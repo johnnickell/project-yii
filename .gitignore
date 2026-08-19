@@ -1,0 +1,8 @@
+/.merge-plan.php
+/graphify-out/
+/vendor/
+/.runs/
+/var/
+/.composer/
+/.DS_Store
+/auth.json

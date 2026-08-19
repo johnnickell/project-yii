@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -eu
+
+cd "$(dirname "$0")/.."
+
+if [ "${PROJECT_YII_IN_BUILD:-0}" = "1" ]; then
+    exec php vendor/bin/phpunit "$@"
+fi
+
+mkdir -p var/cache/phpunit
+exec docker compose run --rm app php vendor/bin/phpunit "$@"
