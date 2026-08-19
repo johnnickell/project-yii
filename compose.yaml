@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: etc/docker/fpm/Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: php-fpm
+
+  web:
+    build:
+      context: .
+      dockerfile: etc/docker/nginx/Dockerfile
+    depends_on:
+      - app
+    ports:
+      - "8088:80"
+    volumes:
+      - .:/app:ro

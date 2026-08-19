@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+set -eu
+
+image=project-yii-build
+
+docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
+docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
+    composer validate --strict
+    composer install --no-interaction --prefer-dist --no-progress
+    php scripts/public-contract-check.php
+    php scripts/governance-check.php
+    php scripts/architecture-check.php
+    php scripts/docs-check.php
+    php tests/regression/quality-gate.php
+    PROJECT_YII_IN_BUILD=1 ./bin/phpunit
+
+    production_root=$(mktemp -d)
+    trap "rm -rf \"$production_root\"" EXIT
+    cp -a . "$production_root"
+    cd "$production_root"
+    composer install --no-dev --no-interaction --prefer-dist --no-progress
+    php scripts/public-contract-check.php
+
+    php -r '\''
+        $installed = require "vendor/composer/installed.php";
+        foreach (["johnnickell/fight-common", "johnnickell/fight-access-control"] as $package) {
+            if (!isset($installed["versions"][$package])) {
+                throw new RuntimeException("Production dependency {$package} is not installed.");
+            }
+        }
+        fwrite(STDOUT, "Production Fight dependency contract passed.\n");
+    '\''
+'

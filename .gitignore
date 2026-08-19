@@ -1,0 +1,27 @@
+# Dependencies and generated runtime state
+/vendor/
+/var/
+/.runs/
+/coverage/
+/.composer/
+.phpunit.result.cache
+
+# Generated code-graph artifacts, at any depth
+graphify-out/
+
+# Local editor and workstation state
+/.idea/
+/.vscode/
+/.zed/
+/.codex/
+/.cursor/
+.phpactor.json
+.DS_Store
+Thumbs.db
+
+# Machine-local configuration and credentials
+/auth.json
+.env
+.env.local
+.env.*.local
+/.merge-plan.php
