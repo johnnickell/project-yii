@@ -10,12 +10,12 @@ final class HelloWorldAndConsoleTest extends TestCase
 {
     public function testHelloWorldConfigurationAndDiIntegration(): void
     {
-        $this->runRegressionScript('tests/integration/hello-world.php');
+        $this->runRegressionScript('tests/Integration/hello-world.php');
     }
 
     public function testYiiNativeConsoleDelegation(): void
     {
-        $this->runRegressionScript('tests/integration/console.php');
+        $this->runRegressionScript('tests/Integration/console.php');
     }
 
     private function runRegressionScript(string $script): void
