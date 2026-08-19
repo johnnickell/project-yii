@@ -72,10 +72,14 @@ foreach (glob($root . '/planning/specs/*-PRD.md') ?: [] as $specification) {
 }
 
 $gitignore = (string) file_get_contents($root . '/.gitignore');
-foreach (['/.runs/', '/var/'] as $ignoredPath) {
+foreach (['/.runs/', '/var/', 'graphify-out/', '/vendor/', '/coverage/', '/.composer/', '/auth.json'] as $ignoredPath) {
     if (!str_contains($gitignore, $ignoredPath)) {
         throw new RuntimeException(sprintf('.gitignore must ignore %s.', $ignoredPath));
     }
+}
+
+if (str_contains($gitignore, '/graphify-out/')) {
+    throw new RuntimeException('.gitignore must ignore graphify-out directories at any depth.');
 }
 
 fwrite(STDOUT, "Local authority and delivery-gate contract passed.\n");

@@ -3,7 +3,7 @@ set -eu
 
 image=project-yii-build
 
-docker build --tag "$image" .
+docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
 docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
     composer validate --strict
     composer install --no-interaction --prefer-dist --no-progress
