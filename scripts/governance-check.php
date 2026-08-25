@@ -58,9 +58,7 @@ foreach (['develop', 'main', "'release/**'"] as $branch) {
 $localPrd = (string) file_get_contents($root . '/planning/specs/00001-PRD.md');
 if (
     !str_contains($localPrd, 'id: PRD-00001')
-    || !str_contains($localPrd, 'Local authority')
-    || !str_contains($localPrd, 'Fight Common PRD-00016')
-    || !str_contains($localPrd, 'Fight Common PRD-00018')
+    || !str_contains($localPrd, 'Fight Common and Fight AccessControl must remain public Composer packages')
 ) {
     throw new RuntimeException('PRD-00001 must be the local product authority.');
 }

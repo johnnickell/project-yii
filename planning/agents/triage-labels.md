@@ -1,6 +1,11 @@
-# Triage states
+# Triage States
 
-Use only `not-planned`, `ready-for-agent`, `in-progress`, `blocked`, `in-review`, and `done`.
+- `needs-triage`: not yet classified.
+- `needs-info`: blocked on a decision or missing evidence.
+- `ready-for-agent`: decision-complete and executable when dependencies are done.
+- `ready-for-human`: requires human judgment or an external action.
+- `in-progress`: actively being changed.
+- `done`: acceptance criteria and verification are complete.
+- `wontfix`: intentionally closed without implementation.
 
-`done` requires local acceptance, architecture and documentation checks, and `./bin/build` evidence. `blocked`
-records a concrete dependency and resumable next action.
+Do not store `blocked` as a status; derive it from unfinished dependency edges.

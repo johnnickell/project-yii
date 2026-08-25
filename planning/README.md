@@ -1,17 +1,24 @@
-# Planning Authority
+# Planning
 
-This directory is the canonical planning surface for Project Yii. It is independent of Fight Common umbrella
-records: this repository owns Yii scope, status, acceptance, build evidence, and documentation updates.
+This directory is the committed source of truth for Project Yii planning.
 
-| Surface | Authority |
-| --- | --- |
-| `specs/` | Product requirements and enduring acceptance decisions. |
-| `tickets/` | Executable vertical slices, status, blockers, and recommended order. |
-| `ROADMAP.md` | Capability sequence, not ticket status. |
-| `agents/` | Focused architecture, tracking, and triage instructions. |
+- `ROADMAP.md` records strategic progress.
+- `epics/` describes destinations.
+- `specs/` describes coherent product requirements.
+- `tickets/` contains executable work; each ticket is canonical for its own status and dependencies.
+- `tickets/BOARD.md` ranks the current execution frontier.
+- `adr/` records architectural decisions.
+- `agents/` contains focused working instructions.
+- `wayfinder/` contains planning-only investigation maps and decision tickets for efforts whose
+  implementation route is not clear enough for an epic or PRD yet.
 
-`tickets/BOARD.md` answers “what is next?”; each ticket remains canonical for its own acceptance criteria and
-blocking edges. The external [Fight Common PRD-00016](https://github.com/johnnickell/fight-common/blob/develop/planning/specs/00016-PRD.md)
-and [Fight Common PRD-00018](https://github.com/johnnickell/fight-common/blob/develop/planning/specs/00018-PRD.md)
-are portfolio-bootstrap provenance, not a competing status system. Local EPIC, PRD, and ticket sequences begin at
-`00001`; this bootstrap has no repository-local epic.
+Every artifact directory keeps a `_…_TEMPLATE.md` copy-ready starting point. `wayfinder/README.md` is the
+continuity index for charting work and its next decision frontier. Archives remain part of this committed
+planning record: use `./bin/archive-planning` only when explicitly asked, review its dry run, then use `--apply`
+to move eligible terminal records and repair local Markdown links.
+
+Identifiers are independent five-digit sequences. Ticket identifiers are displayed as `T-NNNNN`. Valid statuses are `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `in-progress`, `done`, and `wontfix`. Blocking is derived from unfinished `blocked_by` edges and is not stored as a status.
+
+`CONVENTIONS.md` is the canonical reference for planning structure, file naming, ticket lifecycle, BOARD.md, wayfinder maps, epics, PRDs, and pre-PR synchronization.
+
+Run `./bin/planning-check` after changing planning files. Coordinate-build scratch belongs in gitignored `.runs/`, never here.
