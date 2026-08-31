@@ -18,6 +18,8 @@ Create feature branches from `develop` as `feature/<description>`. Never commit 
 
 ## Pre-Submit Gate
 
+For a long non-interactive build, run `screen -dmS <ticket>-build /bin/zsh -lc './bin/build > /private/tmp/<ticket>-build.log 2>&1; print -r -- $? > /private/tmp/<ticket>-build.exit'`, then inspect the log and require an exit file containing `0`; never treat foreground timeout output as a build result.
+
 Always run before committing or creating a PR:
 
 ```bash

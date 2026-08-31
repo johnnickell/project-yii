@@ -67,12 +67,12 @@ Do not store `blocked` as a status; derive it from unfinished `blocked_by` edges
 
 `planning/tickets/BOARD.md` is the canonical execution frontier. It must be structured as:
 
-- **"What's Next?" Contract** — defines what an unqualified "What's next?" returns
+- **"What's Next?" Contract** — defines what `/ask-matt` or an unqualified "What's next?" returns
 - **Now** — the current human decision requiring judgment
 - **Ready Frontier** — rank-ordered tickets with no unfinished blockers
 - **Waiting** — `ready-for-agent` tickets with unfinished `blocked_by` edges
 - **Needs Info** — tickets waiting on decision authority
-- **Recently Done** — terminal tickets with outcomes
+- **Recently Closed / Done** — terminal tickets with outcomes
 
 ## ROADMAP.md
 
@@ -110,6 +110,12 @@ Use `_MAP_TEMPLATE.md` for every new map. A map must contain, in this order:
 4. a linked ticket table with type, mode, status, and dependencies;
 5. blocking relationships when dependencies are non-trivial;
 6. a single explicit `Frontier`, followed by fog and out-of-scope boundaries.
+
+The Board may name one **Wayfinder Review** candidate only when an active map has a concrete, unblocked
+frontier ticket suitable for `/grill-with-docs`. It must link to the map and its frontier ticket. If no such
+map exists, the Board says so rather than inventing planning work and `/ask-matt` offers `/wayfinder` to chart
+a new feature. This advisory pointer never overrides the Board's implementation frontier or the map's own
+decision authority.
 
 ### Archive Operation — Explicit Command Only
 
@@ -166,7 +172,7 @@ Before creating a pull request for any feature or bug fix:
 3. **Update parent PRD** — if the PRD README tracks completion status, verify it reflects the ticket's new state
 4. **Update epic progress** — if the epic's Progress section needs to reflect the new milestone
 5. **Update ROADMAP.md** — if the completed work moves a strategic milestone forward
-6. **Run `./bin/planning-check`** to verify planning file consistency
+6. **Run `./bin/planning-check`** (when available) to verify planning file consistency
 7. **Verify `blocked_by` edges** — ensure no downstream tickets list the completed ticket as an unresolved blocker
 8. **Refresh Wayfinder continuity** — update the Wayfinder index and the Board's Wayfinder Review pointer when
    a map frontier or handoff changed
