@@ -64,8 +64,8 @@ if (
 }
 
 foreach (glob($root . '/planning/specs/*-PRD.md') ?: [] as $specification) {
-    if (basename($specification) !== '00001-PRD.md') {
-        throw new RuntimeException('External provenance must be linked, not copied into a local non-00001 PRD.');
+    if (!in_array(basename($specification), ['00001-PRD.md', '00002-PRD.md'], true)) {
+        throw new RuntimeException('External provenance must be linked, not copied into an unapproved local PRD.');
     }
 }
 
