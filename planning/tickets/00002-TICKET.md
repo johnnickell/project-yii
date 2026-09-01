@@ -10,14 +10,14 @@ blocked_by:
 
 ## Outcome
 
-Resolve a 1.2 candidate through Yii's Composer installation, activate only supported local capabilities, run
-lowest/latest booted journeys, and commit the canonical support receipt.
+Resolve the completed Yii platform profile through Yii's Composer installation, run lowest/latest booted journeys,
+and commit the canonical support receipt.
 
 ## Acceptance Criteria
 
-- [ ] The existing `^1.1` constraint resolves an installed 1.2 candidate recorded with its exact reference.
-- [ ] Lowest/latest journeys boot selected Yii configuration/providers, transactions, routing, PSR composition, and native prototype outcomes.
-- [ ] Stable queue support is recorded as unavailable rather than skipped when its upstream contract remains unavailable.
+- [ ] The exact Fight Common candidate and Composer-resolved version are recorded with its reference.
+- [ ] Lowest/latest journeys boot every default service from T-00004 through Yii configuration and providers.
+- [ ] The receipt records working default asynchronous messaging; it does not classify that capability as unavailable or skipped.
 - [ ] `evidence/framework-support/receipt-v1.json`, `./bin/planning-check`, and `./bin/build` pass before receipt commit.
 
 ## Verification

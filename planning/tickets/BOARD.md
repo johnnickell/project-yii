@@ -24,7 +24,7 @@ When asked for the next wayfinder target, offer to chart a new feature rather th
 
 | Rank | Ticket | Parent PRD | Why now |
 | --- | --- | --- | --- |
-| 1 | [T-00002 — Adopt Fight Common 1.2](00002-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Resolve, boot, and commit the Yii support receipt. |
+| 1 | [T-00002 — Adopt Fight Common 1.2](00002-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Record the complete profile in the canonical support receipt. |
 
 ## Waiting
 
@@ -40,4 +40,5 @@ No ticket is currently waiting on an unfinished local dependency.
 
 | Ticket | Parent PRD | Outcome |
 |--------|------------|---------|
+| [T-00004 — Establish the Yii Complete Platform Profile](00004-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Complete default Yii service composition and booted profile journey verified. |
 | [T-00001 — Establish the Governed Yii Starter Foundation](00001-TICKET.md) | [PRD-00001](../specs/00001-PRD.md) | Local and hosted `./bin/build` receipts are green. The governed bootstrap handoff is accepted. |

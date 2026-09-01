@@ -18,6 +18,11 @@ final class HelloWorldAndConsoleTest extends TestCase
         $this->runRegressionScript('tests/Integration/console.php');
     }
 
+    public function testCompletePlatformDefaultServices(): void
+    {
+        $this->runRegressionScript('tests/Integration/complete-platform.php');
+    }
+
     private function runRegressionScript(string $script): void
     {
         $root = dirname(__DIR__, 2);

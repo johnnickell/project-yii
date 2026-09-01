@@ -5,7 +5,8 @@ image=project-yii-build
 
 docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
 docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
-    composer validate --strict
+    php scripts/composer-candidate-validation.php
+    php scripts/fight-common-candidate-check.php
     composer install --no-interaction --prefer-dist --no-progress
     php scripts/public-contract-check.php
     php scripts/governance-check.php
