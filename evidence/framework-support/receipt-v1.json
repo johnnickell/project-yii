@@ -1,0 +1,97 @@
+{
+    "schema_version": "fight-common.framework-support-receipt/v1",
+    "content_id": "51a547f75aaecc6612b275b93d8e0d9f82dc73e65546498069602d147571b86a",
+    "candidate": {
+        "package": "johnnickell/fight-common",
+        "version": "1.2.0-dev",
+        "reference": "4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16"
+    },
+    "framework": {
+        "name": "yii",
+        "version": "1.1.1",
+        "providers": [
+            "dragonmantank/cron-expression@v3.6.0",
+            "guzzlehttp/guzzle@7.15.5",
+            "league/flysystem@3.36.0",
+            "league/flysystem-local@3.35.3",
+            "nyholm/psr7@1.8.2",
+            "symfony/filesystem@v8.1.6",
+            "symfony/mailer@v8.1.5",
+            "symfony/mercure@v0.7.2",
+            "symfony/messenger@v8.1.6",
+            "symfony/process@v8.1.6",
+            "yiisoft/cache@3.2.0",
+            "yiisoft/config@1.6.2",
+            "yiisoft/db@1.3.0",
+            "yiisoft/db-sqlite@1.2.0",
+            "yiisoft/di@1.4.1",
+            "yiisoft/event-dispatcher@1.1.0",
+            "yiisoft/log@2.2.1",
+            "yiisoft/mailer@6.1.0",
+            "yiisoft/router@4.0.2",
+            "yiisoft/router-fastroute@4.0.3",
+            "yiisoft/session@3.0.2",
+            "yiisoft/validator@2.6.0",
+            "yiisoft/view@11.0.1",
+            "yiisoft/view-twig@3.0.0",
+            "yiisoft/yii-console@2.4.2",
+            "yiisoft/yii-http@1.1.1"
+        ]
+    },
+    "lock_sha256": "3b548faad9372889b7d03aed5d6181c67779b782ce683872ca18b7a2a6071cf4",
+    "capabilities": {
+        "container.bounded_yii_providers": "ship",
+        "request.routing_twig": "ship",
+        "security.password_and_validation": "wire",
+        "messaging.synchronous": "ship",
+        "messaging.symfony_messenger_fallback": "wire",
+        "messaging.stable_yii_queue": "unavailable",
+        "persistence.sqlite_transactions": "ship",
+        "storage.flysystem_local": "wire",
+        "filesystem.symfony": "ship",
+        "http.guzzle_psr18": "wire",
+        "process_and_scheduler": "wire",
+        "mail_sms_and_transfer_null_fallbacks": "wire",
+        "observability.null_fallbacks": "wire",
+        "publication.mercure_mock_fallback": "wire"
+    },
+    "journeys": [
+        {
+            "name": "booted_request_lifecycle",
+            "status": "passed",
+            "evidence": "tests/Integration/HttpApplicationJourneyTest.php"
+        },
+        {
+            "name": "booted_messaging_lifecycle",
+            "status": "passed",
+            "evidence": "tests/Integration/MessagingJourneyTest.php"
+        },
+        {
+            "name": "booted_stateful_lifecycle",
+            "status": "passed",
+            "evidence": "tests/Integration/StatefulCapabilityJourneyTest.php"
+        },
+        {
+            "name": "booted_integration_fallbacks",
+            "status": "passed",
+            "evidence": "tests/Integration/IntegrationFallbackJourneyTest.php"
+        },
+        {
+            "name": "lowest_locked_yii_capabilities",
+            "status": "passed",
+            "evidence": "composer-lowest.lock; scripts/verify-dependency-lanes.sh"
+        },
+        {
+            "name": "latest_and_production_yii_capabilities",
+            "status": "passed",
+            "evidence": "composer.lock; scripts/verify-production-framework-support-profile.php"
+        }
+    ],
+    "result": "passed",
+    "evidence": {
+        "build": "./bin/build",
+        "planning_check": "./bin/planning-check",
+        "receipt_sha256": "74b388cb5cde1ce0f4b0bb8d1754c03b337c3c06b14c9acf7d66611296eafa46"
+    },
+    "next_action": null
+}

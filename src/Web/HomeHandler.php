@@ -20,7 +20,7 @@ final readonly class HomeHandler implements RequestHandlerInterface
     {
         return new Response(
             200,
-            ['Content-Type' => 'text/html; charset=utf-8'],
+            ['Content-Type' => 'text/html; charset=utf-8', 'X-Route-Name' => 'home'],
             $this->view->render('//home.twig')
         );
     }

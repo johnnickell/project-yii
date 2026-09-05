@@ -91,6 +91,11 @@ return [
                 'config/params-console.php',
             ],
         ],
+        'project-runtime' => [
+            '/' => [
+                'project-runtime.php',
+            ],
+        ],
         'providers' => [
             '/' => [
                 'providers.php',

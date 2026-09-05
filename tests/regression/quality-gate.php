@@ -14,7 +14,7 @@ if (!is_file($root . '/phpunit.xml')) {
 }
 
 $build = (string) file_get_contents($root . '/bin/build');
-foreach (['./bin/phpunit', 'php scripts/architecture-check.php', 'php scripts/docs-check.php'] as $requiredCommand) {
+foreach (['./bin/phpunit', 'scripts/verify-dependency-lanes.sh', 'php scripts/verify-framework-support-receipt.php', 'php scripts/architecture-check.php', 'php scripts/docs-check.php'] as $requiredCommand) {
     if (!str_contains($build, $requiredCommand)) {
         throw new RuntimeException(sprintf('The canonical build must run %s.', $requiredCommand));
     }

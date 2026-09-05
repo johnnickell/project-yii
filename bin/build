@@ -8,6 +8,16 @@ docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
     php scripts/composer-candidate-validation.php
     php scripts/fight-common-candidate-check.php
     composer install --no-interaction --prefer-dist --no-progress
+    php scripts/framework-support-profile.php --assert-lane .
+    php scripts/generate-framework-support-receipt.php
+    scripts/verify-dependency-lanes.sh
+
+    work_root=$(mktemp -d)
+    trap "rm -rf \"$work_root\"" EXIT
+    git clone --quiet --no-checkout https://github.com/johnnickell/fight-common "$work_root/fight-common"
+    git -C "$work_root/fight-common" checkout --quiet --detach 4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16
+    php scripts/verify-framework-support-receipt.php "$work_root/fight-common"
+
     php scripts/public-contract-check.php
     php scripts/governance-check.php
     php scripts/architecture-check.php
@@ -15,20 +25,11 @@ docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
     php tests/regression/quality-gate.php
     PROJECT_YII_IN_BUILD=1 ./bin/phpunit
 
-    production_root=$(mktemp -d)
-    trap "rm -rf \"$production_root\"" EXIT
-    cp -a . "$production_root"
+    production_root="$work_root/production"
+    mkdir "$production_root"
+    tar --exclude=.git --exclude=vendor --exclude=.runs --exclude=var -cf - . | tar -C "$production_root" -xf -
     cd "$production_root"
     composer install --no-dev --no-interaction --prefer-dist --no-progress
     php scripts/public-contract-check.php
-
-    php -r '\''
-        $installed = require "vendor/composer/installed.php";
-        foreach (["johnnickell/fight-common", "johnnickell/fight-access-control"] as $package) {
-            if (!isset($installed["versions"][$package])) {
-                throw new RuntimeException("Production dependency {$package} is not installed.");
-            }
-        }
-        fwrite(STDOUT, "Production Fight dependency contract passed.\n");
-    '\''
+    php scripts/verify-production-framework-support-profile.php
 '

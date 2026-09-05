@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Adapter\Container;
+
+use Fight\Common\Adapter\EventSourcing\InMemory\InMemoryEventStore;
+use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
+use Fight\Common\Domain\EventSourcing\EventMapper;
+use Fight\Common\Domain\EventSourcing\EventStore;
+use Psr\Log\NullLogger;
+use Yiisoft\Cache\ArrayCache;
+use Yiisoft\Db\Cache\SchemaCache;
+use Yiisoft\Db\Sqlite\Connection;
+use Yiisoft\Db\Sqlite\Driver;
+use Yiisoft\Di\ServiceProviderInterface;
+
+final class PersistenceProvider implements ServiceProviderInterface
+{
+    /** @param array<string, string> $parameters */
+    public function __construct(string $root, array $parameters)
+    {
+    }
+
+    public function getDefinitions(): array
+    {
+        $cache = new ArrayCache();
+        $connection = new Connection(new Driver('sqlite::memory:'), new SchemaCache($cache));
+
+        return [
+            ...YiiCapabilityConfiguration::persistence($connection, $cache, new NullLogger()),
+            EventMapper::class => static fn (): EventMapper => new EventMapper([]),
+            EventStore::class => InMemoryEventStore::class,
+        ];
+    }
+
+    public function getExtensions(): array
+    {
+        return [];
+    }
+}

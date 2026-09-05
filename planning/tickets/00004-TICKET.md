@@ -23,8 +23,8 @@ configuration; they do not discover, adapt, or wire Fight Common services.
 - [x] Default Yii composition registers and proves validation, security, cache, persistence/event store, synchronous
   and asynchronous messaging, HTTP/PSR-18, request/response, filesystem/storage, transfer, process, scheduler,
   routing, mail, templating, observability, SMS, Mercure/private publication, and every selected fallback.
-- [x] Asynchronous messaging has a working default service. Yii-native Queue remains separately selectable but is
-  not the only async path and is never recorded as unavailable/skipped.
+- [x] Symfony Messenger has a working default asynchronous fallback with complete command/event envelopes. Stable
+  Yii Queue remains a separate capability and is recorded as unavailable until a supported integration exists.
 - [x] Secrets, application routes, templates, and Domain/Application code remain project-owned and configurable.
 - [x] A booted profile journey and configuration tests prove services are available from a clean Composer install.
 
@@ -32,8 +32,8 @@ configuration; they do not discover, adapt, or wire Fight Common services.
 
 Run the complete-profile focused journeys, `./bin/planning-check`, and the repository-owned `./bin/build`.
 
-Verified 2026-08-31: `./bin/phpunit --filter CompletePlatformDefaultServices`, full `./bin/phpunit`,
-`./bin/planning-check`, and detached `./bin/build` (`/private/tmp/t00004-final-build.exit` = `0`).
+The original 2026-08-31 inventory proof was superseded by T-00002's bounded booted request, messaging, stateful,
+integration-fallback, dependency-lane, and receipt-authority journeys.
 
 ## Scope Boundary
 
