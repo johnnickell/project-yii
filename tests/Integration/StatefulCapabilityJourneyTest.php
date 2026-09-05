@@ -9,6 +9,7 @@ use Fight\Common\Application\FileStorage\FileStorage;
 use Fight\Common\Application\Repository\TransactionalUnitOfWork;
 use Fight\Common\Application\Scheduler\Scheduler;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Db\Cache\SchemaCache;
 use Yiisoft\Db\Connection\ConnectionInterface;
 
 final class StatefulCapabilityJourneyTest extends TestCase
@@ -61,5 +62,15 @@ final class StatefulCapabilityJourneyTest extends TestCase
         self::assertTrue($ran);
         self::assertFileExists($base.'/first-scheduler/isolated-job.lock');
         self::assertFileDoesNotExist($base.'/second-scheduler/isolated-job.lock');
+    }
+
+    public function test_booted_schema_cache_is_only_the_persistence_metadata_collaborator(): void
+    {
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $schemaCache = $container->get(SchemaCache::class);
+
+        self::assertTrue($schemaCache->isEnabled());
+        $schemaCache->set('journey-schema-metadata', ['column' => 'value']);
+        self::assertSame(['column' => 'value'], $schemaCache->get('journey-schema-metadata'));
     }
 }

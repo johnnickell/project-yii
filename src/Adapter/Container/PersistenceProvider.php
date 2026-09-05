@@ -25,10 +25,12 @@ final class PersistenceProvider implements ServiceProviderInterface
     public function getDefinitions(): array
     {
         $cache = new ArrayCache();
-        $connection = new Connection(new Driver('sqlite::memory:'), new SchemaCache($cache));
+        $schemaCache = new SchemaCache($cache);
+        $connection = new Connection(new Driver('sqlite::memory:'), $schemaCache);
 
         return [
             ...YiiCapabilityConfiguration::persistence($connection, $cache, new NullLogger()),
+            SchemaCache::class => $schemaCache,
             EventMapper::class => static fn (): EventMapper => new EventMapper([]),
             EventStore::class => InMemoryEventStore::class,
         ];

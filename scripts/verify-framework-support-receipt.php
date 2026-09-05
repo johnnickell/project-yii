@@ -31,6 +31,14 @@ $accepts = static function (array $candidate) use ($authority, $projectRoot): bo
 if (!$accepts($receipt)) {
     throw new RuntimeException('Exact-candidate receipt authority rejected the committed current receipt.');
 }
+if (($receipt['capabilities']['messaging.stable_yii_queue'] ?? null) !== 'unavailable') {
+    throw new RuntimeException('Receipt must record Yii Queue as unavailable rather than claiming worker delivery.');
+}
+foreach ($receipt['journeys'] as $journey) {
+    if (($journey['status'] ?? null) !== 'passed') {
+        throw new RuntimeException('A passed receipt may only record passed journeys.');
+    }
+}
 
 $contentCandidate = $receipt;
 $contentCandidate['content_id'] = str_repeat('0', 64);
@@ -49,19 +57,36 @@ $malformed = $receipt;
 $malformed['candidate']['version'] = 'not-a-version';
 $stale = $receipt;
 $stale['lock_sha256'] = str_repeat('a', 64);
+$stale = frameworkSupportWithDigests($stale);
 $candidateMismatch = $receipt;
 $candidateMismatch['candidate']['reference'] = str_repeat('b', 40);
+$candidateMismatch = frameworkSupportWithDigests($candidateMismatch);
 $fixtures = compact('missing', 'malformed', 'stale', 'candidateMismatch');
 foreach (['failed', 'unavailable', 'skipped', 'indeterminate'] as $status) {
     $fixture = $receipt;
     $fixture['result'] = $status;
     $fixture['journeys'][0]['status'] = $status;
     $fixture['next_action'] = ['action' => 'repair_'.$status.'_journey'];
-    $fixtures[$status] = $fixture;
+    $fixtures[$status] = frameworkSupportWithDigests($fixture);
 }
 foreach ($fixtures as $name => $fixture) {
     if ($accepts($fixture)) {
         throw new RuntimeException(sprintf('Receipt verifier accepted fail-closed fixture: %s', $name));
+    }
+}
+foreach (['failed', 'unavailable', 'skipped', 'indeterminate'] as $status) {
+    if (!$authority->isValid($fixtures[$status])) {
+        throw new RuntimeException(sprintf('Receipt authority rejected valid resumable fixture: %s', $status));
+    }
+    $withoutAction = $fixtures[$status];
+    $withoutAction['next_action'] = null;
+    if ($authority->isValid($withoutAction)) {
+        throw new RuntimeException(sprintf('Receipt authority accepted non-passing fixture without action: %s', $status));
+    }
+    $multipleActions = $fixtures[$status];
+    $multipleActions['next_action']['follow_up'] = 'do_not_accept';
+    if ($authority->isValid($multipleActions)) {
+        throw new RuntimeException(sprintf('Receipt authority accepted non-passing fixture with multiple actions: %s', $status));
     }
 }
 try {

@@ -64,7 +64,7 @@ for lane in latest lowest; do
         echo "$lane install changed its committed lock." >&2
         exit 1
     fi
-    php "$project_root/scripts/framework-support-profile.php" --assert-lane "$lane_root"
+    php "$lane_root/scripts/framework-support-profile.php" --assert-lane "$lane_root"
     (
         cd "$lane_root"
         php vendor/bin/phpunit tests/Integration/HttpApplicationJourneyTest.php tests/Integration/MessagingJourneyTest.php tests/Integration/StatefulCapabilityJourneyTest.php tests/Integration/IntegrationFallbackJourneyTest.php tests/Integration/SourceBoundaryTest.php

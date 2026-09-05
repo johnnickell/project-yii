@@ -12,7 +12,7 @@ use Yiisoft\View\WebView;
 
 final readonly class HomeHandler implements RequestHandlerInterface
 {
-    public function __construct(private WebView $view)
+    public function __construct(private WebView $view, private string $routeName)
     {
     }
 
@@ -20,7 +20,7 @@ final readonly class HomeHandler implements RequestHandlerInterface
     {
         return new Response(
             200,
-            ['Content-Type' => 'text/html; charset=utf-8', 'X-Route-Name' => 'home'],
+            ['Content-Type' => 'text/html; charset=utf-8', 'X-Route-Name' => $this->routeName],
             $this->view->render('//home.twig')
         );
     }

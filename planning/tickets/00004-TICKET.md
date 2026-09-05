@@ -20,11 +20,13 @@ configuration; they do not discover, adapt, or wire Fight Common services.
 
 - [x] Composer uses the Fight Common VCS repository with the exact `dev-develop` commit pin and the authorized
   compatibility alias; it records Composer's actual resolved version and source reference.
-- [x] Default Yii composition registers and proves validation, security, cache, persistence/event store, synchronous
-  and asynchronous messaging, HTTP/PSR-18, request/response, filesystem/storage, transfer, process, scheduler,
+- [x] Default Yii composition registers and proves validation, security, persistence/event store with `yiisoft/cache`
+  as the persistence schema-cache collaborator, synchronous messaging and Symfony Messenger envelope transport,
+  HTTP/PSR-18, request/response, filesystem/storage, transfer, process, scheduler,
   routing, mail, templating, observability, SMS, Mercure/private publication, and every selected fallback.
-- [x] Symfony Messenger has a working default asynchronous fallback with complete command/event envelopes. Stable
-  Yii Queue remains a separate capability and is recorded as unavailable until a supported integration exists.
+- [x] Symfony Messenger has a working default envelope-transport fallback with complete command/event envelopes;
+  this does not claim queue-worker delivery. Stable Yii Queue remains a separate capability and is recorded as
+  unavailable until a supported integration exists.
 - [x] Secrets, application routes, templates, and Domain/Application code remain project-owned and configurable.
 - [x] A booted profile journey and configuration tests prove services are available from a clean Composer install.
 

@@ -27,6 +27,9 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\MockHub;
+use Symfony\Component\Mercure\Update;
 
 final class IntegrationFallbackJourneyTest extends TestCase
 {
@@ -73,5 +76,26 @@ final class IntegrationFallbackJourneyTest extends TestCase
         self::assertFalse($hub->updates[0]->isPrivate());
         self::assertTrue($hub->updates[1]->isPrivate());
         self::addToAssertionCount(3);
+    }
+
+    public function test_configured_mercure_fallback_uses_application_owned_policy_without_network_effects(): void
+    {
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer([
+            'app.mercure_url' => 'https://mercure.example.test/custom',
+            'app.mercure_token' => 'configured-local-token',
+            'app.publication_result' => 'configured-publication',
+        ]);
+
+        $hub = $container->get(HubInterface::class);
+
+        self::assertInstanceOf(MockHub::class, $hub);
+        self::assertSame('https://mercure.example.test/custom', $hub->getUrl());
+        self::assertSame('https://mercure.example.test/custom', $hub->getPublicUrl());
+        self::assertSame('configured-local-token', $hub->getProvider()->getJwt());
+        self::assertSame('configured-publication', $hub->publish(new Update('safe-topic', 'safe-message')));
+
+        $container->get(Publisher::class)->push('safe-public-topic', 'safe-public-message');
+        $container->get(PrivatePublisher::class)->pushPrivate('safe-private-topic', 'safe-private-message');
+        self::addToAssertionCount(2);
     }
 }

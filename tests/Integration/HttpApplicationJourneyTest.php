@@ -29,10 +29,31 @@ final class HttpApplicationJourneyTest extends TestCase
 
     public function test_routing_twig_security_and_validation_have_independent_expected_outcomes(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
+        $parameters = [
+            'app.route_path' => '/configured-hello',
+            'app.route_name' => 'configured-hello',
+            'app.templates_path' => 'tests/Fixture/Http/configured-templates',
+        ];
+        $application = $factory->createApplication($parameters);
 
-        self::assertSame('/', $container->get(UrlGenerator::class)->generate('home'));
-        self::assertStringContainsString('Hello, Fight Yii!', $container->get(TemplateEngine::class)->render('home.twig'));
+        $response = $application->handle(new ServerRequest('GET', 'https://yii.example.test/configured-hello'));
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('configured-hello', $response->getHeaderLine('X-Route-Name'));
+        self::assertStringContainsString('<h1>Configured Yii request</h1>', (string) $response->getBody());
+
+        $outsideConfiguredRoute = $factory
+            ->createApplication($parameters)
+            ->handle(new ServerRequest('GET', 'https://yii.example.test/'));
+        self::assertSame(404, $outsideConfiguredRoute->getStatusCode());
+
+        $container = $factory->createContainer($parameters);
+
+        self::assertSame('/configured-hello', $container->get(UrlGenerator::class)->generate('configured-hello'));
+        self::assertStringContainsString(
+            'Configured Yii request',
+            $container->get(TemplateEngine::class)->render('home.twig'),
+        );
         $hash = $container->get(PasswordHasher::class)->hash('starter-secret');
         self::assertTrue($container->get(PasswordValidator::class)->validate('starter-secret', $hash));
         self::assertFalse($container->get(PasswordValidator::class)->validate('wrong-secret', $hash));

@@ -11,7 +11,7 @@ function assertProjectSourceBoundary(string $sourceRoot): void
 
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($sourceRoot, FilesystemIterator::SKIP_DOTS));
     foreach ($iterator as $file) {
-        if (!$file->isFile() || $file->getExtension() !== 'php') {
+        if (!$file->isFile() || strtolower($file->getExtension()) !== 'php') {
             continue;
         }
 

@@ -13,5 +13,5 @@
 
 ## Completed / Released
 
-The governed Yii Starter Foundation is complete, and T-00002 records the bounded Yii Fight Common 1.2 composition,
-latest/lowest locks, production graph, and canonical support receipt.
+The governed Yii Starter Foundation is complete, and T-00002 records the verified bounded Yii Fight Common 1.2
+composition, latest/lowest locks, production graph, support receipt, and canonical repair build.

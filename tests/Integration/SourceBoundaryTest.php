@@ -35,6 +35,18 @@ final class SourceBoundaryTest extends TestCase
         assertProjectSourceBoundary($root);
     }
 
+    public function test_a_copied_access_control_namespace_in_a_php_file_with_an_uppercase_extension_fails_closed(): void
+    {
+        require_once dirname(__DIR__, 2).'/scripts/source-boundary.php';
+        $root = $this->fixtureRoot('forbidden-access-control');
+        mkdir($root, 0777, true);
+        file_put_contents($root.'/Copied.PHP', '<?php namespace Fight\\AccessControl\\Domain; final class Copied {}');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Copied shared namespace');
+        assertProjectSourceBoundary($root);
+    }
+
     private function fixtureRoot(string $name): string
     {
         return sys_get_temp_dir().'/project-yii-boundary-'.$name.'-'.bin2hex(random_bytes(5));

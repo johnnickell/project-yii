@@ -3,7 +3,7 @@ id: T-00002
 prd: PRD-00002
 title: Adopt Fight Common 1.2
 status: done
-blocked_by:
+blocked_by: T-00004
 ---
 
 # Adopt Fight Common 1.2
@@ -24,6 +24,6 @@ and commit the canonical support receipt.
 
 Run documented lowest/latest Composer and booted journeys, receipt canonicalization, `./bin/planning-check`, and `./bin/build`.
 
-Verified 2026-09-05: focused and full PHPUnit journeys, exact latest/lowest package graphs with unchanged lock digests,
-production `--no-dev` boot, independent receipt digests, exact-candidate `StarterSupportReceiptAuthority`, planning check,
-and the detached canonical build.
+Verified 2026-09-05: focused and full booted journeys, exact latest/lowest package graphs with unchanged lock digests,
+production `--no-dev` boot, independent receipt digests, exact-candidate `StarterSupportReceiptAuthority`, planning
+validation, and the repository-owned detached canonical repair build.

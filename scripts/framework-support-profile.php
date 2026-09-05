@@ -5,15 +5,27 @@ declare(strict_types=1);
 const FRAMEWORK_SUPPORT_CANDIDATE_PACKAGE = 'johnnickell/fight-common';
 const FRAMEWORK_SUPPORT_CANDIDATE_CONSTRAINT = 'dev-develop#4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16 as 1.2.0-dev';
 const FRAMEWORK_SUPPORT_CANDIDATE_REFERENCE = '4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16';
+const FRAMEWORK_SUPPORT_CANDIDATE_REPOSITORY = 'https://github.com/johnnickell/fight-common';
 
 /** @return array<string, mixed> */
 function frameworkSupportProfile(string $projectRoot): array
 {
     $manifest = frameworkSupportJson($projectRoot.'/composer.json');
-    $requirements = array_keys($manifest['require'] ?? []);
-    $requirements = array_values(array_filter($requirements, static fn (string $package): bool => $package !== 'php'));
-    sort($requirements);
-    $expected = [
+    frameworkSupportAssertManifest($manifest);
+
+    return [
+        'selected_direct_runtime_packages' => frameworkSupportSelectedDirectRuntimePackages(),
+        'forbidden_runtime_packages' => [
+            'codeigniter4/framework', 'laravel/framework', 'slim/slim', 'symfony/framework-bundle',
+            'yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/queue', 'phpseclib/phpseclib', 'twilio/sdk',
+        ],
+    ];
+}
+
+/** @return list<string> */
+function frameworkSupportSelectedDirectRuntimePackages(): array
+{
+    return [
         'dragonmantank/cron-expression', 'guzzlehttp/guzzle', 'johnnickell/fight-access-control',
         'johnnickell/fight-common', 'lcobucci/jwt', 'league/flysystem', 'league/flysystem-local', 'nyholm/psr7',
         'symfony/filesystem', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger', 'symfony/process',
@@ -21,6 +33,15 @@ function frameworkSupportProfile(string $projectRoot): array
         'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/mailer', 'yiisoft/router', 'yiisoft/router-fastroute',
         'yiisoft/session', 'yiisoft/validator', 'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
     ];
+}
+
+/** @param array<string, mixed> $manifest */
+function frameworkSupportAssertManifest(array $manifest): void
+{
+    $requirements = array_keys($manifest['require'] ?? []);
+    $requirements = array_values(array_filter($requirements, static fn (string $package): bool => $package !== 'php'));
+    sort($requirements);
+    $expected = frameworkSupportSelectedDirectRuntimePackages();
     sort($expected);
     if ($requirements !== $expected) {
         throw new RuntimeException('composer.json direct runtime requirements do not match the selected Yii profile.');
@@ -33,13 +54,23 @@ function frameworkSupportProfile(string $projectRoot): array
         throw new RuntimeException('Flysystem and Local must retain their compatible selected generation.');
     }
 
-    return [
-        'selected_direct_runtime_packages' => $expected,
-        'forbidden_runtime_packages' => [
-            'codeigniter4/framework', 'laravel/framework', 'slim/slim', 'symfony/framework-bundle',
-            'yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/queue', 'phpseclib/phpseclib', 'twilio/sdk',
-        ],
-    ];
+    frameworkSupportAssertCandidateRepository($manifest);
+}
+
+/** @param array<string, mixed> $manifest */
+function frameworkSupportAssertCandidateRepository(array $manifest): void
+{
+    foreach ($manifest['repositories'] ?? [] as $repository) {
+        if (!is_array($repository)) {
+            continue;
+        }
+        if (($repository['type'] ?? null) === 'vcs'
+            && ($repository['url'] ?? null) === FRAMEWORK_SUPPORT_CANDIDATE_REPOSITORY) {
+            return;
+        }
+    }
+
+    throw new RuntimeException('Fight Common must resolve through its public VCS repository.');
 }
 
 /** @return array<string, mixed> */

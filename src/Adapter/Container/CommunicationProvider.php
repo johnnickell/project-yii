@@ -46,9 +46,9 @@ final class CommunicationProvider implements ServiceProviderInterface
         $configured = $this->parameters['app.mercure_hub'] ?? null;
 
         return $configured instanceof HubInterface ? $configured : new MockHub(
-            'http://localhost/.well-known/mercure',
-            new StaticTokenProvider('project-yii-local'),
-            static fn (): string => 'published',
+            $this->parameters['app.mercure_url'],
+            new StaticTokenProvider($this->parameters['app.mercure_token']),
+            fn (): string => $this->parameters['app.publication_result'],
         );
     }
 }
