@@ -67,7 +67,7 @@ for lane in latest lowest; do
     php "$lane_root/scripts/framework-support-profile.php" --assert-lane "$lane_root"
     (
         cd "$lane_root"
-        php vendor/bin/phpunit tests/Integration/HttpApplicationJourneyTest.php tests/Integration/MessagingJourneyTest.php tests/Integration/StatefulCapabilityJourneyTest.php tests/Integration/IntegrationFallbackJourneyTest.php tests/Integration/SourceBoundaryTest.php
+        php vendor/bin/phpunit tests/Integration/HttpApplicationJourneyTest.php tests/Integration/MessagingJourneyTest.php tests/Integration/StatefulCapabilityJourneyTest.php tests/Integration/IntegrationFallbackJourneyTest.php tests/Integration/CapabilityProviderIsolationTest.php tests/Integration/SourceBoundaryTest.php
     )
     rm -rf "$lane_root"
     trap - EXIT HUP INT TERM

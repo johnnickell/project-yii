@@ -23,6 +23,14 @@ final class SourceBoundaryTest extends TestCase
         self::addToAssertionCount(1);
     }
 
+    public function test_project_owned_production_source_is_limited_to_the_adapter_application_and_domain_layers(): void
+    {
+        require_once dirname(__DIR__, 2).'/scripts/source-boundary.php';
+
+        assertProjectSourceBoundary(dirname(__DIR__, 2).'/src');
+        self::addToAssertionCount(1);
+    }
+
     public function test_a_copied_fight_namespace_fails_closed(): void
     {
         require_once dirname(__DIR__, 2).'/scripts/source-boundary.php';
@@ -32,6 +40,18 @@ final class SourceBoundaryTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Copied shared namespace');
+        assertProjectSourceBoundary($root);
+    }
+
+    public function test_a_project_owned_php_file_outside_the_adapter_application_or_domain_layers_fails_closed(): void
+    {
+        require_once dirname(__DIR__, 2).'/scripts/source-boundary.php';
+        $root = $this->fixtureRoot('invalid-project-layer');
+        mkdir($root.'/Web', 0777, true);
+        file_put_contents($root.'/Web/HomeHandler.php', '<?php namespace App\\Web; final class HomeHandler {}');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Project-owned PHP source must be in Adapter, Application, or Domain');
         assertProjectSourceBoundary($root);
     }
 

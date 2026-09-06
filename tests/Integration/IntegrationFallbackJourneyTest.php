@@ -6,7 +6,10 @@ namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
 use App\Tests\Fixture\RecordingHub;
+use Fight\Common\Adapter\Filesystem\Symfony\SymfonyFilesystem;
 use Fight\Common\Adapter\HttpClient\Guzzle\GuzzleClient;
+use Fight\Common\Adapter\Mail\Symfony\SymfonyMailTransport;
+use Fight\Common\Application\Filesystem\Filesystem;
 use Fight\Common\Application\FileTransfer\Transport\FileTransport;
 use Fight\Common\Application\HttpClient\Transport\HttpClient;
 use Fight\Common\Application\Mail\Message\MailFactory;
@@ -59,6 +62,13 @@ final class IntegrationFallbackJourneyTest extends TestCase
     {
         $hub = new RecordingHub();
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(['app.mercure_hub' => $hub]);
+        self::assertInstanceOf(SymfonyMailTransport::class, $container->get(MailTransport::class));
+        $filesystem = $container->get(Filesystem::class);
+        self::assertInstanceOf(SymfonyFilesystem::class, $filesystem);
+        $path = sys_get_temp_dir().'/project-yii-symfony-filesystem-'.bin2hex(random_bytes(6)).'.txt';
+        $filesystem->put($path, 'symfony-filesystem-fallback');
+        self::assertSame('symfony-filesystem-fallback', $filesystem->get($path));
+        $filesystem->remove($path);
         $mail = $container->get(MailFactory::class)->createMessage()->addFrom('from@example.test')->addTo('to@example.test')
             ->setSubject('local')->addContent('safe', 'text/plain');
         $container->get(MailTransport::class)->send($mail);
@@ -76,6 +86,32 @@ final class IntegrationFallbackJourneyTest extends TestCase
         self::assertFalse($hub->updates[0]->isPrivate());
         self::assertTrue($hub->updates[1]->isPrivate());
         self::addToAssertionCount(3);
+    }
+
+    public function test_native_and_fallback_seams_remain_explicit(): void
+    {
+        /** @var array<string, array{owner: string, status: string}> $seams */
+        $seams = require dirname(__DIR__, 2).'/config/seams.php';
+
+        self::assertSame(
+            [
+                'native-yii-view' => ['owner' => 'starter', 'status' => 'shipped'],
+                'native-yii-mail' => ['owner' => 'starter', 'status' => 'unavailable'],
+                'symfony-mail-fallback' => ['owner' => 'starter', 'status' => 'configured'],
+                'native-yii-filesystem' => ['owner' => 'starter', 'status' => 'unavailable'],
+                'symfony-filesystem-fallback' => ['owner' => 'starter', 'status' => 'configured'],
+            ],
+            array_intersect_key(
+                $seams,
+                array_flip([
+                    'native-yii-view',
+                    'native-yii-mail',
+                    'symfony-mail-fallback',
+                    'native-yii-filesystem',
+                    'symfony-filesystem-fallback',
+                ]),
+            ),
+        );
     }
 
     public function test_configured_mercure_fallback_uses_application_owned_policy_without_network_effects(): void

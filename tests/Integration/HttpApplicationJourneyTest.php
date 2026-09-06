@@ -13,6 +13,9 @@ use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Validator\Rule\Email;
 use Yiisoft\Validator\ValidatorInterface;
+use Yiisoft\View\View;
+use Yiisoft\View\ViewInterface;
+use Yiisoft\View\WebView;
 
 final class HttpApplicationJourneyTest extends TestCase
 {
@@ -49,6 +52,8 @@ final class HttpApplicationJourneyTest extends TestCase
 
         $container = $factory->createContainer($parameters);
 
+        self::assertInstanceOf(View::class, $container->get(ViewInterface::class));
+        self::assertInstanceOf(WebView::class, $container->get(WebView::class));
         self::assertSame('/configured-hello', $container->get(UrlGenerator::class)->generate('configured-hello'));
         self::assertStringContainsString(
             'Configured Yii request',

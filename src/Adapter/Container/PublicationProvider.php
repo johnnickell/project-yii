@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace App\Adapter\Container;
 
-use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
-use Fight\Common\Adapter\Sms\Null\NullSmsTransport;
 use Fight\Common\Adapter\Socket\MercureHubPublisher;
 use Fight\Common\Adapter\Socket\PrivateMercureHubPublisher;
-use Fight\Common\Application\Sms\Transport\SmsTransport;
 use Fight\Common\Application\Socket\PrivatePublisher;
 use Fight\Common\Application\Socket\Publisher;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Jwt\StaticTokenProvider;
 use Symfony\Component\Mercure\MockHub;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class CommunicationProvider implements ServiceProviderInterface
+final class PublicationProvider implements ServiceProviderInterface
 {
     /** @param array<string, mixed> $parameters */
     public function __construct(string $root, private readonly array $parameters)
@@ -28,8 +23,6 @@ final class CommunicationProvider implements ServiceProviderInterface
     public function getDefinitions(): array
     {
         return [
-            ...YiiCapabilityConfiguration::mail(new Mailer(Transport::fromDsn('null://null'))),
-            SmsTransport::class => NullSmsTransport::class,
             HubInterface::class => fn (): HubInterface => $this->hub(),
             Publisher::class => MercureHubPublisher::class,
             PrivatePublisher::class => PrivateMercureHubPublisher::class,

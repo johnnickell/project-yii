@@ -56,6 +56,18 @@ final class MessagingJourneyTest extends TestCase
         self::assertNotSame($sent[0]->getMessage()->id()->toString(), $sent[1]->getMessage()->id()->toString());
     }
 
+    public function test_messenger_fallback_is_selectable_independently_from_synchronous_messaging(): void
+    {
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['messenger-fallback-policy'],
+        );
+
+        self::assertInstanceOf(AsynchronousCommandBus::class, $container->get(AsynchronousCommandBus::class));
+        self::assertInstanceOf(AsynchronousEventDispatcher::class, $container->get(AsynchronousEventDispatcher::class));
+        self::assertFalse($container->has(SynchronousCommandBus::class));
+        self::assertFalse($container->has(SynchronousEventDispatcher::class));
+    }
+
     public function test_declares_messenger_fallback_without_claiming_stable_yii_queue(): void
     {
         /** @var array<string, array{owner: string, status: string}> $seams */

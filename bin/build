@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 set -eu
 
-image=project-yii-build
+worktree_checksum=$(pwd -P | cksum | awk '{print $1}')
+image="project-yii-build-$worktree_checksum"
+
+./bin/planning-check
 
 docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
 docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '

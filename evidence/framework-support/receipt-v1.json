@@ -1,6 +1,6 @@
 {
     "schema_version": "fight-common.framework-support-receipt/v1",
-    "content_id": "51a547f75aaecc6612b275b93d8e0d9f82dc73e65546498069602d147571b86a",
+    "content_id": "8f7a9456cfa650f31e0d814d8bd6cb070f03264ff4e114eb6c8f305745d1b90b",
     "candidate": {
         "package": "johnnickell/fight-common",
         "version": "1.2.0-dev",
@@ -42,20 +42,29 @@
     "capabilities": {
         "container.bounded_yii_providers": "ship",
         "request.routing_twig": "ship",
+        "view.native_yii": "ship",
         "security.password_and_validation": "wire",
         "messaging.synchronous": "ship",
         "messaging.symfony_messenger_fallback": "wire",
         "messaging.stable_yii_queue": "unavailable",
         "persistence.sqlite_transactions": "ship",
         "storage.flysystem_local": "wire",
-        "filesystem.symfony": "ship",
+        "filesystem.native_yii": "unavailable",
+        "filesystem.symfony_fallback": "wire",
         "http.guzzle_psr18": "wire",
         "process_and_scheduler": "wire",
-        "mail_sms_and_transfer_null_fallbacks": "wire",
+        "mail.native_yii": "unavailable",
+        "mail.symfony_fallback": "wire",
+        "sms_and_transfer_null_fallbacks": "wire",
         "observability.null_fallbacks": "wire",
         "publication.mercure_mock_fallback": "wire"
     },
     "journeys": [
+        {
+            "name": "bounded_provider_groups",
+            "status": "passed",
+            "evidence": "tests/Integration/CapabilityProviderIsolationTest.php"
+        },
         {
             "name": "booted_request_lifecycle",
             "status": "passed",
@@ -91,7 +100,7 @@
     "evidence": {
         "build": "./bin/build",
         "planning_check": "./bin/planning-check",
-        "receipt_sha256": "74b388cb5cde1ce0f4b0bb8d1754c03b337c3c06b14c9acf7d66611296eafa46"
+        "receipt_sha256": "7a3eb41820fa8003ab3eb9ca8556fc06cad6ee8c7a2202f64b6b6e2b92ee5894"
     },
     "next_action": null
 }

@@ -2,31 +2,70 @@
 
 declare(strict_types=1);
 
-$root = dirname(__DIR__);
-$architecture = (string) file_get_contents($root . '/ARCHITECTURE.md');
-$provider = (string) file_get_contents($root . '/config/providers.php');
-require $root.'/scripts/source-boundary.php';
+function assertProjectArchitecture(string $root): void
+{
+    $architecture = (string) file_get_contents($root . '/ARCHITECTURE.md');
+    $providers = require $root . '/config/providers.php';
+    require_once $root . '/scripts/source-boundary.php';
 
-foreach (['configuration providers', 'dependency injection', 'web and console entry points', 'presentation'] as $boundary) {
-    if (!str_contains($architecture, $boundary)) {
-        throw new RuntimeException(sprintf('Architecture must declare the Yii-owned %s boundary.', $boundary));
+    if (!is_array($providers)) {
+        throw new RuntimeException('The provider graph must be a PHP array.');
     }
-}
 
-if (preg_match('/published\s+Composer contracts/', $architecture) !== 1) {
-    throw new RuntimeException('Architecture must prohibit unpublished shared-package coupling.');
-}
-
-foreach (['ApplicationProvider::class', 'FilesystemServiceProvider::class', 'HttpClientServiceProvider::class', 'MailServiceProvider::class', 'MessagingServiceProvider::class', 'PersistenceServiceProvider::class', 'RoutingServiceProvider::class', 'ViewServiceProvider::class'] as $providerClass) {
-    if (!str_contains($provider, $providerClass)) {
-        throw new RuntimeException(sprintf('The provider graph must compose %s.', $providerClass));
+    foreach (['configuration providers', 'dependency injection', 'web and console entry points', 'presentation'] as $boundary) {
+        if (!str_contains($architecture, $boundary)) {
+            throw new RuntimeException(sprintf('Architecture must declare the Yii-owned %s boundary.', $boundary));
+        }
     }
+
+    if (preg_match('/published\s+Composer contracts/', $architecture) !== 1) {
+        throw new RuntimeException('Architecture must prohibit unpublished shared-package coupling.');
+    }
+
+    $requiredProviders = [
+        'routing-policy' => 'App\\Adapter\\Container\\RoutingProvider',
+        'view-policy' => 'App\\Adapter\\Container\\ViewProvider',
+        'http-application' => 'App\\Adapter\\Container\\HttpApplicationProvider',
+        'security-and-validation' => 'App\\Adapter\\Container\\SecurityAndValidationProvider',
+        'synchronous-messaging-policy' => 'App\\Adapter\\Container\\SynchronousMessagingProvider',
+        'messenger-fallback-policy' => 'App\\Adapter\\Container\\MessengerFallbackProvider',
+        'persistence-policy' => 'App\\Adapter\\Container\\PersistenceProvider',
+        'files-policy' => 'App\\Adapter\\Container\\FilesProvider',
+        'http-client-policy' => 'App\\Adapter\\Container\\HttpClientProvider',
+        'operations-policy' => 'App\\Adapter\\Container\\OperationsProvider',
+        'mail-policy' => 'App\\Adapter\\Container\\MailProvider',
+        'sms-policy' => 'App\\Adapter\\Container\\SmsProvider',
+        'publication-policy' => 'App\\Adapter\\Container\\PublicationProvider',
+        'observability-policy' => 'App\\Adapter\\Container\\ObservabilityProvider',
+        'fight-common-filesystem' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\FilesystemServiceProvider',
+        'fight-common-http-client' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\HttpClientServiceProvider',
+        'fight-common-mail' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\MailServiceProvider',
+        'fight-common-messaging' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\MessagingServiceProvider',
+        'fight-common-persistence' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\PersistenceServiceProvider',
+        'fight-common-routing' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\RoutingServiceProvider',
+        'fight-common-view' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\ViewServiceProvider',
+    ];
+    foreach ($requiredProviders as $capability => $providerClass) {
+        if (($providers[$capability] ?? null) !== $providerClass) {
+            throw new RuntimeException(sprintf('The provider graph must compose %s as %s.', $capability, $providerClass));
+        }
+    }
+
+    $forbiddenAggregateProviders = [
+        'App\\Adapter\\Container\\ApplicationProvider' => 'src/Adapter/Container/ApplicationProvider.php',
+        'App\\Adapter\\Container\\CommunicationProvider' => 'src/Adapter/Container/CommunicationProvider.php',
+        'App\\Adapter\\Container\\CompletePlatformProvider' => 'src/Adapter/Container/CompletePlatformProvider.php',
+    ];
+    foreach ($forbiddenAggregateProviders as $providerClass => $providerPath) {
+        if (in_array($providerClass, $providers, true) || is_file($root . '/' . $providerPath)) {
+            throw new RuntimeException(sprintf('The bounded provider graph must not retain aggregate provider %s at %s.', $providerClass, $providerPath));
+        }
+    }
+
+    assertProjectSourceBoundary($root . '/src');
 }
 
-if (is_file($root.'/src/Infrastructure/Container/CompletePlatformProvider.php')) {
-    throw new RuntimeException('The catch-all CompletePlatformProvider must not remain in the bounded composition.');
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    assertProjectArchitecture(dirname(__DIR__));
+    fwrite(STDOUT, "Architecture boundary contract passed.\n");
 }
-
-assertProjectSourceBoundary($root.'/src');
-
-fwrite(STDOUT, "Architecture boundary contract passed.\n");

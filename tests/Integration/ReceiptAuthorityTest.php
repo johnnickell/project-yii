@@ -50,10 +50,35 @@ final class ReceiptAuthorityTest extends TestCase
         $authority = new StarterSupportReceiptAuthority();
 
         self::assertTrue($authority->isValid($this->receipt));
-        self::assertSame('unavailable', $this->receipt['capabilities']['messaging.stable_yii_queue']);
-        self::assertSame('wire', $this->receipt['capabilities']['messaging.symfony_messenger_fallback']);
+        self::assertSame(
+            [
+                'view.native_yii' => 'ship',
+                'messaging.symfony_messenger_fallback' => 'wire',
+                'messaging.stable_yii_queue' => 'unavailable',
+                'filesystem.native_yii' => 'unavailable',
+                'filesystem.symfony_fallback' => 'wire',
+                'mail.native_yii' => 'unavailable',
+                'mail.symfony_fallback' => 'wire',
+            ],
+            array_intersect_key(
+                $this->receipt['capabilities'],
+                array_flip([
+                    'view.native_yii',
+                    'mail.native_yii',
+                    'mail.symfony_fallback',
+                    'filesystem.native_yii',
+                    'filesystem.symfony_fallback',
+                    'messaging.symfony_messenger_fallback',
+                    'messaging.stable_yii_queue',
+                ]),
+            ),
+        );
         self::assertSame('passed', $this->receipt['result']);
         self::assertNull($this->receipt['next_action']);
+        self::assertContains(
+            ['name' => 'bounded_provider_groups', 'status' => 'passed', 'evidence' => 'tests/Integration/CapabilityProviderIsolationTest.php'],
+            $this->receipt['journeys'],
+        );
         foreach ($this->receipt['journeys'] as $journey) {
             self::assertSame('passed', $journey['status']);
         }
