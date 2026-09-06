@@ -12,10 +12,9 @@ use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Validator\Validator;
 use Yiisoft\Validator\ValidatorInterface;
 
-final class SecurityAndValidationProvider implements ServiceProviderInterface
+final readonly class SecurityAndValidationProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

@@ -15,10 +15,9 @@ use Yiisoft\Db\Sqlite\Connection;
 use Yiisoft\Db\Sqlite\Driver;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class PersistenceProvider implements ServiceProviderInterface
+final readonly class PersistenceProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

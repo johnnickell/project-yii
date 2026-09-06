@@ -15,8 +15,7 @@ use Yiisoft\Router\RouteCollector;
 
 final readonly class RoutingProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(string $root, private array $parameters)
+    public function __construct(private ProviderContext $context)
     {
     }
 
@@ -24,8 +23,8 @@ final readonly class RoutingProvider implements ServiceProviderInterface
     {
         $collector = new RouteCollector();
         $collector->addRoute(
-            Route::get($this->parameters['app.route_path'])
-                ->name($this->parameters['app.route_name'])
+            Route::get($this->context->parameters['app.route_path'])
+                ->name($this->context->parameters['app.route_name'])
                 ->action([HomeHandler::class, 'handle']),
         );
         $routes = new RouteCollection($collector);

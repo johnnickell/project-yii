@@ -183,9 +183,9 @@ final class CapabilityProviderIsolationTest extends TestCase
 
     public function test_selected_persistence_providers_boot_the_transaction_contract_without_unrelated_public_contracts(): void
     {
-        /** @var array<string, class-string> $providerMap */
+        /** @var array<string, string|array{class: class-string, runtime: bool}> $providerMap */
         $providerMap = require dirname(__DIR__, 2).'/config/providers.php';
-        self::assertSame(PersistenceProvider::class, $providerMap['persistence-policy']);
+        self::assertSame(PersistenceProvider::class, $providerMap['persistence-policy']['class']);
         self::assertSame(PersistenceServiceProvider::class, $providerMap['fight-common-persistence']);
 
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(

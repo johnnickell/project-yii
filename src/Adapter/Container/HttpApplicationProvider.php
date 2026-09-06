@@ -22,8 +22,7 @@ use Yiisoft\Yii\Http\Handler\NotFoundHandler;
 
 final readonly class HttpApplicationProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(string $root, private array $parameters)
+    public function __construct(private ProviderContext $context)
     {
     }
 
@@ -32,7 +31,7 @@ final readonly class HttpApplicationProvider implements ServiceProviderInterface
         return [
             HomeHandler::class => fn (WebView $view): HomeHandler => new HomeHandler(
                 $view,
-                $this->parameters['app.route_name'],
+                $this->context->parameters['app.route_name'],
             ),
             ResponseFactoryInterface::class => Psr17Factory::class,
             UrlMatcherInterface::class => fn (RouteCollection $routes): UrlMatcherInterface => new NativeUrlMatcher($routes),

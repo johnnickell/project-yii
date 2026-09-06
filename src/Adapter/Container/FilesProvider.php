@@ -15,14 +15,13 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class FilesProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(private string $root, private array $parameters)
+    public function __construct(private ProviderContext $context)
     {
     }
 
     public function getDefinitions(): array
     {
-        $storagePath = $this->absolutePath($this->parameters['app.storage_path']);
+        $storagePath = $this->context->absolutePath($this->context->parameters['app.storage_path']);
 
         return [
             FilesystemOperator::class => static fn (): FilesystemOperator =>
@@ -35,10 +34,5 @@ final readonly class FilesProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [];
-    }
-
-    private function absolutePath(string $path): string
-    {
-        return str_starts_with($path, '/') ? $path : $this->root.'/'.$path;
     }
 }

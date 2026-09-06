@@ -9,10 +9,9 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class MailProvider implements ServiceProviderInterface
+final readonly class MailProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

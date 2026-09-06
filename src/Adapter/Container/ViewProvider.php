@@ -15,14 +15,13 @@ use Yiisoft\View\WebView;
 
 final readonly class ViewProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(private string $root, private array $parameters)
+    public function __construct(private ProviderContext $context)
     {
     }
 
     public function getDefinitions(): array
     {
-        $templatesPath = $this->root.'/'.$this->parameters['app.templates_path'];
+        $templatesPath = $this->context->root.'/'.$this->context->parameters['app.templates_path'];
         $view = new View();
 
         return [

@@ -13,10 +13,9 @@ use Symfony\Component\Mercure\Jwt\StaticTokenProvider;
 use Symfony\Component\Mercure\MockHub;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class PublicationProvider implements ServiceProviderInterface
+final readonly class PublicationProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, private readonly array $parameters)
+    public function __construct(private readonly ProviderContext $context)
     {
     }
 
@@ -36,12 +35,12 @@ final class PublicationProvider implements ServiceProviderInterface
 
     private function hub(): HubInterface
     {
-        $configured = $this->parameters['app.mercure_hub'] ?? null;
+        $configured = $this->context->parameters['app.mercure_hub'] ?? null;
 
         return $configured instanceof HubInterface ? $configured : new MockHub(
-            $this->parameters['app.mercure_url'],
-            new StaticTokenProvider($this->parameters['app.mercure_token']),
-            fn (): string => $this->parameters['app.publication_result'],
+            $this->context->parameters['app.mercure_url'],
+            new StaticTokenProvider($this->context->parameters['app.mercure_token']),
+            fn (): string => $this->context->parameters['app.publication_result'],
         );
     }
 }

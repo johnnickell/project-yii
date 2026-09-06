@@ -14,10 +14,9 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class HttpClientProvider implements ServiceProviderInterface
+final readonly class HttpClientProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, private readonly array $parameters)
+    public function __construct(private readonly ProviderContext $context)
     {
     }
 
@@ -38,7 +37,7 @@ final class HttpClientProvider implements ServiceProviderInterface
 
     private function httpClient(): HttpClient
     {
-        $configured = $this->parameters['app.http_client'] ?? null;
+        $configured = $this->context->parameters['app.http_client'] ?? null;
 
         return $configured instanceof HttpClient
             ? $configured

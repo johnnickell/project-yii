@@ -10,10 +10,9 @@ use Fight\Common\Application\Observability\AuditLog;
 use Fight\Common\Application\Observability\MetricsCollector;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class ObservabilityProvider implements ServiceProviderInterface
+final readonly class ObservabilityProvider implements ServiceProviderInterface
 {
-    /** @param array<string, string> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

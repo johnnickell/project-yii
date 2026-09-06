@@ -8,10 +8,9 @@ use Fight\Common\Adapter\Sms\Null\NullSmsTransport;
 use Fight\Common\Application\Sms\Transport\SmsTransport;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class SmsProvider implements ServiceProviderInterface
+final readonly class SmsProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

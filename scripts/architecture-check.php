@@ -46,7 +46,9 @@ function assertProjectArchitecture(string $root): void
         'fight-common-view' => 'Fight\\Common\\Adapter\\ServiceContainer\\Yii\\ViewServiceProvider',
     ];
     foreach ($requiredProviders as $capability => $providerClass) {
-        if (($providers[$capability] ?? null) !== $providerClass) {
+        $value = $providers[$capability] ?? null;
+        $actualClass = is_array($value) ? ($value['class'] ?? null) : $value;
+        if ($actualClass !== $providerClass) {
             throw new RuntimeException(sprintf('The provider graph must compose %s as %s.', $capability, $providerClass));
         }
     }
@@ -57,7 +59,9 @@ function assertProjectArchitecture(string $root): void
         'App\\Adapter\\Container\\CompletePlatformProvider' => 'src/Adapter/Container/CompletePlatformProvider.php',
     ];
     foreach ($forbiddenAggregateProviders as $providerClass => $providerPath) {
-        if (in_array($providerClass, $providers, true) || is_file($root . '/' . $providerPath)) {
+        $containsClass = in_array($providerClass, $providers, true)
+            || array_filter($providers, fn($v) => is_array($v) && ($v['class'] ?? null) === $providerClass) !== [];
+        if ($containsClass || is_file($root . '/' . $providerPath)) {
             throw new RuntimeException(sprintf('The bounded provider graph must not retain aggregate provider %s at %s.', $providerClass, $providerPath));
         }
     }

@@ -11,10 +11,9 @@ use Fight\Common\Adapter\Messaging\Event\Sync\SimpleEventDispatcher;
 use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class SynchronousMessagingProvider implements ServiceProviderInterface
+final readonly class SynchronousMessagingProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 

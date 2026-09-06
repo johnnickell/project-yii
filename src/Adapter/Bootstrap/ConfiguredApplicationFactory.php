@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Adapter\Bootstrap;
 
+use App\Adapter\Container\ProviderContext;
 use Yiisoft\Config\Config;
 use Yiisoft\Config\ConfigPaths;
 use Yiisoft\Di\Container;
@@ -13,23 +14,6 @@ use Yiisoft\Yii\Http\Application;
 
 final readonly class ConfiguredApplicationFactory
 {
-    /** @var array<string, true> */
-    private const PROVIDERS_WITH_PROJECT_RUNTIME = [
-        'routing-policy' => true,
-        'view-policy' => true,
-        'http-application' => true,
-        'security-and-validation' => true,
-        'synchronous-messaging-policy' => true,
-        'messenger-fallback-policy' => true,
-        'persistence-policy' => true,
-        'files-policy' => true,
-        'http-client-policy' => true,
-        'operations-policy' => true,
-        'mail-policy' => true,
-        'sms-policy' => true,
-        'publication-policy' => true,
-        'observability-policy' => true,
-    ];
 
     public function __construct(private string $root)
     {
@@ -64,13 +48,16 @@ final readonly class ConfiguredApplicationFactory
     }
 
     /** @param array<string, mixed> $parameters */
-    private function createProvider(string $providerName, string $provider, array $parameters): ServiceProviderInterface
+    private function createProvider(string $providerName, string|array $provider, array $parameters): ServiceProviderInterface
     {
-        if (isset(self::PROVIDERS_WITH_PROJECT_RUNTIME[$providerName])) {
-            return new $provider($this->root, $parameters);
+        $className = is_array($provider) ? $provider['class'] : $provider;
+        $needsRuntime = is_array($provider) && ($provider['runtime'] ?? false);
+
+        if ($needsRuntime) {
+            return new $className(new ProviderContext($this->root, $parameters));
         }
 
-        return new $provider();
+        return new $className();
     }
 
     /** @param array<string, mixed> $parameterOverrides */

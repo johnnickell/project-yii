@@ -12,10 +12,9 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\Sender\SenderInterface;
 use Yiisoft\Di\ServiceProviderInterface;
 
-final class MessengerFallbackProvider implements ServiceProviderInterface
+final readonly class MessengerFallbackProvider implements ServiceProviderInterface
 {
-    /** @param array<string, mixed> $parameters */
-    public function __construct(string $root, array $parameters)
+    public function __construct(ProviderContext $context)
     {
     }
 
