@@ -20,6 +20,8 @@ use Fight\Common\Application\Sms\Transport\SmsTransport;
 use Fight\Common\Application\Socket\Publisher;
 use Fight\Common\Application\Templating\TemplateEngine;
 use Fight\Common\Application\Filesystem\Filesystem;
+use Fight\Common\Domain\EventSourcing\EventMapper;
+use Fight\Common\Domain\EventSourcing\EventStore;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -28,6 +30,7 @@ use GuzzleHttp\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Yiisoft\Db\Connection\ConnectionInterface;
 use Yiisoft\Router\UrlMatcherInterface;
@@ -128,6 +131,11 @@ final class CapabilityProviderIsolationTest extends TestCase
             Publisher::class,
             MailTransport::class,
         ];
+        yield 'cache' => [
+            ['cache-policy'],
+            CacheItemPoolInterface::class,
+            SmsTransport::class,
+        ];
     }
 
     public function test_selected_routing_providers_boot_routing_without_view_or_http_application(): void
@@ -209,5 +217,42 @@ final class CapabilityProviderIsolationTest extends TestCase
         self::assertFalse($container->has(ClientInterface::class));
         self::assertFalse($container->has(MailTransport::class));
         self::assertFalse($container->has(CommandMessageHandler::class));
+    }
+
+    public function test_selected_persistence_providers_exclude_event_sourcing_contracts(): void
+    {
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['persistence-policy', 'fight-common-persistence'],
+        );
+
+        self::assertInstanceOf(
+            TransactionalUnitOfWork::class,
+            $container->get(TransactionalUnitOfWork::class),
+        );
+        self::assertFalse(
+            $container->has(EventStore::class),
+            'EventStore must not be resolvable from the persistence-only container.',
+        );
+        self::assertFalse(
+            $container->has(EventMapper::class),
+            'EventMapper must not be resolvable from the persistence-only container.',
+        );
+    }
+
+    public function test_selected_messaging_providers_exclude_event_sourcing_contracts(): void
+    {
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['synchronous-messaging-policy', 'fight-common-messaging'],
+        );
+
+        self::assertInstanceOf(SynchronousCommandBus::class, $container->get(SynchronousCommandBus::class));
+        self::assertFalse(
+            $container->has(EventStore::class),
+            'EventStore must not be resolvable from the messaging-only container.',
+        );
+        self::assertFalse(
+            $container->has(EventMapper::class),
+            'EventMapper must not be resolvable from the messaging-only container.',
+        );
     }
 }

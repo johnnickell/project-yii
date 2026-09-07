@@ -28,7 +28,7 @@ function frameworkSupportSelectedDirectRuntimePackages(): array
     return [
         'dragonmantank/cron-expression', 'guzzlehttp/guzzle', 'johnnickell/fight-access-control',
         'johnnickell/fight-common', 'lcobucci/jwt', 'league/flysystem', 'league/flysystem-local', 'nyholm/psr7',
-        'symfony/filesystem', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger', 'symfony/process',
+        'symfony/filesystem', 'symfony/cache', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger', 'symfony/process',
         'yiisoft/cache', 'yiisoft/config', 'yiisoft/db', 'yiisoft/db-sqlite', 'yiisoft/di',
         'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/mailer', 'yiisoft/router', 'yiisoft/router-fastroute',
         'yiisoft/session', 'yiisoft/validator', 'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',

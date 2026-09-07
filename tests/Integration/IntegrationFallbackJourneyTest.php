@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
+use App\Adapter\Container\MailProvider;
+use App\Adapter\Container\ProviderContext;
 use App\Tests\Fixture\RecordingHub;
 use Fight\Common\Adapter\Filesystem\Symfony\SymfonyFilesystem;
 use Fight\Common\Adapter\HttpClient\Guzzle\GuzzleClient;
@@ -15,6 +17,8 @@ use Fight\Common\Application\HttpClient\Transport\HttpClient;
 use Fight\Common\Application\Mail\Message\MailFactory;
 use Fight\Common\Application\Mail\Transport\MailTransport;
 use Fight\Common\Application\Observability\AuditLog;
+use Yiisoft\Mailer\MailerInterface as YiiMailerInterface;
+use Yiisoft\Mailer\NullMailer;
 use Fight\Common\Application\Observability\MetricsCollector;
 use Fight\Common\Application\Process\ProcessBuilder;
 use Fight\Common\Application\Process\ProcessRunner;
@@ -112,6 +116,31 @@ final class IntegrationFallbackJourneyTest extends TestCase
                 ]),
             ),
         );
+    }
+
+    public function test_yii_mailer_is_evaluated_before_falling_back_to_symfony(): void
+    {
+        $provider = new MailProvider(new ProviderContext(dirname(__DIR__, 2), []));
+
+        self::assertArrayHasKey(
+            NullMailer::class,
+            $provider->getDefinitions(),
+            'MailProvider must evaluate (instantiate and register) yiisoft/mailer NullMailer',
+        );
+
+        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['mail-policy', 'fight-common-mail'],
+        );
+
+        self::assertInstanceOf(SymfonyMailTransport::class, $container->get(MailTransport::class));
+
+        self::assertFalse(
+            $container->has(YiiMailerInterface::class),
+            'yiisoft/mailer interface must NOT be wired — type-incompatible with Fight Common MailTransport contract',
+        );
+
+        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        self::assertSame('unavailable', $seams['native-yii-mail']['status']);
     }
 
     public function test_configured_mercure_fallback_uses_application_owned_policy_without_network_effects(): void

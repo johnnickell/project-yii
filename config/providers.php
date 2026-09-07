@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Adapter\Container\CacheProvider;
 use App\Adapter\Container\FilesProvider;
 use App\Adapter\Container\HttpApplicationProvider;
 use App\Adapter\Container\HttpClientProvider;
@@ -32,6 +33,7 @@ return [
     'synchronous-messaging-policy' => ['class' => SynchronousMessagingProvider::class, 'runtime' => true],
     'messenger-fallback-policy' => ['class' => MessengerFallbackProvider::class, 'runtime' => true],
     'persistence-policy' => ['class' => PersistenceProvider::class, 'runtime' => true],
+    'cache-policy' => ['class' => CacheProvider::class, 'runtime' => true],
     'files-policy' => ['class' => FilesProvider::class, 'runtime' => true],
     'http-client-policy' => ['class' => HttpClientProvider::class, 'runtime' => true],
     'operations-policy' => ['class' => OperationsProvider::class, 'runtime' => true],

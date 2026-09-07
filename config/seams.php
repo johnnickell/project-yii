@@ -14,4 +14,5 @@ return [
     'messenger-fallback' => ['owner' => 'starter', 'status' => 'configured'],
     'stable-yii-queue' => ['owner' => 'starter', 'status' => 'unavailable'],
     'operations' => ['owner' => 'starter', 'status' => 'declared'],
+    'psr6-cache' => ['owner' => 'starter', 'status' => 'configured'],
 ];

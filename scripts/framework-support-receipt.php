@@ -46,7 +46,7 @@ function frameworkSupportReceipt(string $projectRoot): array
         ?? throw new RuntimeException(sprintf('Receipt provider is missing from composer.lock: %s', $package));
     $providerPackages = [
         'dragonmantank/cron-expression', 'guzzlehttp/guzzle', 'league/flysystem', 'league/flysystem-local',
-        'nyholm/psr7', 'symfony/filesystem', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger',
+        'nyholm/psr7', 'symfony/cache', 'symfony/filesystem', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger',
         'symfony/process', 'yiisoft/cache', 'yiisoft/config', 'yiisoft/db', 'yiisoft/db-sqlite', 'yiisoft/di',
         'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/mailer', 'yiisoft/router', 'yiisoft/router-fastroute',
         'yiisoft/session', 'yiisoft/validator', 'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
@@ -85,6 +85,7 @@ function frameworkSupportReceipt(string $projectRoot): array
             'sms_and_transfer_null_fallbacks' => 'wire',
             'observability.null_fallbacks' => 'wire',
             'publication.mercure_mock_fallback' => 'wire',
+            'cache.psr6' => 'wire',
         ],
         'journeys' => [
             ['name' => 'bounded_provider_groups', 'status' => 'passed', 'evidence' => 'tests/Integration/CapabilityProviderIsolationTest.php'],

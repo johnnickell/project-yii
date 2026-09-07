@@ -1,6 +1,6 @@
 {
     "schema_version": "fight-common.framework-support-receipt/v1",
-    "content_id": "8f7a9456cfa650f31e0d814d8bd6cb070f03264ff4e114eb6c8f305745d1b90b",
+    "content_id": "d4ad78ab75882628c1eb482aedfcb23b04e31d22cb4b6223d0aca05ba379d14a",
     "candidate": {
         "package": "johnnickell/fight-common",
         "version": "1.2.0-dev",
@@ -15,6 +15,7 @@
             "league/flysystem@3.36.0",
             "league/flysystem-local@3.35.3",
             "nyholm/psr7@1.8.2",
+            "symfony/cache@v8.1.6",
             "symfony/filesystem@v8.1.6",
             "symfony/mailer@v8.1.5",
             "symfony/mercure@v0.7.2",
@@ -38,7 +39,7 @@
             "yiisoft/yii-http@1.1.1"
         ]
     },
-    "lock_sha256": "3b548faad9372889b7d03aed5d6181c67779b782ce683872ca18b7a2a6071cf4",
+    "lock_sha256": "47c38cfbd5de8c60d9a0f4004e157db595d3df82dbc034969ba744bfe953c909",
     "capabilities": {
         "container.bounded_yii_providers": "ship",
         "request.routing_twig": "ship",
@@ -57,7 +58,8 @@
         "mail.symfony_fallback": "wire",
         "sms_and_transfer_null_fallbacks": "wire",
         "observability.null_fallbacks": "wire",
-        "publication.mercure_mock_fallback": "wire"
+        "publication.mercure_mock_fallback": "wire",
+        "cache.psr6": "wire"
     },
     "journeys": [
         {
@@ -100,7 +102,7 @@
     "evidence": {
         "build": "./bin/build",
         "planning_check": "./bin/planning-check",
-        "receipt_sha256": "7a3eb41820fa8003ab3eb9ca8556fc06cad6ee8c7a2202f64b6b6e2b92ee5894"
+        "receipt_sha256": "4c313a6892bc0f3410f06c91b285f4630c64984eb32132c2a9986af52fe3681b"
     },
     "next_action": null
 }
