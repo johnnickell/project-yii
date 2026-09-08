@@ -48,8 +48,8 @@ function frameworkSupportReceipt(string $projectRoot): array
         'dragonmantank/cron-expression', 'guzzlehttp/guzzle', 'league/flysystem', 'league/flysystem-local',
         'nyholm/psr7', 'symfony/cache', 'symfony/filesystem', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger',
         'symfony/process', 'yiisoft/cache', 'yiisoft/config', 'yiisoft/db', 'yiisoft/db-sqlite', 'yiisoft/di',
-        'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/mailer', 'yiisoft/router', 'yiisoft/router-fastroute',
-        'yiisoft/session', 'yiisoft/validator', 'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
+        'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/router', 'yiisoft/router-fastroute', 'yiisoft/validator',
+        'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
     ];
 
     return frameworkSupportWithDigests([

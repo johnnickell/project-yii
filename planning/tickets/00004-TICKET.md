@@ -47,6 +47,12 @@ Final correction verification on 2026-09-08 proves that no deployable HMAC/JWT c
 that missing, blank, malformed, or undersized credential values fail at the corresponding lazy service seam, and
 that deterministic fixtures are confined to tests and the production-profile verifier.
 
+Certified dependency evidence on 2026-09-08 fixes the JWT encoder and decoder to HS256 without a public
+algorithm-selection setting. The regenerated latest and lowest Composer locks contain no installed
+`yiisoft/mailer` or `yiisoft/session` package; both remain forbidden unselected Yii dependencies, while the
+selected Symfony Mailer fallback remains intact. The regenerated receipt and focused profile and receipt-authority
+verification record this state.
+
 ## Scope Boundary
 
 This ticket blocks T-00002's support receipt. It does not publish a package, tag a release, create a project

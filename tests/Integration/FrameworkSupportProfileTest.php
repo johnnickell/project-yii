@@ -11,6 +11,34 @@ require_once __DIR__.'/../../scripts/framework-support-profile.php';
 
 final class FrameworkSupportProfileTest extends TestCase
 {
+    public function test_unavailable_yii_mail_and_session_are_excluded_from_the_runtime_graph(): void
+    {
+        $root = dirname(__DIR__, 2);
+        $profile = frameworkSupportProfile($root);
+        $unavailable = ['yiisoft/mailer', 'yiisoft/session'];
+
+        self::assertSame([], array_values(array_intersect(
+            $unavailable,
+            $profile['selected_direct_runtime_packages'],
+        )));
+        self::assertSame($unavailable, array_values(array_intersect(
+            $unavailable,
+            $profile['forbidden_runtime_packages'],
+        )));
+
+        foreach ([
+            'composer.json' => array_keys(frameworkSupportJson($root.'/composer.json')['require']),
+            'composer.lock' => array_keys(frameworkSupportLockPackages($root.'/composer.lock')),
+            'installed.json' => array_keys(frameworkSupportInstalledPackages($root.'/vendor/composer/installed.json')),
+        ] as $source => $packages) {
+            self::assertSame(
+                [],
+                array_values(array_intersect($unavailable, $packages)),
+                sprintf('Unavailable Yii integrations must be absent from %s.', $source),
+            );
+        }
+    }
+
     public function test_real_manifest_lock_and_installed_package_matrix_match_the_closed_profile(): void
     {
         $root = dirname(__DIR__, 2);

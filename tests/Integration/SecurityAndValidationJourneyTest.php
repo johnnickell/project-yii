@@ -105,7 +105,6 @@ final class SecurityAndValidationJourneyTest extends TestCase
             'app.hmac_identity' => 'configured-yii-client',
             'app.hmac_private_hex' => str_repeat('ab', 32),
             'app.jwt_secret_hex' => str_repeat('cd', 32),
-            'app.jwt_algorithm' => 'HS256',
         ]);
 
         $body = '{"action":"prove-yii-composition"}';
@@ -122,6 +121,13 @@ final class SecurityAndValidationJourneyTest extends TestCase
             ['sub' => 'yii-starter', 'capability' => 'security'],
             new DateTimeImmutable('+5 minutes'),
         );
+        $tokenHeader = json_decode(
+            base64_decode(strtr(explode('.', $token, 2)[0], '-_', '+/'), true),
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
+        self::assertSame('HS256', $tokenHeader['alg']);
         $claims = $container->get(TokenDecoder::class)->decode($token);
         self::assertSame('yii-starter', $claims['sub']);
         self::assertSame('security', $claims['capability']);
@@ -144,7 +150,6 @@ final class SecurityAndValidationJourneyTest extends TestCase
             'app.hmac_identity' => 'configured-yii-client',
             'app.hmac_private_hex' => str_repeat('ab', 32),
             'app.jwt_secret_hex' => str_repeat('cd', 32),
-            'app.jwt_algorithm' => 'HS256',
         ], $overrides);
     }
 }

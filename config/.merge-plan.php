@@ -22,9 +22,6 @@ return [
             ],
         ],
         'di' => [
-            'yiisoft/mailer' => [
-                'config/di.php',
-            ],
             'yiisoft/router-fastroute' => [
                 'config/di.php',
             ],
@@ -44,14 +41,16 @@ return [
                 'config/di.php',
             ],
         ],
-        'params' => [
-            'yiisoft/mailer' => [
-                'config/params.php',
-            ],
+        'di-web' => [
             'yiisoft/router-fastroute' => [
-                'config/params.php',
+                'config/di-web.php',
             ],
-            'yiisoft/session' => [
+            'yiisoft/view' => [
+                'config/di-web.php',
+            ],
+        ],
+        'params' => [
+            'yiisoft/router-fastroute' => [
                 'config/params.php',
             ],
             'yiisoft/validator' => [
@@ -68,17 +67,6 @@ return [
             ],
             'yiisoft/view' => [
                 'config/params.php',
-            ],
-        ],
-        'di-web' => [
-            'yiisoft/router-fastroute' => [
-                'config/di-web.php',
-            ],
-            'yiisoft/session' => [
-                'config/di-web.php',
-            ],
-            'yiisoft/view' => [
-                'config/di-web.php',
             ],
         ],
         'di-console' => [

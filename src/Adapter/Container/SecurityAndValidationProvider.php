@@ -42,14 +42,14 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
                     $this->context->parameters['app.jwt_secret_hex'] ?? null,
                     'FIGHT_JWT_SECRET',
                 ),
-                $this->context->parameters['app.jwt_algorithm'],
+                'HS256',
             ),
             TokenDecoder::class => fn (): TokenDecoder => new JwtDecoder(
                 self::requiredHexSecret(
                     $this->context->parameters['app.jwt_secret_hex'] ?? null,
                     'FIGHT_JWT_SECRET',
                 ),
-                $this->context->parameters['app.jwt_algorithm'],
+                'HS256',
             ),
             PasswordHasher::class => static fn (): PasswordHasher => new PhpPasswordHasher(PASSWORD_ARGON2ID),
             PasswordValidator::class => static fn (): PasswordValidator => new PhpPasswordValidator(PASSWORD_ARGON2ID),

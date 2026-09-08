@@ -6,7 +6,6 @@ return [
     'app.hmac_identity' => getenv('FIGHT_HMAC_PUBLIC'),
     'app.hmac_private_hex' => getenv('FIGHT_HMAC_PRIVATE'),
     'app.jwt_secret_hex' => getenv('FIGHT_JWT_SECRET'),
-    'app.jwt_algorithm' => getenv('FIGHT_JWT_ALGORITHM') ?: 'HS256',
     'app.storage_path' => 'var/storage/flysystem',
     'app.scheduler_path' => 'var/runtime/scheduler',
     'app.route_path' => '/',

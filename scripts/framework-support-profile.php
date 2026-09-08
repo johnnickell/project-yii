@@ -17,7 +17,8 @@ function frameworkSupportProfile(string $projectRoot): array
         'selected_direct_runtime_packages' => frameworkSupportSelectedDirectRuntimePackages(),
         'forbidden_runtime_packages' => [
             'codeigniter4/framework', 'laravel/framework', 'slim/slim', 'symfony/framework-bundle',
-            'yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/queue', 'phpseclib/phpseclib', 'twilio/sdk',
+            'yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/mailer', 'yiisoft/queue', 'yiisoft/session',
+            'phpseclib/phpseclib', 'twilio/sdk',
         ],
     ];
 }
@@ -30,8 +31,8 @@ function frameworkSupportSelectedDirectRuntimePackages(): array
         'johnnickell/fight-common', 'lcobucci/jwt', 'league/flysystem', 'league/flysystem-local', 'nyholm/psr7',
         'symfony/filesystem', 'symfony/cache', 'symfony/mailer', 'symfony/mercure', 'symfony/messenger', 'symfony/process',
         'yiisoft/cache', 'yiisoft/config', 'yiisoft/db', 'yiisoft/db-sqlite', 'yiisoft/di',
-        'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/mailer', 'yiisoft/router', 'yiisoft/router-fastroute',
-        'yiisoft/session', 'yiisoft/validator', 'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
+        'yiisoft/event-dispatcher', 'yiisoft/log', 'yiisoft/router', 'yiisoft/router-fastroute', 'yiisoft/validator',
+        'yiisoft/view', 'yiisoft/view-twig', 'yiisoft/yii-console', 'yiisoft/yii-http',
     ];
 }
 

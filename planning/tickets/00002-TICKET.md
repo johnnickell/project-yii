@@ -35,3 +35,8 @@ composition. PR #4 carries this receipt with T-00004 under the approved exceptio
 Final correction verification on 2026-09-08 removes deployable HMAC/JWT defaults, proves lazy fail-closed credential
 resolution, keeps deterministic credentials inside tests and verification only, and restores exclusive security-test
 ownership without changing the receipt, exact dependency candidates, or previously accepted capability journeys.
+
+Certified dependency evidence on 2026-09-08 regenerates the lowest lock digest and support receipt after fixing
+JWT encoding and decoding to HS256. Both Composer locks contain no installed `yiisoft/mailer` or
+`yiisoft/session` package; they are forbidden unselected Yii dependencies, and Symfony Mailer remains the selected
+fallback. Focused receipt-authority and framework-profile tests passed against the regenerated evidence.

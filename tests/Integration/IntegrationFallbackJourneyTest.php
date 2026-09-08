@@ -15,7 +15,6 @@ use Fight\Common\Application\HttpClient\Transport\HttpClient;
 use Fight\Common\Application\Mail\Message\MailFactory;
 use Fight\Common\Application\Mail\Transport\MailTransport;
 use Fight\Common\Application\Observability\AuditLog;
-use Yiisoft\Mailer\MailerInterface as YiiMailerInterface;
 use Fight\Common\Application\Observability\MetricsCollector;
 use Fight\Common\Application\Process\ProcessBuilder;
 use Fight\Common\Application\Process\ProcessRunner;
@@ -117,7 +116,7 @@ final class IntegrationFallbackJourneyTest extends TestCase
         );
     }
 
-    public function test_native_mail_is_unselected_while_the_symfony_fallback_sends_safely(): void
+    public function test_symfony_mail_fallback_sends_safely(): void
     {
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
             providerNames: ['mail-policy', 'fight-common-mail'],
@@ -125,10 +124,6 @@ final class IntegrationFallbackJourneyTest extends TestCase
 
         self::assertInstanceOf(SymfonyMailTransport::class, $container->get(MailTransport::class));
 
-        self::assertFalse(
-            $container->has(YiiMailerInterface::class),
-            'The unsupported native Yii mail adapter must remain unselected.',
-        );
         self::assertInstanceOf(SymfonyMailerInterface::class, $container->get(SymfonyMailerInterface::class));
         $mail = $container->get(MailFactory::class)->createMessage()
             ->addFrom('from@example.test')->addTo('to@example.test')

@@ -118,7 +118,6 @@ $container = $factory->createContainer([
     'app.hmac_identity' => 'production-yii-local-only',
     'app.hmac_private_hex' => str_repeat('a1', 32),
     'app.jwt_secret_hex' => str_repeat('b2', 32),
-    'app.jwt_algorithm' => 'HS256',
     'app.storage_path' => $runtime.'/storage',
     'app.scheduler_path' => $runtime.'/scheduler',
     'app.http_client' => new GuzzleClient(new Client([

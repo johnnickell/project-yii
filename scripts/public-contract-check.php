@@ -28,11 +28,9 @@ $required = [
     'yiisoft/view',
     'yiisoft/view-twig',
     'yiisoft/validator',
-    'yiisoft/mailer',
     'yiisoft/cache',
     'yiisoft/db',
     'yiisoft/db-sqlite',
-    'yiisoft/session',
     'yiisoft/log',
 ];
 
@@ -47,7 +45,7 @@ foreach ($required as $package) {
     }
 }
 
-foreach (['yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/queue', 'phpseclib/phpseclib', 'twilio/sdk'] as $unselected) {
+foreach (['yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/mailer', 'yiisoft/queue', 'yiisoft/session', 'phpseclib/phpseclib', 'twilio/sdk'] as $unselected) {
     if (array_key_exists($unselected, $dependencies)) {
         throw new RuntimeException(sprintf('Unselected runtime dependency %s must be absent.', $unselected));
     }

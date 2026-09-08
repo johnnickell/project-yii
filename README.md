@@ -22,4 +22,4 @@ distribution without a separately adopted local ticket.
 
 Configure these environment variables in every deployment: `FIGHT_HMAC_PUBLIC` for the nonblank HMAC identity,
 `FIGHT_HMAC_PRIVATE` for the 32-byte hexadecimal HMAC secret, and `FIGHT_JWT_SECRET` for the 32-byte hexadecimal
-JWT secret. `FIGHT_JWT_ALGORITHM` selects the JWT algorithm and defaults to `HS256` when unset.
+JWT secret. JWT encoding and decoding use `HS256`.
