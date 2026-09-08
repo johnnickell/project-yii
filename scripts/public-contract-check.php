@@ -28,12 +28,9 @@ $required = [
     'yiisoft/view',
     'yiisoft/view-twig',
     'yiisoft/validator',
-    'yiisoft/mailer',
     'yiisoft/cache',
     'yiisoft/db',
-    'yiisoft/db-mysql',
-    'yiisoft/db-pgsql',
-    'yiisoft/session',
+    'yiisoft/db-sqlite',
     'yiisoft/log',
 ];
 
@@ -48,9 +45,9 @@ foreach ($required as $package) {
     }
 }
 
-foreach (['src/Domain', 'src/Application'] as $forbiddenDirectory) {
-    if (is_dir($root.'/'.$forbiddenDirectory)) {
-        throw new RuntimeException(sprintf('Copied shared layer %s must not exist.', $forbiddenDirectory));
+foreach (['yiisoft/db-mysql', 'yiisoft/db-pgsql', 'yiisoft/mailer', 'yiisoft/queue', 'yiisoft/session', 'phpseclib/phpseclib', 'twilio/sdk'] as $unselected) {
+    if (array_key_exists($unselected, $dependencies)) {
+        throw new RuntimeException(sprintf('Unselected runtime dependency %s must be absent.', $unselected));
     }
 }
 
