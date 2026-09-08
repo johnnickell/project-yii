@@ -52,18 +52,32 @@ final class ReceiptAuthorityTest extends TestCase
         self::assertTrue($authority->isValid($this->receipt));
         self::assertSame(
             [
+                'routing.native_yii' => 'ship',
                 'view.native_yii' => 'ship',
+                'http.psr15_json_jsend_middleware' => 'wire',
+                'http.psr17_jsend_response' => 'wire',
+                'security.hmac_jwt_password_validation' => 'wire',
                 'messaging.symfony_messenger_fallback' => 'wire',
                 'messaging.stable_yii_queue' => 'unavailable',
                 'filesystem.native_yii' => 'unavailable',
                 'filesystem.symfony_fallback' => 'wire',
                 'mail.native_yii' => 'unavailable',
                 'mail.symfony_fallback' => 'wire',
+                'observability.yii_psr3_shared' => 'wire',
+                'cache.yii_psr16' => 'wire',
+                'cache.fight_psr6' => 'wire',
             ],
             array_intersect_key(
                 $this->receipt['capabilities'],
                 array_flip([
+                    'routing.native_yii',
                     'view.native_yii',
+                    'http.psr15_json_jsend_middleware',
+                    'http.psr17_jsend_response',
+                    'security.hmac_jwt_password_validation',
+                    'cache.yii_psr16',
+                    'cache.fight_psr6',
+                    'observability.yii_psr3_shared',
                     'mail.native_yii',
                     'mail.symfony_fallback',
                     'filesystem.native_yii',
@@ -77,6 +91,14 @@ final class ReceiptAuthorityTest extends TestCase
         self::assertNull($this->receipt['next_action']);
         self::assertContains(
             ['name' => 'bounded_provider_groups', 'status' => 'passed', 'evidence' => 'tests/Integration/CapabilityProviderIsolationTest.php'],
+            $this->receipt['journeys'],
+        );
+        self::assertContains(
+            ['name' => 'booted_security_and_validation', 'status' => 'passed', 'evidence' => 'tests/Integration/SecurityAndValidationJourneyTest.php'],
+            $this->receipt['journeys'],
+        );
+        self::assertContains(
+            ['name' => 'booted_cache_and_observability', 'status' => 'passed', 'evidence' => 'tests/Integration/CacheAndObservabilityJourneyTest.php'],
             $this->receipt['journeys'],
         );
         foreach ($this->receipt['journeys'] as $journey) {

@@ -40,15 +40,15 @@ final readonly class ConfiguredApplicationFactory
             $providerMap = array_intersect_key($providerMap, array_flip($providerNames));
         }
         $providers = [];
-        foreach ($providerMap as $providerName => $provider) {
-            $providers[] = $this->createProvider($providerName, $provider, $parameters);
+        foreach ($providerMap as $provider) {
+            $providers[] = $this->createProvider($provider, $parameters);
         }
 
         return new Container(ContainerConfig::create()->withProviders($providers));
     }
 
     /** @param array<string, mixed> $parameters */
-    private function createProvider(string $providerName, string|array $provider, array $parameters): ServiceProviderInterface
+    private function createProvider(string|array $provider, array $parameters): ServiceProviderInterface
     {
         $className = is_array($provider) ? $provider['class'] : $provider;
         $needsRuntime = is_array($provider) && ($provider['runtime'] ?? false);

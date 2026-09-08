@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Adapter\Container;
 
-use App\Adapter\Http\HomeHandler;
 use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
 use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Router\CurrentRoute;
@@ -23,9 +22,9 @@ final readonly class RoutingProvider implements ServiceProviderInterface
     {
         $collector = new RouteCollector();
         $collector->addRoute(
-            Route::get($this->context->parameters['app.route_path'])
+            Route::methods($this->context->parameters['app.route_methods'], $this->context->parameters['app.route_path'])
                 ->name($this->context->parameters['app.route_name'])
-                ->action([HomeHandler::class, 'handle']),
+                ->action($this->context->parameters['app.route_action']),
         );
         $routes = new RouteCollection($collector);
 

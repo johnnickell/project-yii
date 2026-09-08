@@ -9,6 +9,10 @@ use Fight\Common\Adapter\HttpClient\Guzzle\GuzzleClient;
 use Fight\Common\Adapter\Messaging\Command\Sync\Routing\InMemoryCommandRouter;
 use Fight\Common\Application\Auth\Security\PasswordHasher;
 use Fight\Common\Application\Auth\Security\PasswordValidator;
+use Fight\Common\Application\Auth\RequestService;
+use Fight\Common\Application\Auth\Security\TokenDecoder;
+use Fight\Common\Application\Auth\Security\TokenEncoder;
+use Fight\Common\Application\Cache\Cache;
 use Fight\Common\Application\FileStorage\FileStorage;
 use Fight\Common\Application\FileTransfer\Transport\FileTransport;
 use Fight\Common\Application\HttpClient\Transport\HttpClient;
@@ -20,6 +24,8 @@ use Fight\Common\Application\Messaging\Command\SynchronousCommandBus;
 use Fight\Common\Application\Messaging\Event\AsynchronousEventDispatcher;
 use Fight\Common\Application\Observability\AuditLog;
 use Fight\Common\Application\Observability\MetricsCollector;
+use Fight\Common\Application\Observability\HealthAggregator;
+use Fight\Common\Application\Observability\HealthCheck;
 use Fight\Common\Application\Repository\TransactionalUnitOfWork;
 use Fight\Common\Application\Routing\UrlGenerator;
 use Fight\Common\Application\Scheduler\Scheduler;
@@ -32,6 +38,8 @@ use Fight\Common\Domain\Messaging\Command\CommandMessage;
 use Fight\Common\Domain\Messaging\Event\Event;
 use Fight\Common\Domain\Messaging\Event\EventMessage;
 use Fight\Common\Domain\Observability\AuditEntry;
+use Fight\Common\Domain\Observability\HealthResult;
+use Fight\Common\Domain\Observability\HealthStatus;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -39,6 +47,8 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Nyholm\Psr7\ServerRequest;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\MockHub;
 use Symfony\Component\Mercure\Update;
@@ -128,6 +138,50 @@ if ($container->get(UrlGenerator::class)->generate('home') !== '/') {
 $hash = $container->get(PasswordHasher::class)->hash('production-secret');
 if (!$container->get(PasswordValidator::class)->validate('production-secret', $hash)) {
     throw new RuntimeException('Production-installed security journey failed.');
+}
+$signedRequest = $container->get(RequestService::class)->signRequest(
+    new Request('POST', 'https://no-network.invalid/signed', [], 'production'),
+);
+if ($signedRequest->getHeaderLine('Credential') !== 'project-yii-local'
+    || !preg_match('/^[a-f0-9]{64}$/', $signedRequest->getHeaderLine('Signature'))) {
+    throw new RuntimeException('Production-installed HMAC request-signing journey failed.');
+}
+$token = $container->get(TokenEncoder::class)->encode(
+    ['sub' => 'production-yii'],
+    new DateTimeImmutable('+5 minutes'),
+);
+if (($container->get(TokenDecoder::class)->decode($token)['sub'] ?? null) !== 'production-yii') {
+    throw new RuntimeException('Production-installed JWT round-trip journey failed.');
+}
+$nativeCache = $container->get(CacheInterface::class);
+$nativeCache->set('production-native-cache', 'ready');
+$loads = 0;
+$fightCache = $container->get(Cache::class);
+$loader = static function () use (&$loads): string {
+    ++$loads;
+    return 'ready';
+};
+if ($nativeCache->get('production-native-cache') !== 'ready'
+    || $fightCache->read('production-fight-cache', $loader, 60) !== 'ready'
+    || $fightCache->read('production-fight-cache', $loader, 60) !== 'ready'
+    || $loads !== 1) {
+    throw new RuntimeException('Production-installed cache composition journey failed.');
+}
+$container->get(LoggerInterface::class)->info('production-yii-composition');
+$health = $container->get(HealthAggregator::class);
+$health->addCheck(new class implements HealthCheck {
+    public function check(): HealthResult
+    {
+        return new HealthResult($this->name(), HealthStatus::healthy());
+    }
+
+    public function name(): string
+    {
+        return 'production-yii-composition';
+    }
+});
+if (!$health->report()->isHealthy() || $health->report()->results()[0]->name() !== 'production-yii-composition') {
+    throw new RuntimeException('Production-installed observability composition journey failed.');
 }
 $httpRequest = new Request('GET', 'https://no-network.invalid/production');
 if ($container->get(HttpClient::class)->send($httpRequest)->getStatusCode() !== 202

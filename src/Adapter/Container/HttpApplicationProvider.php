@@ -6,8 +6,12 @@ namespace App\Adapter\Container;
 
 use App\Adapter\Http\HomeHandler;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Fight\Common\Adapter\Http\Psr17\JSendResponseFactory;
+use Fight\Common\Adapter\Middleware\Psr15\JSendErrorMiddleware;
+use Fight\Common\Adapter\Middleware\Psr15\JsonRequestMiddleware;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
 use Yiisoft\Middleware\Dispatcher\MiddlewareFactory;
@@ -29,15 +33,30 @@ final readonly class HttpApplicationProvider implements ServiceProviderInterface
     public function getDefinitions(): array
     {
         return [
-            HomeHandler::class => fn (WebView $view): HomeHandler => new HomeHandler(
+            HomeHandler::class => fn (
+                WebView $view,
+                ResponseFactoryInterface $responseFactory,
+                StreamFactoryInterface $streamFactory,
+            ): HomeHandler => new HomeHandler(
                 $view,
                 $this->context->parameters['app.route_name'],
+                $responseFactory,
+                $streamFactory,
             ),
-            ResponseFactoryInterface::class => Psr17Factory::class,
+            Psr17Factory::class => Psr17Factory::class,
+            ResponseFactoryInterface::class => fn (Psr17Factory $factory): ResponseFactoryInterface => $factory,
+            StreamFactoryInterface::class => fn (Psr17Factory $factory): StreamFactoryInterface => $factory,
+            JSendResponseFactory::class => JSendResponseFactory::class,
+            JsonRequestMiddleware::class => JsonRequestMiddleware::class,
+            JSendErrorMiddleware::class => JSendErrorMiddleware::class,
             UrlMatcherInterface::class => fn (RouteCollection $routes): UrlMatcherInterface => new NativeUrlMatcher($routes),
             CurrentRoute::class => CurrentRoute::class,
             MiddlewareDispatcher::class => fn (ContainerInterface $container): MiddlewareDispatcher =>
-                (new MiddlewareDispatcher(new MiddlewareFactory($container)))->withMiddlewares([Router::class]),
+                (new MiddlewareDispatcher(new MiddlewareFactory($container)))->withMiddlewares([
+                    JSendErrorMiddleware::class,
+                    JsonRequestMiddleware::class,
+                    Router::class,
+                ]),
             Application::class => fn (ContainerInterface $container): Application =>
                 new Application(
                     $container->get(MiddlewareDispatcher::class),

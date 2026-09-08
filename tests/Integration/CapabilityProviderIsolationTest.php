@@ -8,9 +8,7 @@ use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
 use App\Adapter\Container\CacheProvider;
 use App\Adapter\Container\MailProvider;
 use App\Adapter\Container\MessengerFallbackProvider;
-use App\Adapter\Container\ObservabilityProvider;
 use App\Adapter\Container\PersistenceProvider;
-use App\Adapter\Container\SecurityAndValidationProvider;
 use App\Adapter\Container\SmsProvider;
 use App\Adapter\Container\SynchronousMessagingProvider;
 use Fight\Common\Adapter\Messaging\Handler\CommandMessageHandler;
@@ -38,6 +36,8 @@ use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Psr\Http\Client\ClientInterface;
 use Yiisoft\Db\Connection\ConnectionInterface;
 use Yiisoft\Di\ServiceProviderInterface;
@@ -144,6 +144,11 @@ final class CapabilityProviderIsolationTest extends TestCase
             CacheItemPoolInterface::class,
             SmsTransport::class,
         ];
+        yield 'observability' => [
+            ['observability-policy'],
+            LoggerInterface::class,
+            SmsTransport::class,
+        ];
     }
 
     public function test_selected_routing_providers_boot_routing_without_view_or_http_application(): void
@@ -205,7 +210,7 @@ final class CapabilityProviderIsolationTest extends TestCase
         self::assertSame(PersistenceServiceProvider::class, $providerMap['fight-common-persistence']);
 
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
-            providerNames: ['persistence-policy', 'fight-common-persistence'],
+            providerNames: ['cache-policy', 'observability-policy', 'persistence-policy', 'fight-common-persistence'],
         );
         $connection = $container->get(ConnectionInterface::class);
         $connection->createCommand('CREATE TABLE selected_capability (value TEXT NOT NULL)')->execute();
@@ -225,12 +230,14 @@ final class CapabilityProviderIsolationTest extends TestCase
         self::assertFalse($container->has(ClientInterface::class));
         self::assertFalse($container->has(MailTransport::class));
         self::assertFalse($container->has(CommandMessageHandler::class));
+        self::assertSame($container->get(CacheInterface::class), $container->get(\Yiisoft\Cache\ArrayCache::class));
+        self::assertSame($container->get(LoggerInterface::class), $container->get(\Yiisoft\Log\Logger::class));
     }
 
     public function test_selected_persistence_providers_exclude_event_sourcing_contracts(): void
     {
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
-            providerNames: ['persistence-policy', 'fight-common-persistence'],
+            providerNames: ['cache-policy', 'observability-policy', 'persistence-policy', 'fight-common-persistence'],
         );
 
         self::assertInstanceOf(
@@ -272,9 +279,7 @@ final class CapabilityProviderIsolationTest extends TestCase
             new PersistenceProvider(),
             new MessengerFallbackProvider(),
             new SmsProvider(),
-            new SecurityAndValidationProvider(),
             new SynchronousMessagingProvider(),
-            new ObservabilityProvider(),
         ];
 
         foreach ($providers as $provider) {

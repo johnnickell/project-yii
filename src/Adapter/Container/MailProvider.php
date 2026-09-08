@@ -8,16 +8,12 @@ use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Yiisoft\Di\ServiceProviderInterface;
-use Yiisoft\Mailer\NullMailer;
 
 final readonly class MailProvider implements ServiceProviderInterface
 {
     public function getDefinitions(): array
     {
-        $nullMailer = new NullMailer();
-
         return [
-            NullMailer::class => $nullMailer,
             ...YiiCapabilityConfiguration::mail(new Mailer(Transport::fromDsn('null://null'))),
         ];
     }

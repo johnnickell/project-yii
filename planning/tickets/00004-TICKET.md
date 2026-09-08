@@ -20,8 +20,8 @@ configuration; they do not discover, adapt, or wire Fight Common services.
 
 - [x] Composer uses the Fight Common VCS repository with the exact `dev-develop` commit pin and the authorized
   compatibility alias; it records Composer's actual resolved version and source reference.
-- [x] Default Yii composition registers and proves validation, security, persistence/event store with `yiisoft/cache`
-  as the persistence schema-cache collaborator, synchronous messaging and Symfony Messenger envelope transport,
+- [x] Default Yii composition registers and proves validation, security, SQLite schema-cache/transaction composition
+  with the selected `yiisoft/cache` PSR-16 and Yii PSR-3 collaborators, synchronous messaging and Symfony Messenger envelope transport,
   HTTP/PSR-18, request/response, filesystem/storage, transfer, process, scheduler,
   routing, mail, templating, observability, SMS, Mercure/private publication, and every selected fallback.
 - [x] Symfony Messenger has a working default envelope-transport fallback with complete command/event envelopes;
@@ -36,6 +36,11 @@ Run the complete-profile focused journeys, `./bin/planning-check`, and the repos
 
 The original 2026-08-31 inventory proof was superseded by T-00002's bounded booted request, messaging, stateful,
 integration-fallback, dependency-lane, and receipt-authority journeys.
+
+The project skeleton intentionally provides no `EventStore` or `EventMapper`; event-sourcing behavior is not part of
+this starter ticket. Fight Common T-00072 records the authoritative native outcomes: Yii View passed, Yii Mail failed
+independent-part charset and exact valid-CID behavior, and Yii Files passed only recursive directory creation in its
+22-case suite. The tested Symfony Mailer and Filesystem fallbacks remain selected.
 
 ## Scope Boundary
 

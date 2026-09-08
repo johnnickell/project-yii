@@ -1,6 +1,6 @@
 {
     "schema_version": "fight-common.framework-support-receipt/v1",
-    "content_id": "d4ad78ab75882628c1eb482aedfcb23b04e31d22cb4b6223d0aca05ba379d14a",
+    "content_id": "a750efcd20e293333c9da9d692fee9080cdbdc2d0020f3e546d681802fcf4b98",
     "candidate": {
         "package": "johnnickell/fight-common",
         "version": "1.2.0-dev",
@@ -42,9 +42,11 @@
     "lock_sha256": "47c38cfbd5de8c60d9a0f4004e157db595d3df82dbc034969ba744bfe953c909",
     "capabilities": {
         "container.bounded_yii_providers": "ship",
-        "request.routing_twig": "ship",
+        "routing.native_yii": "ship",
         "view.native_yii": "ship",
-        "security.password_and_validation": "wire",
+        "http.psr15_json_jsend_middleware": "wire",
+        "http.psr17_jsend_response": "wire",
+        "security.hmac_jwt_password_validation": "wire",
         "messaging.synchronous": "ship",
         "messaging.symfony_messenger_fallback": "wire",
         "messaging.stable_yii_queue": "unavailable",
@@ -57,9 +59,10 @@
         "mail.native_yii": "unavailable",
         "mail.symfony_fallback": "wire",
         "sms_and_transfer_null_fallbacks": "wire",
-        "observability.null_fallbacks": "wire",
+        "observability.yii_psr3_shared": "wire",
         "publication.mercure_mock_fallback": "wire",
-        "cache.psr6": "wire"
+        "cache.yii_psr16": "wire",
+        "cache.fight_psr6": "wire"
     },
     "journeys": [
         {
@@ -71,6 +74,16 @@
             "name": "booted_request_lifecycle",
             "status": "passed",
             "evidence": "tests/Integration/HttpApplicationJourneyTest.php"
+        },
+        {
+            "name": "booted_security_and_validation",
+            "status": "passed",
+            "evidence": "tests/Integration/SecurityAndValidationJourneyTest.php"
+        },
+        {
+            "name": "booted_cache_and_observability",
+            "status": "passed",
+            "evidence": "tests/Integration/CacheAndObservabilityJourneyTest.php"
         },
         {
             "name": "booted_messaging_lifecycle",
@@ -102,7 +115,7 @@
     "evidence": {
         "build": "./bin/build",
         "planning_check": "./bin/planning-check",
-        "receipt_sha256": "4c313a6892bc0f3410f06c91b285f4630c64984eb32132c2a9986af52fe3681b"
+        "receipt_sha256": "0295d3108cff85e348c4dfc91abb818ceb74f0c5a5002ad15483a1a8e6c3d0d3"
     },
     "next_action": null
 }

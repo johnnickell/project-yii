@@ -11,6 +11,14 @@ No login, persistence workflow, client, or realtime behavior is established by t
 
 The web entrypoint and behavioral tests share `ConfiguredApplicationFactory`. Project-owned bounded providers supply
 policy and collaborators; Fight Common's Yii providers remain directly registered from the Composer dependency.
+Yii's native router and View adapter ship. The shared PSR-15 JSON/JSend middleware and PSR-17 response factory run
+inside Yii's real middleware dispatcher, while HMAC, JWT, password, validation, cache, logging, health, audit, and
+metrics resolve through explicit public contracts. Persistence consumes the selected PSR-16 cache and PSR-3 logger;
+it does not install competing cache or logging policy.
+
+Fight Common T-00072 is authoritative for the native prototype outcomes. Yii Mail failed independent-part charset
+and exact valid-CID behavior, so Symfony Mailer remains selected. Yii Files passed only recursive directory creation
+in the 22-case suite, so Symfony Filesystem remains selected. Yii View passed the complete shared suite and ships.
 Storage and scheduler state default to `var/storage/flysystem` and `var/runtime/scheduler` and can be overridden per boot.
 
 Generated caches and runtime artifacts belong under `var/`, with tool caches under `var/cache/<tool>`. `.runs/`
