@@ -28,15 +28,27 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
     {
         return [
             RequestService::class => fn (): RequestService => new HmacRequestService(
-                $this->context->parameters['app.hmac_identity'],
-                $this->context->parameters['app.hmac_private_hex'],
+                self::requiredNonBlankString(
+                    $this->context->parameters['app.hmac_identity'] ?? null,
+                    'FIGHT_HMAC_PUBLIC',
+                ),
+                self::requiredHexSecret(
+                    $this->context->parameters['app.hmac_private_hex'] ?? null,
+                    'FIGHT_HMAC_PRIVATE',
+                ),
             ),
             TokenEncoder::class => fn (): TokenEncoder => new JwtEncoder(
-                $this->context->parameters['app.jwt_secret_hex'],
+                self::requiredHexSecret(
+                    $this->context->parameters['app.jwt_secret_hex'] ?? null,
+                    'FIGHT_JWT_SECRET',
+                ),
                 $this->context->parameters['app.jwt_algorithm'],
             ),
             TokenDecoder::class => fn (): TokenDecoder => new JwtDecoder(
-                $this->context->parameters['app.jwt_secret_hex'],
+                self::requiredHexSecret(
+                    $this->context->parameters['app.jwt_secret_hex'] ?? null,
+                    'FIGHT_JWT_SECRET',
+                ),
                 $this->context->parameters['app.jwt_algorithm'],
             ),
             PasswordHasher::class => static fn (): PasswordHasher => new PhpPasswordHasher(PASSWORD_ARGON2ID),
@@ -48,5 +60,31 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
     public function getExtensions(): array
     {
         return [];
+    }
+
+    private static function requiredNonBlankString(mixed $value, string $environmentVariable): string
+    {
+        if (!is_string($value) || trim($value) === '') {
+            throw new DeploymentCredentialException(sprintf(
+                'Security credential %s must be configured as a nonblank string.',
+                $environmentVariable,
+            ));
+        }
+
+        return $value;
+    }
+
+    private static function requiredHexSecret(mixed $value, string $environmentVariable): string
+    {
+        $value = self::requiredNonBlankString($value, $environmentVariable);
+
+        if (preg_match('/\\A[0-9a-fA-F]{64}\\z/D', $value) !== 1) {
+            throw new DeploymentCredentialException(sprintf(
+                'Security credential %s must contain exactly 64 hexadecimal characters (32 bytes).',
+                $environmentVariable,
+            ));
+        }
+
+        return $value;
     }
 }

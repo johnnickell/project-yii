@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
-use Fight\Common\Application\Auth\Security\PasswordHasher;
-use Fight\Common\Application\Auth\Security\PasswordValidator;
 use Fight\Common\Application\Routing\UrlGenerator;
 use Fight\Common\Application\Templating\TemplateEngine;
 use Fight\Common\Adapter\Http\Psr17\JSendResponseFactory;
@@ -15,8 +13,6 @@ use Fight\Common\Domain\Exception\ValidationException;
 use Fight\Common\Domain\Type\Arrayable;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Validator\Rule\Email;
-use Yiisoft\Validator\ValidatorInterface;
 use Yiisoft\View\View;
 use Yiisoft\View\ViewInterface;
 use Yiisoft\View\WebView;
@@ -36,7 +32,7 @@ final class HttpApplicationJourneyTest extends TestCase
         self::assertStringContainsString('<h1>Hello, Fight Yii!</h1>', (string) $response->getBody());
     }
 
-    public function test_routing_twig_security_and_validation_have_independent_expected_outcomes(): void
+    public function test_configured_routing_and_yii_view_twig_services_have_expected_outcomes(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $parameters = [
@@ -65,11 +61,6 @@ final class HttpApplicationJourneyTest extends TestCase
             'Configured Yii request',
             $container->get(TemplateEngine::class)->render('home.twig'),
         );
-        $hash = $container->get(PasswordHasher::class)->hash('starter-secret');
-        self::assertTrue($container->get(PasswordValidator::class)->validate('starter-secret', $hash));
-        self::assertFalse($container->get(PasswordValidator::class)->validate('wrong-secret', $hash));
-        self::assertTrue($container->get(ValidatorInterface::class)->validate('invalid-address', [new Email()])->isValid() === false);
-        self::assertTrue($container->get(ValidatorInterface::class)->validate('starter@example.test', [new Email()])->isValid());
     }
 
     public function test_shared_json_and_jsend_middleware_execute_through_the_yii_router(): void

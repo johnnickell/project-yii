@@ -27,7 +27,8 @@ configuration; they do not discover, adapt, or wire Fight Common services.
 - [x] Symfony Messenger has a working default envelope-transport fallback with complete command/event envelopes;
   this does not claim queue-worker delivery. Stable Yii Queue remains a separate capability and is recorded as
   unavailable until a supported integration exists.
-- [x] Secrets, application routes, templates, and Domain/Application code remain project-owned and configurable.
+- [x] Secrets, application routes, templates, and Domain/Application code remain project-owned and configurable;
+  HMAC/JWT credentials come from explicit deployment environment inputs and fail closed when their service resolves.
 - [x] A booted profile journey and configuration tests prove services are available from a clean Composer install.
 
 ## Verification
@@ -41,6 +42,10 @@ The project skeleton intentionally provides no `EventStore` or `EventMapper`; ev
 this starter ticket. Fight Common T-00072 records the authoritative native outcomes: Yii View passed, Yii Mail failed
 independent-part charset and exact valid-CID behavior, and Yii Files passed only recursive directory creation in its
 22-case suite. The tested Symfony Mailer and Filesystem fallbacks remain selected.
+
+Final correction verification on 2026-09-08 proves that no deployable HMAC/JWT credential fallback remains,
+that missing, blank, malformed, or undersized credential values fail at the corresponding lazy service seam, and
+that deterministic fixtures are confined to tests and the production-profile verifier.
 
 ## Scope Boundary
 

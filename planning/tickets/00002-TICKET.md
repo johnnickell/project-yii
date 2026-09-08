@@ -31,3 +31,7 @@ validation, and the repository-owned detached canonical repair build.
 Repair verification on 2026-09-07 additionally covers granular native Yii routing/View, shared PSR-15/17 HTTP,
 HMAC/JWT/password/validation, Yii PSR-16 plus Fight PSR-6 cache, Yii PSR-3 plus shared observability, and persistence
 composition. PR #4 carries this receipt with T-00004 under the approved exception recorded in PRD-00002.
+
+Final correction verification on 2026-09-08 removes deployable HMAC/JWT defaults, proves lazy fail-closed credential
+resolution, keeps deterministic credentials inside tests and verification only, and restores exclusive security-test
+ownership without changing the receipt, exact dependency candidates, or previously accepted capability journeys.

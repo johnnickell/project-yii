@@ -115,6 +115,10 @@ frameworkSupportAssertLane($root, $profile);
 $factory = new ConfiguredApplicationFactory($root);
 $runtime = sys_get_temp_dir().'/project-yii-production-'.bin2hex(random_bytes(5));
 $container = $factory->createContainer([
+    'app.hmac_identity' => 'production-yii-local-only',
+    'app.hmac_private_hex' => str_repeat('a1', 32),
+    'app.jwt_secret_hex' => str_repeat('b2', 32),
+    'app.jwt_algorithm' => 'HS256',
     'app.storage_path' => $runtime.'/storage',
     'app.scheduler_path' => $runtime.'/scheduler',
     'app.http_client' => new GuzzleClient(new Client([
@@ -142,7 +146,7 @@ if (!$container->get(PasswordValidator::class)->validate('production-secret', $h
 $signedRequest = $container->get(RequestService::class)->signRequest(
     new Request('POST', 'https://no-network.invalid/signed', [], 'production'),
 );
-if ($signedRequest->getHeaderLine('Credential') !== 'project-yii-local'
+if ($signedRequest->getHeaderLine('Credential') !== 'production-yii-local-only'
     || !preg_match('/^[a-f0-9]{64}$/', $signedRequest->getHeaderLine('Signature'))) {
     throw new RuntimeException('Production-installed HMAC request-signing journey failed.');
 }
