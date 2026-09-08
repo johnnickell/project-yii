@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
+use App\Adapter\Container\CacheProvider;
+use App\Adapter\Container\MailProvider;
+use App\Adapter\Container\MessengerFallbackProvider;
+use App\Adapter\Container\ObservabilityProvider;
 use App\Adapter\Container\PersistenceProvider;
+use App\Adapter\Container\SecurityAndValidationProvider;
+use App\Adapter\Container\SmsProvider;
+use App\Adapter\Container\SynchronousMessagingProvider;
 use Fight\Common\Adapter\Messaging\Handler\CommandMessageHandler;
 use Fight\Common\Adapter\ServiceContainer\Yii\PersistenceServiceProvider;
 use Fight\Common\Adapter\HttpClient\Guzzle\GuzzleClient;
@@ -33,6 +40,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Yiisoft\Db\Connection\ConnectionInterface;
+use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Router\UrlMatcherInterface;
 use Yiisoft\View\View;
 use Yiisoft\View\ViewInterface;
@@ -193,7 +201,7 @@ final class CapabilityProviderIsolationTest extends TestCase
     {
         /** @var array<string, string|array{class: class-string, runtime: bool}> $providerMap */
         $providerMap = require dirname(__DIR__, 2).'/config/providers.php';
-        self::assertSame(PersistenceProvider::class, $providerMap['persistence-policy']['class']);
+        self::assertSame(PersistenceProvider::class, $providerMap['persistence-policy']);
         self::assertSame(PersistenceServiceProvider::class, $providerMap['fight-common-persistence']);
 
         $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
@@ -254,5 +262,25 @@ final class CapabilityProviderIsolationTest extends TestCase
             $container->has(EventMapper::class),
             'EventMapper must not be resolvable from the messaging-only container.',
         );
+    }
+
+    public function test_providers_without_provider_context_dependency_can_be_instantiated_without_arguments(): void
+    {
+        $providers = [
+            new CacheProvider(),
+            new MailProvider(),
+            new PersistenceProvider(),
+            new MessengerFallbackProvider(),
+            new SmsProvider(),
+            new SecurityAndValidationProvider(),
+            new SynchronousMessagingProvider(),
+            new ObservabilityProvider(),
+        ];
+
+        foreach ($providers as $provider) {
+            self::assertInstanceOf(ServiceProviderInterface::class, $provider);
+            self::assertNotEmpty($provider->getDefinitions(), $provider::class . ' must define services');
+            self::assertIsArray($provider->getExtensions());
+        }
     }
 }

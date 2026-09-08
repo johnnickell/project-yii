@@ -14,10 +14,6 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class CacheProvider implements ServiceProviderInterface
 {
-    public function __construct(ProviderContext $context)
-    {
-    }
-
     public function getDefinitions(): array
     {
         $pool = new ArrayAdapter();

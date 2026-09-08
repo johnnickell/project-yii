@@ -12,10 +12,6 @@ use Yiisoft\Mailer\NullMailer;
 
 final readonly class MailProvider implements ServiceProviderInterface
 {
-    public function __construct(ProviderContext $context)
-    {
-    }
-
     public function getDefinitions(): array
     {
         $nullMailer = new NullMailer();

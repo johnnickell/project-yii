@@ -6,7 +6,6 @@ namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
 use App\Adapter\Container\MailProvider;
-use App\Adapter\Container\ProviderContext;
 use App\Tests\Fixture\RecordingHub;
 use Fight\Common\Adapter\Filesystem\Symfony\SymfonyFilesystem;
 use Fight\Common\Adapter\HttpClient\Guzzle\GuzzleClient;
@@ -19,6 +18,7 @@ use Fight\Common\Application\Mail\Transport\MailTransport;
 use Fight\Common\Application\Observability\AuditLog;
 use Yiisoft\Mailer\MailerInterface as YiiMailerInterface;
 use Yiisoft\Mailer\NullMailer;
+use Yiisoft\Di\NotFoundException;
 use Fight\Common\Application\Observability\MetricsCollector;
 use Fight\Common\Application\Process\ProcessBuilder;
 use Fight\Common\Application\Process\ProcessRunner;
@@ -120,7 +120,7 @@ final class IntegrationFallbackJourneyTest extends TestCase
 
     public function test_yii_mailer_is_evaluated_before_falling_back_to_symfony(): void
     {
-        $provider = new MailProvider(new ProviderContext(dirname(__DIR__, 2), []));
+        $provider = new MailProvider();
 
         self::assertArrayHasKey(
             NullMailer::class,
@@ -141,6 +141,83 @@ final class IntegrationFallbackJourneyTest extends TestCase
 
         $seams = require dirname(__DIR__, 2) . '/config/seams.php';
         self::assertSame('unavailable', $seams['native-yii-mail']['status']);
+    }
+
+    public function test_native_mail_unavailable_proved_by_active_construction_failure(): void
+    {
+        $nativeOnlyContainer = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['mail-policy'],
+        );
+
+        self::assertFalse(
+            $nativeOnlyContainer->has(YiiMailerInterface::class),
+            'Yiisoft MailerInterface must NOT be resolvable from the native Yii mail path alone',
+        );
+
+        try {
+            $nativeOnlyContainer->get(YiiMailerInterface::class);
+            self::fail('Expected NotFoundException when resolving Yiisoft\Mailer\MailerInterface from native-only container');
+        } catch (NotFoundException) {
+            self::addToAssertionCount(1);
+        }
+
+        self::assertInstanceOf(
+            NullMailer::class,
+            $nativeOnlyContainer->get(NullMailer::class),
+            'MailProvider must evaluate (instantiate and register) yiisoft/mailer NullMailer',
+        );
+
+        $fullMailContainer = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['mail-policy', 'fight-common-mail'],
+        );
+
+        self::assertInstanceOf(
+            SymfonyMailTransport::class,
+            $fullMailContainer->get(MailTransport::class),
+            'Full mail path (native + fallback) must resolve to SymfonyMailTransport',
+        );
+
+        self::assertFalse(
+            $fullMailContainer->has(YiiMailerInterface::class),
+            'yiisoft/mailer interface must NOT be wired — type-incompatible with Fight Common MailTransport contract',
+        );
+
+        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        self::assertSame('unavailable', $seams['native-yii-mail']['status']);
+        self::assertSame('configured', $seams['symfony-mail-fallback']['status']);
+    }
+
+    public function test_native_filesystem_unavailable_proved_by_active_construction_failure(): void
+    {
+        $nativeOnlyContainer = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['files-policy'],
+        );
+
+        self::assertFalse(
+            $nativeOnlyContainer->has(Filesystem::class),
+            'Fight Common Filesystem must NOT be resolvable from the native Yii filesystem path alone',
+        );
+
+        try {
+            $nativeOnlyContainer->get(Filesystem::class);
+            self::fail('Expected NotFoundException when resolving Filesystem from native-only container');
+        } catch (NotFoundException) {
+            self::addToAssertionCount(1);
+        }
+
+        $fullFilesystemContainer = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+            providerNames: ['files-policy', 'fight-common-filesystem'],
+        );
+
+        self::assertInstanceOf(
+            SymfonyFilesystem::class,
+            $fullFilesystemContainer->get(Filesystem::class),
+            'Full filesystem path (native + fallback) must resolve to SymfonyFilesystem',
+        );
+
+        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        self::assertSame('unavailable', $seams['native-yii-filesystem']['status']);
+        self::assertSame('configured', $seams['symfony-filesystem-fallback']['status']);
     }
 
     public function test_configured_mercure_fallback_uses_application_owned_policy_without_network_effects(): void

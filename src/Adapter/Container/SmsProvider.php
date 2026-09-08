@@ -10,10 +10,6 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class SmsProvider implements ServiceProviderInterface
 {
-    public function __construct(ProviderContext $context)
-    {
-    }
-
     public function getDefinitions(): array
     {
         return [SmsTransport::class => NullSmsTransport::class];

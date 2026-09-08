@@ -14,10 +14,6 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class PersistenceProvider implements ServiceProviderInterface
 {
-    public function __construct(ProviderContext $context)
-    {
-    }
-
     public function getDefinitions(): array
     {
         $cache = new ArrayCache();
