@@ -38,6 +38,7 @@ No ticket is currently waiting on an unfinished local dependency.
 
 | Ticket | Parent PRD | Outcome |
 |--------|------------|---------|
+| [T-00006 — Re-certify Rewritten Fight Common Candidate](00006-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Re-certified the tree-equivalent rewritten Fight Common candidate with fresh latest/lowest locks, receipt digests, and the canonical build. |
 | [T-00002 — Adopt Fight Common 1.2](00002-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | The granular behavioral repair, exact dependency lanes, regenerated support receipt, fixed-HS256 correction, and canonical build are verified; Yii Mail and Session remain unselected. |
 | [T-00004 — Establish the Yii Complete Platform Profile](00004-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Booted security with fail-closed deployment credentials and fixed HS256, HTTP, cache, observability, persistence, and fallback composition are verified; Yii Mail and Session remain forbidden unselected dependencies. |
 | [T-00001 — Establish the Governed Yii Starter Foundation](00001-TICKET.md) | [PRD-00001](../specs/00001-PRD.md) | Local and hosted `./bin/build` receipts are green. The governed bootstrap handoff is accepted. |

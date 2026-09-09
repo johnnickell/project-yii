@@ -1,10 +1,10 @@
 {
     "schema_version": "fight-common.framework-support-receipt/v1",
-    "content_id": "9085309c84f26cd5c48e771b8f2746912515c134c371a3f419bbb1ec2009e717",
+    "content_id": "c22bd80296ede72b3b4f5a8f576622a8073906b8b0f9f41578d7e2ef06dffe5f",
     "candidate": {
         "package": "johnnickell/fight-common",
         "version": "1.2.0-dev",
-        "reference": "4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16"
+        "reference": "fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911"
     },
     "framework": {
         "name": "yii",
@@ -37,7 +37,7 @@
             "yiisoft/yii-http@1.1.1"
         ]
     },
-    "lock_sha256": "cae76a0d02102d273f7dcf962043463cf37761f2d5117b9e04d6122dd35e5708",
+    "lock_sha256": "a58b67187f55b13bf12f9ca1135b3271ce32c98fe7cd9e6b0e25d0d0dd167172",
     "capabilities": {
         "container.bounded_yii_providers": "ship",
         "routing.native_yii": "ship",
@@ -113,7 +113,7 @@
     "evidence": {
         "build": "./bin/build",
         "planning_check": "./bin/planning-check",
-        "receipt_sha256": "ba721a17eb600f5fb0e04b34464a1ebbe0f28d55f0d2dd8ad180c6875d462a44"
+        "receipt_sha256": "17060c1523aeea3f67b4e8f2c482e3341f34b88f60c9e4e7bbfe2b0eaa6aaa81"
     },
     "next_action": null
 }
