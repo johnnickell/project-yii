@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 const FRAMEWORK_SUPPORT_CANDIDATE_PACKAGE = 'johnnickell/fight-common';
-const FRAMEWORK_SUPPORT_CANDIDATE_CONSTRAINT = 'dev-develop#4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16 as 1.2.0-dev';
-const FRAMEWORK_SUPPORT_CANDIDATE_REFERENCE = '4a798b1db8fdb5e4af7d0ba8c98a88ac53c50c16';
+const FRAMEWORK_SUPPORT_CANDIDATE_CONSTRAINT = 'dev-develop#fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911 as 1.2.0-dev';
+const FRAMEWORK_SUPPORT_CANDIDATE_REFERENCE = 'fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911';
 const FRAMEWORK_SUPPORT_CANDIDATE_REPOSITORY = 'https://github.com/johnnickell/fight-common';
 
 /** @return array<string, mixed> */
