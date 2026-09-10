@@ -3,11 +3,13 @@ set -eu
 
 worktree_checksum=$(pwd -P | cksum | awk '{print $1}')
 image="project-yii-build-$worktree_checksum"
+host_uid=$(id -u)
+host_gid=$(id -g)
 
 ./bin/planning-check
 
 docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
-docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
+docker run --rm --user "$host_uid:$host_gid" --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
     php-fpm -tt
     composer validate
     composer install --no-interaction --prefer-dist --no-progress
