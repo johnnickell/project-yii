@@ -4,17 +4,16 @@
 
 | PRD | Target | Status | Current outcome |
 | --- | --- | --- | --- |
-| [PRD-00002](specs/00002-PRD.md) | Fight Common 2.0 | needs-info | Fight Common 1.2 receipt and dependency lanes verified with fixed HS256 and Yii Mail/Session unselected; wait for the 2.0 contract, removal inventory, and migration guide. |
+| [PRD-00002](specs/00002-PRD.md) | Fight Common 2.0 | needs-info | T-00005 replaced historical certification machinery with a lean code-quality and hardened runtime gate; the 2.0 contract remains unavailable. |
 
 ## Route to 1.0
 
-1. Retain the verified Fight Common 1.2 support receipt and exact Composer evidence, including fixed HS256 and the
-   absence of installed Yii Mail and Yii Session packages in both locks.
+1. Maintain the Yii composition through exact Unit coverage, valuable integration journeys, production boot proof,
+   and the root Composer lockfile.
 2. Revisit 2.0 only after Fight Common publishes its migration authority.
 
 ## Completed / Released
 
 The governed Yii Starter Foundation is complete, and T-00002 records the verified bounded Yii Fight Common 1.2
-composition, latest/lowest locks, production graph, support receipt, fail-closed deployment credentials, and
-canonical repair build. Certified dependency evidence fixes JWT to HS256 and keeps Yii Mail and Yii Session as
-forbidden unselected dependencies while retaining the Symfony Mailer fallback.
+composition, production graph, fail-closed deployment credentials, and canonical repair build. Historical
+certification fixed JWT to HS256 and kept Yii Mail and Yii Session unselected while retaining Symfony Mailer.

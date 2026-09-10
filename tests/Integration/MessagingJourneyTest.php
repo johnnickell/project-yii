@@ -18,13 +18,15 @@ use Fight\Common\Application\Messaging\Event\SynchronousEventDispatcher;
 use Fight\Common\Domain\Messaging\Command\CommandMessage;
 use Fight\Common\Domain\Messaging\Event\EventMessage;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 
+#[CoversNothing]
 final class MessagingJourneyTest extends TestCase
 {
     public function test_synchronous_command_and_event_handlers_execute_through_the_booted_container(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $commandHandler = new RecordingCommandHandler();
         $container->get(InMemoryCommandRouter::class)->registerHandler(RecordJourneyCommand::class, $commandHandler);
         $subscriber = new RecordingEventSubscriber();
@@ -39,7 +41,7 @@ final class MessagingJourneyTest extends TestCase
 
     public function test_messenger_fallback_transports_complete_command_and_event_envelopes(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $container->get(AsynchronousCommandBus::class)->execute(new RecordJourneyCommand('transport-command'));
         $container->get(AsynchronousEventDispatcher::class)->trigger(new JourneyRecorded('transport-event'));
         $sent = $container->get(InMemoryTransport::class)->getSent();
@@ -58,7 +60,7 @@ final class MessagingJourneyTest extends TestCase
 
     public function test_messenger_fallback_is_selectable_independently_from_synchronous_messaging(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['messenger-fallback-policy'],
         );
 

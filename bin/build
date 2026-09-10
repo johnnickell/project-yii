@@ -8,31 +8,26 @@ image="project-yii-build-$worktree_checksum"
 
 docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
 docker run --rm --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
-    php scripts/composer-candidate-validation.php
-    php scripts/fight-common-candidate-check.php
+    php-fpm -tt
+    composer validate
     composer install --no-interaction --prefer-dist --no-progress
-    php scripts/framework-support-profile.php --assert-lane .
-    php scripts/generate-framework-support-receipt.php
-    scripts/verify-dependency-lanes.sh
+    vendor/bin/phpcs
+    vendor/bin/phpstan analyse --no-progress
+    vendor/bin/deptrac analyse --no-progress --fail-on-uncovered
+    vendor/bin/rector process --dry-run --no-progress-bar
+    mkdir -p var/coverage
+    rm -f var/coverage/unit-clover.xml
+    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Unit --coverage-clover var/coverage/unit-clover.xml
+    php scripts/verify-coverage.php var/coverage/unit-clover.xml src
+    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Integration
+    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Functional
 
     work_root=$(mktemp -d)
     trap "rm -rf \"$work_root\"" EXIT
-    git clone --quiet --no-checkout https://github.com/johnnickell/fight-common "$work_root/fight-common"
-    git -C "$work_root/fight-common" checkout --quiet --detach fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911
-    php scripts/verify-framework-support-receipt.php "$work_root/fight-common"
-
-    php scripts/public-contract-check.php
-    php scripts/governance-check.php
-    php scripts/architecture-check.php
-    php scripts/docs-check.php
-    php tests/regression/quality-gate.php
-    PROJECT_YII_IN_BUILD=1 ./bin/phpunit
-
     production_root="$work_root/production"
     mkdir "$production_root"
     tar --exclude=.git --exclude=vendor --exclude=.runs --exclude=var -cf - . | tar -C "$production_root" -xf -
     cd "$production_root"
     composer install --no-dev --no-interaction --prefer-dist --no-progress
-    php scripts/public-contract-check.php
-    php scripts/verify-production-framework-support-profile.php
+    php tests/Functional/production-boot.php
 '

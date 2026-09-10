@@ -19,20 +19,22 @@ final readonly class ViewProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
-        $templatesPath = $this->context->root.'/'.$this->context->parameters['app.templates_path'];
+        $templatesPath = $this->context->root . '/' . $this->context->parameters['app.templates_path'];
         $view = new View();
 
         return [
             ...YiiCapabilityConfiguration::view($view, $templatesPath),
             Environment::class => fn (): Environment => new Environment(new FilesystemLoader($templatesPath)),
             TwigTemplateRenderer::class => TwigTemplateRenderer::class,
-            WebView::class => fn (ContainerInterface $container): WebView => (new WebView($templatesPath))
+            WebView::class => fn (ContainerInterface $container): WebView => new WebView($templatesPath)
                 ->withRenderers(['twig' => $container->get(TwigTemplateRenderer::class)]),
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

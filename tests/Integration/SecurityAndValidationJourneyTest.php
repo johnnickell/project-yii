@@ -14,11 +14,13 @@ use Fight\Common\Application\Auth\Security\TokenDecoder;
 use Fight\Common\Application\Auth\Security\TokenEncoder;
 use Nyholm\Psr7\Request;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Yiisoft\Validator\Rule\Email;
 use Yiisoft\Validator\ValidatorInterface;
 
+#[CoversNothing]
 final class SecurityAndValidationJourneyTest extends TestCase
 {
     public function test_deployment_credential_exception_autoloads_independently(): void
@@ -32,7 +34,7 @@ final class SecurityAndValidationJourneyTest extends TestCase
         mixed $value,
         string $environmentVariable,
     ): void {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             self::securityRuntimeOverrides([$parameter => $value]),
         );
 
@@ -62,7 +64,7 @@ final class SecurityAndValidationJourneyTest extends TestCase
         string $service,
         mixed $secret,
     ): void {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             self::securityRuntimeOverrides(['app.jwt_secret_hex' => $secret]),
         );
 
@@ -78,17 +80,17 @@ final class SecurityAndValidationJourneyTest extends TestCase
     public static function invalidJwtSecretValues(): iterable
     {
         foreach ([TokenEncoder::class, TokenDecoder::class] as $service) {
-            yield $service.' missing secret' => [$service, null];
-            yield $service.' non-string secret' => [$service, []];
-            yield $service.' blank secret' => [$service, '   '];
-            yield $service.' non-hex secret' => [$service, str_repeat('g', 64)];
-            yield $service.' undersized secret' => [$service, str_repeat('a', 62)];
+            yield $service . ' missing secret' => [$service, null];
+            yield $service . ' non-string secret' => [$service, []];
+            yield $service . ' blank secret' => [$service, '   '];
+            yield $service . ' non-hex secret' => [$service, str_repeat('g', 64)];
+            yield $service . ' undersized secret' => [$service, str_repeat('a', 62)];
         }
     }
 
     public function test_security_credentials_are_validated_only_when_their_services_are_resolved(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             self::securityRuntimeOverrides([
                 'app.hmac_identity' => null,
                 'app.hmac_private_hex' => null,
@@ -101,7 +103,7 @@ final class SecurityAndValidationJourneyTest extends TestCase
 
     public function test_booted_security_services_use_project_owned_runtime_configuration(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer([
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer([
             'app.hmac_identity' => 'configured-yii-client',
             'app.hmac_private_hex' => str_repeat('ab', 32),
             'app.jwt_secret_hex' => str_repeat('cd', 32),

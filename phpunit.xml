@@ -3,10 +3,17 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          cacheDirectory="var/cache/phpunit"
-         colors="true">
+         colors="true"
+         requireCoverageMetadata="true">
     <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
         <testsuite name="Integration">
             <directory>tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory suffix="Test.php">tests/Functional</directory>
         </testsuite>
     </testsuites>
     <source ignoreDirectDeprecations="true" ignoreIndirectDeprecations="true">

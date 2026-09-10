@@ -27,6 +27,6 @@ final class RecordingHub implements HubInterface
     {
         $this->updates[] = $update;
 
-        return 'recorded-'.count($this->updates);
+        return 'recorded-' . count($this->updates);
     }
 }

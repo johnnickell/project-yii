@@ -10,11 +10,13 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class SmsProvider implements ServiceProviderInterface
 {
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [SmsTransport::class => NullSmsTransport::class];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

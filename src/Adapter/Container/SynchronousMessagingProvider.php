@@ -13,6 +13,7 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class SynchronousMessagingProvider implements ServiceProviderInterface
 {
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         $router = new InMemoryCommandRouter();
@@ -26,6 +27,7 @@ final readonly class SynchronousMessagingProvider implements ServiceProviderInte
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

@@ -20,6 +20,7 @@ final readonly class FilesProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         $storagePath = $this->context->absolutePath($this->context->parameters['app.storage_path']);
@@ -33,6 +34,7 @@ final readonly class FilesProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

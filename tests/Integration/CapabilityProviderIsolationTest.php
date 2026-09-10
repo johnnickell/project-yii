@@ -34,6 +34,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
@@ -47,11 +48,12 @@ use Yiisoft\View\ViewInterface;
 use Yiisoft\View\WebView;
 use Yiisoft\Yii\Http\Application;
 
+#[CoversNothing]
 final class CapabilityProviderIsolationTest extends TestCase
 {
     public function test_selected_http_application_providers_handle_the_route_without_communication_integrations(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: [
                 'routing-policy',
                 'view-policy',
@@ -91,7 +93,7 @@ final class CapabilityProviderIsolationTest extends TestCase
         string $expectedContract,
         string $unrelatedContract,
     ): void {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: $providerNames,
         );
 
@@ -153,7 +155,7 @@ final class CapabilityProviderIsolationTest extends TestCase
 
     public function test_selected_routing_providers_boot_routing_without_view_or_http_application(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['routing-policy', 'fight-common-routing'],
         );
 
@@ -170,7 +172,7 @@ final class CapabilityProviderIsolationTest extends TestCase
 
     public function test_selected_synchronous_messaging_providers_exclude_messenger_fallback_contracts(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['synchronous-messaging-policy', 'fight-common-messaging'],
         );
 
@@ -188,7 +190,7 @@ final class CapabilityProviderIsolationTest extends TestCase
             ])),
             'http_errors' => false,
         ]));
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             parameterOverrides: ['app.http_client' => $http],
             providerNames: ['http-client-policy', 'fight-common-http-client'],
         );
@@ -205,11 +207,11 @@ final class CapabilityProviderIsolationTest extends TestCase
     public function test_selected_persistence_providers_boot_the_transaction_contract_without_unrelated_public_contracts(): void
     {
         /** @var array<string, string|array{class: class-string, runtime: bool}> $providerMap */
-        $providerMap = require dirname(__DIR__, 2).'/config/providers.php';
+        $providerMap = require dirname(__DIR__, 2) . '/config/providers.php';
         self::assertSame(PersistenceProvider::class, $providerMap['persistence-policy']);
         self::assertSame(PersistenceServiceProvider::class, $providerMap['fight-common-persistence']);
 
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['cache-policy', 'observability-policy', 'persistence-policy', 'fight-common-persistence'],
         );
         $connection = $container->get(ConnectionInterface::class);
@@ -236,7 +238,7 @@ final class CapabilityProviderIsolationTest extends TestCase
 
     public function test_selected_persistence_providers_exclude_event_sourcing_contracts(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['cache-policy', 'observability-policy', 'persistence-policy', 'fight-common-persistence'],
         );
 
@@ -256,7 +258,7 @@ final class CapabilityProviderIsolationTest extends TestCase
 
     public function test_selected_messaging_providers_exclude_event_sourcing_contracts(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['synchronous-messaging-policy', 'fight-common-messaging'],
         );
 
@@ -285,7 +287,7 @@ final class CapabilityProviderIsolationTest extends TestCase
         foreach ($providers as $provider) {
             self::assertInstanceOf(ServiceProviderInterface::class, $provider);
             self::assertNotEmpty($provider->getDefinitions(), $provider::class . ' must define services');
-            self::assertIsArray($provider->getExtensions());
+            self::assertSame([], $provider->getExtensions());
         }
     }
 }

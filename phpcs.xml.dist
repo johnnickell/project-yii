@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="Project Yii">
+    <description>Project-owned PHP coding standard.</description>
+    <file>src</file>
+    <file>tests</file>
+    <file>scripts/verify-coverage.php</file>
+    <arg name="colors"/>
+    <arg name="parallel" value="8"/>
+    <rule ref="PSR12">
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+    </rule>
+</ruleset>

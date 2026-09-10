@@ -13,12 +13,14 @@ use Fight\Common\Domain\Exception\ValidationException;
 use Fight\Common\Domain\Type\Arrayable;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Yiisoft\View\View;
 use Yiisoft\View\ViewInterface;
 use Yiisoft\View\WebView;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+#[CoversNothing]
 final class HttpApplicationJourneyTest extends TestCase
 {
     public function test_the_same_configured_factory_as_the_web_entrypoint_handles_the_request_lifecycle(): void
@@ -75,7 +77,9 @@ final class HttpApplicationJourneyTest extends TestCase
             return $responses->fromEnvelope(
                 JSendEnvelope::success(new readonly class ($data) implements Arrayable {
                     /** @param array<string, mixed> $data */
-                    public function __construct(private array $data) {}
+                    public function __construct(private array $data)
+                    {
+                    }
                     public function toArray(): array
                     {
                         return $this->data;
@@ -93,9 +97,9 @@ final class HttpApplicationJourneyTest extends TestCase
         ];
 
         $response = $factory->createApplication($parameters)->handle(
-            (new ServerRequest('POST', 'https://yii.example.test/json'))
+            new ServerRequest('POST', 'https://yii.example.test/json')
                 ->withHeader('Content-Type', 'application/json; charset=utf-8')
-                ->withBody((new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('{"role":"editor"}')),
+                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{"role":"editor"}')),
         );
         self::assertSame(201, $response->getStatusCode());
         self::assertSame('application/json', $response->getHeaderLine('Content-Type'));
@@ -128,9 +132,9 @@ final class HttpApplicationJourneyTest extends TestCase
         );
 
         $malformed = $factory->createApplication($parameters)->handle(
-            (new ServerRequest('POST', 'https://yii.example.test/json'))
+            new ServerRequest('POST', 'https://yii.example.test/json')
                 ->withHeader('Content-Type', 'application/json')
-                ->withBody((new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('{not-json')),
+                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{not-json')),
         );
         self::assertSame(500, $malformed->getStatusCode());
         self::assertSame('application/json', $malformed->getHeaderLine('Content-Type'));

@@ -16,6 +16,7 @@ final readonly class OperationsProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         $schedulerPath = $this->context->absolutePath($this->context->parameters['app.scheduler_path']);
@@ -30,9 +31,9 @@ final readonly class OperationsProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];
     }
-
-    }
+}
