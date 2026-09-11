@@ -17,8 +17,9 @@ deprecation-removal inventory, and migration guide exist.
 
 ## Wayfinder Review
 
-No active Wayfinder map currently exists. When an active map has an unblocked frontier ticket, list it here.
-When asked for the next wayfinder target, offer to chart a new feature rather than fabricating one.
+[Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) is active. Its one
+unblocked review frontier is [WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md),
+which requires human judgment on the complete, worktree-safe local Compose lifecycle.
 
 ## Ready Frontier
 
