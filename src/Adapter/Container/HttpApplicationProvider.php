@@ -30,6 +30,7 @@ final readonly class HttpApplicationProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [
@@ -52,7 +53,7 @@ final readonly class HttpApplicationProvider implements ServiceProviderInterface
             UrlMatcherInterface::class => fn (RouteCollection $routes): UrlMatcherInterface => new NativeUrlMatcher($routes),
             CurrentRoute::class => CurrentRoute::class,
             MiddlewareDispatcher::class => fn (ContainerInterface $container): MiddlewareDispatcher =>
-                (new MiddlewareDispatcher(new MiddlewareFactory($container)))->withMiddlewares([
+                new MiddlewareDispatcher(new MiddlewareFactory($container))->withMiddlewares([
                     JSendErrorMiddleware::class,
                     JsonRequestMiddleware::class,
                     Router::class,
@@ -66,6 +67,7 @@ final readonly class HttpApplicationProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

@@ -15,6 +15,7 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class CacheProvider implements ServiceProviderInterface
 {
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         $pool = new ArrayAdapter();
@@ -31,6 +32,7 @@ final readonly class CacheProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

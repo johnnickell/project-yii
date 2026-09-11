@@ -11,6 +11,7 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class MailProvider implements ServiceProviderInterface
 {
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [
@@ -18,6 +19,7 @@ final readonly class MailProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

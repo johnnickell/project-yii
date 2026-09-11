@@ -19,15 +19,17 @@ final readonly class PublicationProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [
-            HubInterface::class => fn (): HubInterface => $this->hub(),
+            HubInterface::class => $this->hub(...),
             Publisher::class => MercureHubPublisher::class,
             PrivatePublisher::class => PrivateMercureHubPublisher::class,
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

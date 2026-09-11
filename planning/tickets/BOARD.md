@@ -22,7 +22,7 @@ When asked for the next wayfinder target, offer to chart a new feature rather th
 
 ## Ready Frontier
 
-No ticket is currently ready for agent execution.
+No ticket is currently ready for agent execution; T-00003 remains in **Needs Info**.
 
 ## Waiting
 
@@ -38,6 +38,7 @@ No ticket is currently waiting on an unfinished local dependency.
 
 | Ticket | Parent PRD | Outcome |
 |--------|------------|---------|
+| [T-00005 — Establish the Lean Yii Quality Gate and Harden FPM](00005-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Replaced historical certification machinery with exact Unit-only application coverage, focused runtime journeys, a production boot probe, and hardened non-root FPM. |
 | [T-00006 — Re-certify Rewritten Fight Common Candidate](00006-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Re-certified the tree-equivalent rewritten Fight Common candidate with fresh latest/lowest locks, receipt digests, and the canonical build. |
 | [T-00002 — Adopt Fight Common 1.2](00002-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | The granular behavioral repair, exact dependency lanes, regenerated support receipt, fixed-HS256 correction, and canonical build are verified; Yii Mail and Session remain unselected. |
 | [T-00004 — Establish the Yii Complete Platform Profile](00004-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Booted security with fail-closed deployment credentials and fixed HS256, HTTP, cache, observability, persistence, and fallback composition are verified; Yii Mail and Session remain forbidden unselected dependencies. |

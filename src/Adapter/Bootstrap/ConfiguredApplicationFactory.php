@@ -14,7 +14,6 @@ use Yiisoft\Yii\Http\Application;
 
 final readonly class ConfiguredApplicationFactory
 {
-
     public function __construct(private string $root)
     {
     }
@@ -47,7 +46,10 @@ final readonly class ConfiguredApplicationFactory
         return new Container(ContainerConfig::create()->withProviders($providers));
     }
 
-    /** @param array<string, mixed> $parameters */
+    /**
+     * @param string|array{class: class-string<ServiceProviderInterface>, runtime?: bool} $provider
+     * @param array<string, mixed> $parameters
+     */
     private function createProvider(string|array $provider, array $parameters): ServiceProviderInterface
     {
         $className = is_array($provider) ? $provider['class'] : $provider;

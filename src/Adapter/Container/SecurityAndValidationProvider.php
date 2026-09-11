@@ -24,6 +24,7 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [
@@ -57,6 +58,7 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

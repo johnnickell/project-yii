@@ -16,6 +16,7 @@ use Fight\Common\Domain\Observability\AuditEntry;
 use Fight\Common\Domain\Observability\HealthResult;
 use Fight\Common\Domain\Observability\HealthStatus;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -25,11 +26,12 @@ use Yiisoft\Cache\ArrayCache;
 use Yiisoft\Log\Logger;
 use Yiisoft\Log\PsrTarget;
 
+#[CoversNothing]
 final class CacheAndObservabilityJourneyTest extends TestCase
 {
     public function test_booted_cache_group_owns_native_psr16_and_fight_psr6_behavior(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             providerNames: ['cache-policy'],
         );
 
@@ -52,17 +54,22 @@ final class CacheAndObservabilityJourneyTest extends TestCase
 
     public function test_booted_observability_group_exposes_native_logging_and_shared_health(): void
     {
-        $messages = [];
-        $sink = new class ($messages) extends AbstractLogger {
-            /** @param list<array{level: mixed, message: string}> $messages */
-            public function __construct(private array &$messages) {}
+        $sink = new class extends AbstractLogger {
+            /** @var list<array{level: mixed, message: string}> */
+            private array $messages = [];
 
             public function log(mixed $level, string|Stringable $message, array $context = []): void
             {
                 $this->messages[] = ['level' => $level, 'message' => (string) $message];
             }
+
+            /** @return list<array{level: mixed, message: string}> */
+            public function messages(): array
+            {
+                return $this->messages;
+            }
         };
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer(
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             ['app.log_targets' => [new PsrTarget($sink)]],
             ['observability-policy'],
         );
@@ -71,7 +78,7 @@ final class CacheAndObservabilityJourneyTest extends TestCase
         self::assertSame($logger, $container->get(LoggerInterface::class));
         $logger->info('booted-yii-log');
         $logger->flush(true);
-        self::assertSame('booted-yii-log', $messages[0]['message']);
+        self::assertSame('booted-yii-log', $sink->messages()[0]['message']);
 
         $health = $container->get(HealthAggregator::class);
         self::assertInstanceOf(HealthReporter::class, $health);

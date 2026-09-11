@@ -18,7 +18,8 @@ final readonly class HomeHandler implements RequestHandlerInterface
         private string $routeName,
         private ResponseFactoryInterface $responseFactory,
         private StreamFactoryInterface $streamFactory,
-    ) {}
+    ) {
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

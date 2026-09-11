@@ -18,6 +18,7 @@ final readonly class RoutingProvider implements ServiceProviderInterface
     {
     }
 
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         $collector = new RouteCollector();
@@ -35,6 +36,7 @@ final readonly class RoutingProvider implements ServiceProviderInterface
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

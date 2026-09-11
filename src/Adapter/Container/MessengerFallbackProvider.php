@@ -14,6 +14,7 @@ use Yiisoft\Di\ServiceProviderInterface;
 
 final readonly class MessengerFallbackProvider implements ServiceProviderInterface
 {
+    /** @return array<string, mixed> */
     public function getDefinitions(): array
     {
         return [
@@ -24,6 +25,7 @@ final readonly class MessengerFallbackProvider implements ServiceProviderInterfa
         ];
     }
 
+    /** @return array<string, mixed> */
     public function getExtensions(): array
     {
         return [];

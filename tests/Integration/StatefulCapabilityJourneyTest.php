@@ -9,14 +9,16 @@ use Fight\Common\Application\FileStorage\FileStorage;
 use Fight\Common\Application\Repository\TransactionalUnitOfWork;
 use Fight\Common\Application\Scheduler\Scheduler;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Yiisoft\Db\Cache\SchemaCache;
 use Yiisoft\Db\Connection\ConnectionInterface;
 
+#[CoversNothing]
 final class StatefulCapabilityJourneyTest extends TestCase
 {
     public function test_transactions_commit_and_roll_back_at_the_booted_yii_connection(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $connection = $container->get(ConnectionInterface::class);
         $connection->createCommand('CREATE TABLE journey (value TEXT NOT NULL)')->execute();
         $unitOfWork = $container->get(TransactionalUnitOfWork::class);
@@ -37,15 +39,15 @@ final class StatefulCapabilityJourneyTest extends TestCase
 
     public function test_storage_and_scheduler_use_independent_configured_runtime_roots(): void
     {
-        $base = sys_get_temp_dir().'/project-yii-state-'.bin2hex(random_bytes(6));
+        $base = sys_get_temp_dir() . '/project-yii-state-' . bin2hex(random_bytes(6));
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $first = $factory->createContainer([
-            'app.storage_path' => $base.'/first-storage',
-            'app.scheduler_path' => $base.'/first-scheduler',
+            'app.storage_path' => $base . '/first-storage',
+            'app.scheduler_path' => $base . '/first-scheduler',
         ]);
         $second = $factory->createContainer([
-            'app.storage_path' => $base.'/second-storage',
-            'app.scheduler_path' => $base.'/second-scheduler',
+            'app.storage_path' => $base . '/second-storage',
+            'app.scheduler_path' => $base . '/second-scheduler',
         ]);
 
         $first->get(FileStorage::class)->putFile('journey.txt', 'first-root');
@@ -60,13 +62,13 @@ final class StatefulCapabilityJourneyTest extends TestCase
         });
         $first->get(Scheduler::class)->run();
         self::assertTrue($ran);
-        self::assertFileExists($base.'/first-scheduler/isolated-job.lock');
-        self::assertFileDoesNotExist($base.'/second-scheduler/isolated-job.lock');
+        self::assertFileExists($base . '/first-scheduler/isolated-job.lock');
+        self::assertFileDoesNotExist($base . '/second-scheduler/isolated-job.lock');
     }
 
     public function test_booted_schema_cache_is_only_the_persistence_metadata_collaborator(): void
     {
-        $container = (new ConfiguredApplicationFactory(dirname(__DIR__, 2)))->createContainer();
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $schemaCache = $container->get(SchemaCache::class);
 
         self::assertTrue($schemaCache->isEnabled());

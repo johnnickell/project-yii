@@ -12,7 +12,8 @@ final readonly class ProviderContext
     public function __construct(
         public string $root,
         public array $parameters,
-    ) {}
+    ) {
+    }
 
     public function absolutePath(string $path): string
     {
