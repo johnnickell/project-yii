@@ -4,12 +4,11 @@
 
 | PRD | Target | Status | Current outcome |
 | --- | --- | --- | --- |
-| [PRD-00002](specs/00002-PRD.md) | Fight Common 2.0 | needs-info | T-00005 replaced historical certification machinery with a lean code-quality and hardened runtime gate; the 2.0 contract remains unavailable. |
+| [PRD-00002](specs/00002-PRD.md) | Fight Common 1.2 | in-progress | T-00007 owns remaining policy and coverage-verifier cleanup; historical 1.2 certification remains intact and 2.0 stays needs-info. |
 
 ## Route to 1.0
 
-1. Maintain the Yii composition through exact Unit coverage, valuable integration journeys, production boot proof,
-   and the root Composer lockfile.
+1. Implement T-00007's one lean local and hosted `./bin/build` gate with direct Unit-only coverage and retained Yii journeys.
 2. Revisit 2.0 only after Fight Common publishes its migration authority.
 
 ## Completed / Released

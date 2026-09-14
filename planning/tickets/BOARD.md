@@ -23,7 +23,9 @@ which requires human judgment on the complete, worktree-safe local Compose lifec
 
 ## Ready Frontier
 
-No ticket is currently ready for agent execution; T-00003 remains in **Needs Info**.
+| Suggested Order | Ticket | Parent PRD | Why now |
+| --- | --- | --- | --- |
+| 1 | [T-00007 — Establish the Lean Yii Pre-Submit Quality Gate](00007-TICKET.md) | [PRD-00002](../specs/00002-PRD.md) | Direct successor to Fight Common T-00087; remove remaining policy and coverage-verifier machinery. |
 
 ## Waiting
 
