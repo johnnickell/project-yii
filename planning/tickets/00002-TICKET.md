@@ -49,15 +49,32 @@ The 2026-09-09 authorship-only Fight Common rewrite changed the certified candid
 tree. TASK-00006 records the exact mapping, regenerated consumer evidence, and replacement certification while
 preserving the original ticket's historical statements.
 
-Fight Common T-00087 transferred permanent pre-submit quality-gate ownership to TASK-00005; the separate 2.0
-migration remains blocked on Fight Common's future authority. TASK-00005 completed that transfer with the lean
-code-only gate and hardened two-service FPM runtime. PR #4 intentionally carried TASK-00004 together with its
-inseparable TASK-00002 support receipt under John's approved two-ticket exception (the historical execution
-terminology); this does not establish a general multi-TASK delivery convention.
+Fight Common T-00087 transfers the remaining lean pre-submit cleanup to [TASK-00010](../tasks/00010-TASK.md),
+imported from the later legacy T-00007 in [PR #8](https://github.com/johnnickell/project-yii/pull/8).
+TASK-00005 remains the historical code-only gate and hardened two-service FPM outcome; TASK-00010 retains the
+source requirements and maps all of them to TASK-00008/00009, closing only the duplicate assignment. Remaining
+policy/coverage-verifier removal, direct Unit coverage, and meaningful Yii boundaries are consolidated in TASK-00009.
+The separate 2.0 migration stays blocked on Fight Common's future authority.
+PR #4 intentionally carried TASK-00004 together with its inseparable TASK-00002 support receipt under John's
+approved two-ticket exception (the historical execution terminology); this does not establish a general
+multi-TASK delivery convention.
 
 Migrated from PRD-00002. The recorded production `--no-dev` gate is the current/historical contract, not the
 approved future direction. [TICKET-00004](00004-TICKET.md) owns its explicit replacement; this migration does not
 change runtime behavior or reopen completed TASKs.
+
+## Reconciliation decision
+
+PR #8 marked this requirement `in-progress` with its legacy successor ready. On 2026-09-28 the maintainer directed
+adoption of the new standards and consolidation without losing work. TASK-00010 retains the legacy contract and
+maps stable-package/PHPCS adoption to [TICKET-00003](00003-TICKET.md) / TASK-00008, and all gate/coverage cleanup
+to [TICKET-00004](00004-TICKET.md) / TASK-00009. The latter preserves exact Unit-only and missing-file/ignore
+rejection while replacing bespoke verification machinery with direct attribution and standard coverage tools.
+No gate outcome is discarded or claimed complete; only the duplicate assignment closes as `wontfix`.
+
+This historical requirement returns to `needs-info` solely because its remaining Common 2.0 TASK-00003 still
+lacks upstream migration authority. The stable-adoption and consolidated gate requirements remain executable
+in dependency order under EPIC-00003; there is no overlap-related needs-info blocker or automatic parent closeout.
 
 ## TASKs
 
@@ -69,4 +86,5 @@ change runtime behavior or reopen completed TASKs.
 | — | [TASK-00004](../tasks/00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](00002-TICKET.md) | done | — | — |
 | — | [TASK-00005](../tasks/00005-TASK.md) | Establish the Lean Yii Quality Gate and Harden FPM | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](00002-TICKET.md) | done | — | — |
 | — | [TASK-00006](../tasks/00006-TASK.md) | Re-certify Rewritten Fight Common Candidate | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](00002-TICKET.md) | done | — | — |
+| — | [TASK-00010](../tasks/00010-TASK.md) | Establish the Lean Yii Pre-Submit Quality Gate | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](00002-TICKET.md) | wontfix | — | — |
 <!-- /planning:children -->

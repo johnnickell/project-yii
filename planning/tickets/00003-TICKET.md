@@ -30,8 +30,8 @@ platform requirements or copying source. Any missing public capability becomes a
 - Stable version constraints and a regenerated root lock replace Fight development pins/aliases; record resolved
   versions and references, not neighboring checkout branches. No unapproved major-version upgrade.
 - Existing selected capabilities remain behaviorally verified, including rejected credentials and rollback.
-- Common's shipped PHPCS standard is selected with compatible consumer development dependencies; do not install
-  all upstream require-dev packages or suppress failures to make the migration pass.
+- Common's shipped PHPCS standard is selected with compatible consumer development dependencies and repository-owned
+  scan paths/exclusions; do not install all upstream require-dev packages or suppress failures to make the migration pass.
 - Local documentation and WF-001 release-baseline references reflect 1.2+/0.4+ without claiming completion of its
   whole capability inventory. Fight Common 2.0 remains separately blocked.
 
@@ -52,3 +52,5 @@ The subsequent build-lifecycle replacement belongs to TICKET-00004.
 
 The maintainer approved stable adoption. Upstream release metadata confirms AccessControl v0.4.0 requires Common
 `^1.2` and PHP >=8.5; the whole Yii graph and adapter compatibility still require Composer and behavioral proof.
+The same package/PHPCS requirement from the later legacy gate plan is consolidated here, not lost or implemented
+again; [TASK-00010](../tasks/00010-TASK.md) retains the source contract and full destination mapping.

@@ -29,6 +29,13 @@ edges. `legacy_id` records provenance. New EPIC parents summarize existing local
 Upstream Fight Common ticket/PRD identifiers and historical branch names remain unchanged. Wayfinder `WF-NNN`
 decisions are not implementation TASKs. This is a rename, not an archive operation or re-verification of old work.
 
+The 2026-09-28 reconciliation includes the later legacy `T-00007` merged in PR #8. It maps to
+[TASK-00010](tasks/00010-TASK.md), with `legacy_id: T-00007`, because TASK-00007 already identifies this migration
+and TASK-00008/00009 were allocated. No existing TASK is renumbered. The imported record retains its complete
+requirement text and maps every obligation to TASK-00008/00009. Under the maintainer's consolidation direction,
+TASK-00010 is `wontfix` only as a duplicate delivery assignment, not as a rejection or completion of those obligations.
+This documented collision mapping is an exception to numeric preservation, not permission to reuse an ID.
+
 ## Metadata and lifecycle
 
 ```yaml
