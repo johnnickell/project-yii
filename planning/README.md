@@ -1,24 +1,18 @@
 # Planning
 
-This directory is the committed source of truth for Project Yii planning.
+Project Yii's committed planning uses **EPIC → TICKET → TASK**:
 
-- `ROADMAP.md` records strategic progress.
-- `epics/` describes destinations.
-- `specs/` describes coherent product requirements.
-- `tickets/` contains executable work; each ticket is canonical for its own status and dependencies.
-- `tickets/BOARD.md` ranks the current execution frontier.
-- `adr/` records architectural decisions.
-- `agents/` contains focused working instructions.
-- `wayfinder/` contains planning-only investigation maps and decision tickets for efforts whose
-  implementation route is not clear enough for an epic or PRD yet.
+- `epics/`: destinations and boundaries.
+- `tickets/`: related use cases and requirements, each owned by an EPIC.
+- `tasks/`: bounded executable work and its acceptance/verification evidence.
+- [TASK Board](tasks/BOARD.md): active work, execution priority, and human decisions.
+- [Roadmap](ROADMAP.md): strategy, EPIC progress, and decomposition/closeout frontier.
+- `adr/`: accepted architecture decisions; `agents/`: focused working instructions.
+- `wayfinder/`: uncertain planning questions, not executable implementation work.
 
-Every artifact directory keeps a `_…_TEMPLATE.md` copy-ready starting point. `wayfinder/README.md` is the
-continuity index for charting work and its next decision frontier. Archives remain part of this committed
-planning record: use `./bin/archive-planning` only when explicitly asked, review its dry run, then use `--apply`
-to move eligible terminal records and repair local Markdown links.
+Read [CONVENTIONS.md](CONVENTIONS.md) for identities, lifecycle, templates, generated views, historical ID mapping,
+and explicit-only archive operations. Record files own status and dependencies; generated views never override them.
 
-Identifiers are independent five-digit sequences. Ticket identifiers are displayed as `T-NNNNN`. Valid statuses are `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `in-progress`, `done`, and `wontfix`. Blocking is derived from unfinished `blocked_by` edges and is not stored as a status.
-
-`CONVENTIONS.md` is the canonical reference for planning structure, file naming, ticket lifecycle, BOARD.md, wayfinder maps, epics, PRDs, and pre-PR synchronization.
-
-Run `./bin/planning-check` after changing planning files. Coordinate-build scratch belongs in gitignored `.runs/`, never here.
+After editing records run `./bin/planning-check --write`, then `./bin/planning-check`. The canonical build checks
+planning read-only. Archive only on explicit request using `./bin/archive-planning`, dry run before `--apply`.
+Ignored coordination material belongs under `.runs/`, never in this directory.

@@ -11,7 +11,7 @@
 Describe the implementation-ready planning result.
 
 **Done** = every linked decision ticket is closed, the remaining fog is resolved or excluded, and the map links
-to its resulting epic, PRDs, and/or implementation tickets.
+to its resulting EPIC, requirement TICKETs, and implementation TASKs.
 
 ## Notes
 

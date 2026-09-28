@@ -3,14 +3,18 @@
 **Labels:** `wayfinder:research`
 **Mode:** AFK
 **Status:** Open
-**Gate:** Installable Fight Common v1.2.0 and Fight AccessControl v0.2.0
+**Gate:** Verified installed stable Common 1.2+ / AccessControl 0.4+ contracts
 **Map:** [Yii AccessControl Starter Application](../yii-access-control-application-map.md)
 **Depends on:** —
 
 ## Question
 
 What is the complete, released, public consumer contract that the Yii starter must compose from
-`fight-access-control` `v0.2.0` and `fight-common` `v1.2.0`?
+`fight-access-control` `^0.4` and `fight-common` `^1.2`?
+
+The maintainer raised the baseline during alignment planning. v0.4.0/v1.2.0 tags and Composer metadata have been
+observed, but local installation and the full capability audit remain unverified. [TASK-00008](../../tasks/00008-TASK.md)
+performs bounded dependency adoption; this decision still owns the complete released-contract inventory.
 
 ## Must decide
 
@@ -34,5 +38,5 @@ What is the complete, released, public consumer contract that the Yii starter mu
 ## Resolution boundary
 
 This ticket may classify the released package surface and identify consumer obligations. It may not make private
-package internals public, turn each class into an endpoint, select Yii adapters, implement integrations, or claim
-`fight-common` `v1.2.0` is available before the authoritative release exists.
+package internals public, turn each class into an endpoint, select Yii adapters, implement integrations, or treat
+an observed tag, development branch, or unverified installation as a completed released-contract audit.

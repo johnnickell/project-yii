@@ -16,7 +16,8 @@ GitHub Actions delegates to that exact command for pushes and pull requests targ
 
 This repository is MIT-licensed source, not a release or package-distribution claim. Do not add copied shared
 source, credentials, production data, tags, Packagist publication, template enablement, or create-project
-distribution without a separately adopted local ticket.
+distribution without a separately accepted local TASK. Planning follows EPIC → TICKET → TASK; see
+[the planning guide](planning/README.md) and [TASK Board](planning/tasks/BOARD.md).
 
 ## Deployment security
 

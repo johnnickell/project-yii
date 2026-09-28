@@ -9,14 +9,14 @@
 
 ## Question
 
-What epic, PRDs, vertical implementation tickets, acceptance journeys, documentation, and dependency order are
+What EPIC, requirement TICKETs, vertical implementation TASKs, acceptance journeys, documentation, and dependency order are
 required to implement the closed Wayfinder without losing its boundaries or cross-repository blockers?
 
 ## Must decide
 
-- Create one destination epic and the smallest coherent PRD set covering runtime foundation, persistence/bootstrap,
+- Create one destination EPIC and the smallest coherent TICKET set covering runtime foundation, persistence/bootstrap,
   HTTP/security/authorization, async/realtime operations, and client adoption without layer-only delivery phases.
-- Produce independently verifiable vertical T-tickets that cross configuration, Action/application contract,
+- Produce independently verifiable vertical TASKs that cross configuration, Action/application contract,
   adapter, presentation, and behavioral proof only where the slice needs them.
 - Order work by actual blockers: released package contract, local runtime, shared wire/auth/event contracts,
   persistence, principals, operation groups, async effects, and completed Symfony client adoption.
@@ -29,7 +29,7 @@ required to implement the closed Wayfinder without losing its boundaries or cros
   Functional journeys; use real commands and human inspection for wrappers, configuration, generated docs, and assets.
 - Require checked-in OpenAPI and architecture/operations/security/API/client documentation, `.env.example`, local
   runbooks, non-HTTP capability guidance, and Symfony contract/provenance notes.
-- Establish per-ticket verification, final `./bin/build` qualification, planning synchronization, and explicit
+- Establish per-TASK verification, final `./bin/build` qualification, planning synchronization, and explicit
   separation of local proof, hosted CI, release qualification, and production readiness.
 - Require one valid checked-in Yii-generated OpenAPI document and rendered local Swagger UI, normalized Symfony
   semantic parity, generated-client compilation, unauthorized operation/private-subscription rejection, JWT
@@ -38,9 +38,9 @@ required to implement the closed Wayfinder without losing its boundaries or cros
 
 ## Handoff acceptance
 
-- Every closed WF resolution maps to at least one epic/PRD requirement, implementation ticket, acceptance journey,
+- Every closed WF resolution maps to at least one EPIC/TICKET requirement, implementation TASK, acceptance journey,
   documentation obligation, or explicit exclusion.
-- Every implementation ticket has clear ownership, dependencies, behavior-focused acceptance criteria, exclusions,
+- Every implementation TASK has clear ownership, dependencies, behavior-focused acceptance criteria, exclusions,
   and repository-owned verification commands.
 - The map closes only after it links the accepted handoff and has no remaining frontier or unexplained fog.
 

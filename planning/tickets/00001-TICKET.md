@@ -1,33 +1,45 @@
 ---
-id: T-00001
-prd: PRD-00001
-title: Establish the Governed Yii Starter Foundation
+id: TICKET-00001
+epic: EPIC-00001
+legacy_id: PRD-00001
+title: Yii Starter Product and Walking-Slice Acceptance
 status: done
-blocked_by:
 ---
 
-# Establish the Governed Yii Starter Foundation
+# Yii Starter Product and Walking-Slice Acceptance
 
-## Outcome
+## Problem Statement
 
-Repository-local planning, architecture, triage, and public-source guidance are canonical. Docker-backed Composer, PHPUnit, lifecycle, Yii-native console wrappers exist. `./bin/build` validates the public Composer boundary and the Yii DI-backed hello-world seam; hosted CI invokes that exact command.
+A new Yii starter project needs governed boundaries: configuration-provider composition, DI bindings, HTTP and console entry points, Twig presentation, and future adapters. Fight Common and Fight AccessControl must remain public Composer packages only.
 
-## Scope
+## Solution
 
-- In scope: local planning authority, Docker-backed tooling, `./bin/build` gate, hosted CI, MIT/CONTRIBUTING/SECURITY policies.
-- Out of scope: login, persistence, browser UAT, client, realtime, release, tag, Packagist publication, template enablement, create-project distribution.
+The bootstrap establishes a governed hello-world foundation with Docker-backed tooling, a canonical `./bin/build` gate, hosted CI, and public-source guidance.
 
-## Acceptance Criteria
+## Implementation Decisions
 
-- [x] Repository-local planning, architecture, triage, and public-source guidance are canonical.
-- [x] Docker-backed Composer, PHPUnit, lifecycle, and Yii-native console wrappers exist.
-- [x] `./bin/build` validates the public Composer boundary and the Yii DI-backed hello-world seam; hosted CI invokes that exact command.
-- [x] MIT, contribution, and security policies are present.
+- Repository-local planning, architecture, triage, and public-source guidance are canonical.
+- Docker-backed Composer, PHPUnit, lifecycle, and Yii-native console wrappers exist.
+- `./bin/build` is the single noninteractive local and hosted gate.
+- MIT, contribution, and security policies are present.
 
-## Verification
+## Testing Decisions
 
-- `./bin/build` passes locally and in hosted CI.
+- `./bin/build` validates the public Composer boundary and the Yii DI-backed hello-world seam.
+- Hosted CI invokes the exact same `./bin/build` command.
 
-## Completion Notes
+## Out of Scope
 
-Local and hosted `./bin/build` receipts are green. The governed bootstrap handoff is accepted.
+- Login, persistence, browser journeys, releases, tags, Packagist publication, template enablement, create-project distribution.
+
+## Further Notes
+
+Migrated from PRD-00001; the completed foundation evidence remains unchanged.
+
+## TASKs
+
+<!-- planning:children -->
+| Order | ID | Title | Parent | Status | Blocked by | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| — | [TASK-00001](../tasks/00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](00001-TICKET.md) | done | — | — |
+<!-- /planning:children -->
