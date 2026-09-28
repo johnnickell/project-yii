@@ -2,23 +2,29 @@
 id: EPIC-NNNNN
 title: Brief destination
 status: needs-triage
-target: target-version
+order:
+target:
 ---
 
 # Brief destination
 
 ## Destination
 
-Describe the durable outcome and the boundary of this epic.
+State the durable outcome, users, and explicit completion condition.
 
-## Decisions so far
+## Scope and exclusions
 
-- Link accepted decisions and their consequences.
+Define boundaries and what is not authorized.
 
-## PRDs
+## Accepted decisions
 
-- PRD-NNNNN — Title
+Link decision authority and unresolved questions; approval precedes decomposition.
+
+## TICKETs
+
+<!-- planning:children -->
+<!-- /planning:children -->
 
 ## Progress
 
-Record completed milestones and the next unresolved planning consequence.
+Record milestones and outstanding closeout decisions; generated child rows own current status.

@@ -2,11 +2,11 @@
 
 Read `ARCHITECTURE.md`, `planning/README.md`, `planning/CONVENTIONS.md`, and `planning/agents/` before changing behavior. Work in independently verifiable vertical slices. Use the repository-owned `./bin/build`, `./bin/phpunit`, `./bin/up`, `./bin/down`, `./bin/composer`, and `./bin/exec` commands; `./bin/build` is the single noninteractive local and hosted gate.
 
-Yii owns its configuration-provider composition, DI bindings, HTTP and console entry points, Twig presentation, and future adapters. Fight Common and Fight AccessControl are public Composer dependencies only. Do not implement login, persistence, browser journeys, releases, tags, Packagist publication, template enablement, or create-project distribution without a local ticket.
+Yii owns its configuration-provider composition, DI bindings, HTTP and console entry points, Twig presentation, and future adapters. Fight Common and Fight AccessControl are public Composer dependencies only. Do not implement login, persistence, browser journeys, releases, tags, Packagist publication, template enablement, or create-project distribution without an accepted local TASK.
 
 ## Work Routing
 
-When asked "What's next?" or invoked without a task, read `planning/tickets/BOARD.md` and return the current human decision under **Now** and the first ticket under **Ready Frontier**. Use `planning/CONVENTIONS.md` to interpret ticket status and ordering.
+When asked "What's next?" or invoked without a task, read `planning/tasks/BOARD.md`. Return the current human decision under **Now** and the active TASK; if none is active, return the first executable TASK under **Ready Frontier**. Use `planning/CONVENTIONS.md` to interpret status, blockers, and ordering. EPICs own destinations, TICKETs own requirements, and TASKs own implementation.
 
 ## Run and Worktree Isolation
 
@@ -14,11 +14,11 @@ Coordinate-build scratch belongs in `.runs/<YYYY-MM-DD>-<slug>/`. It is gitignor
 
 ## Branch Conventions
 
-Create feature branches from `develop` as `feature/<description>`. Never commit directly to `develop` or `main`.
+Create TASK branches from `develop` as `feature/task-NNNNN-<slug>`. Preserve existing authorized branches. Never commit directly to `develop` or `main`; choose this checkout or an isolated worktree explicitly with the user.
 
 ## Pre-Submit Gate
 
-For a long non-interactive build, run `screen -dmS <ticket>-build /bin/zsh -lc './bin/build > /private/tmp/<ticket>-build.log 2>&1; print -r -- $? > /private/tmp/<ticket>-build.exit'`, then inspect the log and require an exit file containing `0`; never treat foreground timeout output as a build result.
+For a long non-interactive build, run `screen -dmS <task>-build /bin/zsh -lc './bin/build > /private/tmp/<task>-build.log 2>&1; print -r -- $? > /private/tmp/<task>-build.exit'`, then inspect the log and require an exit file containing `0`; never treat foreground timeout output as a build result.
 
 Always run before committing or creating a PR:
 
@@ -28,19 +28,19 @@ Always run before committing or creating a PR:
 
 ## Planning
 
-See `planning/CONVENTIONS.md` for the canonical planning structure: ticket lifecycle, BOARD.md execution frontier,
-Wayfinder maps, PRD and epic conventions, file naming, templates, and explicit-only archive operations. Never
-archive planning records as a completion side effect; run `./bin/archive-planning` only on an explicit request,
-review its dry run, and then apply it.
+See `planning/CONVENTIONS.md` for EPIC → TICKET → TASK ownership, lifecycle, generated views, Wayfinder maps,
+file naming, templates, and explicit-only archive operations. Refresh views with `./bin/planning-check --write`;
+`./bin/planning-check` and the canonical build remain read-only. Never archive as a completion side effect;
+run `./bin/archive-planning` only on an explicit request, review its dry run, and then apply it.
 
 ### Pre-PR Sync Checklist
 
 Before final commit and PR for any feature or bug fix:
 
-1. Mark the ticket `done` with verified acceptance criteria
-2. Move the ticket to **Recently Done** in `planning/tickets/BOARD.md`
-3. Recalculate the "What's Next?" contract if dependencies shifted
-4. Update parent PRD and epic progress sections
-5. Update `ROADMAP.md` if strategic progress changed
-6. Verify no downstream ticket still lists the completed ticket as `blocked_by`
-7. Run `./bin/planning-check`
+1. Record TASK verification honestly; mark `done` only when acceptance and required checks are complete
+2. Refresh generated views with `./bin/planning-check --write`, including `planning/tasks/BOARD.md`
+3. Verify the active/ready frontier and authored human decisions remain correct
+4. Update parent TICKET and EPIC progress; review explicit parent closeout
+5. Update `planning/ROADMAP.md` if strategic progress changed
+6. Preserve `blocked_by` history; completed blockers must no longer prevent execution
+7. Run `./bin/planning-check` and the complete `./bin/build`; review and publication remain separate

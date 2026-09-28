@@ -1,30 +1,35 @@
 ---
-id: T-NNNNN
-prd: PRD-NNNNN
-title: Brief executable outcome
+id: TICKET-NNNNN
+epic: EPIC-NNNNN
+title: Related use cases and requirements
 status: needs-triage
-blocked_by:
+order:
 ---
 
-# Brief executable outcome
+# Related use cases and requirements
 
-## Outcome
+## Problem and outcome
 
-State the independently reviewable vertical slice.
+Describe the requirement and its observable result, not an implementation assignment.
 
-## Scope
+## Use cases and contracts
 
-- In scope:
-- Out of scope:
+Name actors, input, result/failure, commands/queries/events, side effects, validation, and permissions.
+Explain non-applicable concerns. Identify package versus Yii ownership and sequencing constraints.
 
-## Acceptance Criteria
+## Acceptance requirements
 
-- [ ] Observable behavior or artifact.
+- State observable requirements from which TASK acceptance can be derived.
 
-## Verification
+## Exclusions
 
-- Command and expected evidence.
+Bound the requirement explicitly.
 
-## Completion Notes
+## TASKs
 
-Record the verified outcome only when terminal.
+<!-- planning:children -->
+<!-- /planning:children -->
+
+## Progress
+
+Record accepted scope, completed milestones, and remaining closeout decisions.

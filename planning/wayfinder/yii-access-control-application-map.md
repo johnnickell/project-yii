@@ -21,14 +21,16 @@ project-owned.
 
 **Done** = every linked decision ticket is closed; every released consumer-relevant package capability is
 classified as HTTP, CLI, worker, or composition-only; cross-repository dependencies are resolved or explicitly
-excluded; and [WF-010](tickets/WF-010-implementation-handoff-acceptance-contract.md) links the resulting epic,
-PRDs, vertical implementation tickets, acceptance journeys, documentation requirements, and dependency order.
+excluded; and [WF-010](tickets/WF-010-implementation-handoff-acceptance-contract.md) links the resulting EPIC,
+requirement TICKETs, vertical implementation TASKs, acceptance journeys, documentation requirements, and dependency order.
 
 ## Notes
 
 - This is planning-only charting. It does not authorize runtime, API, persistence, worker, or frontend changes.
-- Starter implementation is gated on installable `fight-common` `v1.2.0` and `fight-access-control` `v0.2.0`;
-  development branches or invented `0.1.x` releases cannot satisfy the package audit.
+- The approved package baseline is stable `fight-common` `^1.2` and `fight-access-control` `^0.4`.
+  Development branches or aliases cannot satisfy the package audit. Released tags have been observed; the actual
+  Yii installation and complete public capability inventory remain unverified. [TASK-00008](../tasks/00008-TASK.md)
+  owns bounded adoption; it does not complete this map or authorize its product implementation.
 - Fight AccessControl owns scan-only reusable component schemas under `resources/openapi/`. Yii owns one complete
   OpenAPI 3.1 document, generated in one pass from those installed resources and Yii-owned Actions, DTOs, routes,
   security declarations, and project-specific components.
@@ -59,7 +61,7 @@ PRDs, vertical implementation tickets, acceptance journeys, documentation requir
 
 | Ticket | Type | Mode | Status | Depends On | Gate |
 |---|---|---|---|---|---|
-| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Installable Fight Common 1.2.0 and Fight AccessControl 0.2.0 |
+| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Verified installed stable Common 1.2+ / AccessControl 0.4+ contracts |
 | [WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) | Grilling | HITL | **Open** | — | — |
 | [WF-003 — Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) | Prototype | HITL | **Open** | WF-001, WF-002 | Symfony canonical wire contract |
 | [WF-004 — Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) | Prototype | HITL | **Open** | WF-001, WF-002, WF-003 | — |
@@ -79,7 +81,7 @@ WF-002 (sole frontier) ──→ WF-003 ─────────────�
 Symfony wire/auth/realtime decisions ──→ WF-003/WF-005/WF-007                              ├──→ WF-008
 WF-002 + WF-003 + WF-004 + WF-005 + WF-006 ──→ WF-007 ────────────────────────────────────┘
 WF-003 + WF-005 + WF-007 + WF-008 + completed Symfony client ──→ WF-009
-WF-001 through WF-009 ──→ WF-010 ──→ epic + PRDs + vertical implementation tickets
+WF-001 through WF-009 ──→ WF-010 ──→ EPIC + TICKETs + vertical implementation TASKs
 ```
 
 ## Frontier
@@ -92,10 +94,10 @@ the missing package release or unfinished Symfony wire and client decisions.
 
 - Exact service image versions, port assignments, health probes, and worktree-derived Compose naming.
 - Symfony's final OpenAPI, authentication, realtime-event, and client-source contracts.
-- The final released public capability inventory for Fight Common `v1.2.0` and its compatibility with
-  Fight AccessControl `v0.2.0`.
+- The complete installed stable public capability inventory for Common `^1.2` and its compatibility with
+  AccessControl `^0.4`; observed release tags alone do not complete WF-001.
 - Whether generated `public/dist/*` assets are committed or remain build-only output.
-- The final epic/PRD split and implementation-ticket granularity; WF-010 owns that handoff after decisions close.
+- The final EPIC/TICKET split and implementation-TASK granularity; WF-010 owns that handoff after decisions close.
 
 ## Out of scope
 
