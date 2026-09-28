@@ -54,9 +54,10 @@ def archived(path: Path) -> bool:
     return "archive" in path.relative_to(PLANNING).parts
 
 
-def priority(record: tuple[Path, dict[str, str]]) -> tuple[int, str]:
+def priority(record: tuple[Path, dict[str, str]]) -> tuple[bool, int, str]:
     data = record[1]
-    return (int(data["order"]) if data.get("order") else 10**9, data["id"])
+    order = data.get("order")
+    return (not order, int(order) if order else 0, data["id"])
 
 
 def link(source: Path, destination: Path, label: str) -> str:
