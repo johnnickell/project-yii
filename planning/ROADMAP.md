@@ -40,6 +40,6 @@ Certification fixed JWT to HS256 and kept Yii Mail/Session unselected while reta
 TASK-00005 established exact coverage and the non-root FPM gate; TASK-00006 recertified the rewritten candidate.
 These are historical completion facts, not claims that the current lock already contains stable releases.
 TASK-00007 completed reconciliation of the later legacy plan without discarding its work; the fresh canonical
-gate passed. Its earlier independent review remains evidence for that earlier snapshot; the substantive
-reconciliation requires fresh review. Stable adoption in TASK-00008 and the consolidated gate in TASK-00009
-remain unimplemented. TASK-00010's duplicate closeout is not implementation evidence.
+gate passed. Fresh independent review accepted the reconciled head `97bf944` against `6aa5539`; landing records
+publication separately from human approval or merge. Stable adoption in TASK-00008 and the consolidated gate in
+TASK-00009 remain unimplemented. TASK-00010's duplicate closeout is not implementation evidence.
