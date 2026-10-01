@@ -10,8 +10,9 @@
 
 Produce an implementation-ready planning handoff for a complete local-development Yii starter that composes
 the released public contracts of Fight Common and Fight AccessControl. The planned product includes MySQL,
-Redis, Nginx, PHP-FPM, PHP-CLI workers, Cron scheduling, Mercure private SSE, a versioned JSON API, and a full
-React administration console whose editable source lives under `client/` and builds to `public/dist/`.
+Redis, Nginx, PHP-FPM, PHP-CLI workers, Cron scheduling, Mercure private SSE, development-only Mailpit,
+a versioned JSON API, and a full React administration console whose editable source lives under `client/`
+and builds to `public/dist/`.
 
 The API uses Yii-native routing, invokable Actions, dependency injection, PSR-15 middleware, and project-owned
 Responders. Symfony remains the wire-contract leader: Yii reproduces its paths, methods, operation IDs, payload
@@ -41,13 +42,15 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 - Yii's official action and routing contracts are navigation evidence for the project-owned HTTP adapter:
   [Yii Actions](https://yiisoft.github.io/docs/guide/structure/action.html) and
   [Yii Routing](https://yiisoft.github.io/docs/guide/runtime/routing.html).
-- Compose topology, ports, volumes, health checks, and bootstrap behavior are local-development decisions only;
-  they do not imply a production deployment design.
+- [WF-002](tickets/WF-002-local-development-runtime-contract.md) settles the project-owned local stack behind
+  Fight Agent OS-owned shared HTTPS ingress. It keeps `bin/up` a thin Compose wrapper and setup, migrations,
+  and application/browser verification explicit. Per-worktree execution isolation belongs upstream, not Yii.
+  This is accepted planning, not an installed ingress dependency or a production deployment design.
 
 ## Decisions so far
 
 1. **[Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is open and externally gated.** It inventories released public contracts without turning every package class into an endpoint.
-2. **[Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) is open.** It is the sole current frontier and settles the complete local Compose lifecycle and isolation contract.
+2. **[Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) is closed.** The confirmed resolution defines project service/storage/health boundaries and acceptance journeys, shared upstream ingress, thin Compose wrappers, explicit setup, and upstream ownership of isolated execution.
 3. **[Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) is open and waiting.** It proves Yii-native Action-Domain-Responder composition while adopting Symfony's finished wire contract.
 4. **[Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) is open and waiting.** It settles MySQL adapters, atomicity, reconciliation, and invitation-led CLI bootstrap.
 5. **[Authentication and Account Security](tickets/WF-005-authentication-and-account-security.md) is open and waiting.** It adopts Symfony-led token behavior and decides Yii middleware and browser defenses.
@@ -62,7 +65,7 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 | Ticket | Type | Mode | Status | Depends On | Gate |
 |---|---|---|---|---|---|
 | [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Verified installed stable Common 1.2+ / AccessControl 0.4+ contracts |
-| [WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) | Grilling | HITL | **Open** | — | — |
+| [WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) | Grilling | HITL | **Closed** | — | — |
 | [WF-003 — Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) | Prototype | HITL | **Open** | WF-001, WF-002 | Symfony canonical wire contract |
 | [WF-004 — Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) | Prototype | HITL | **Open** | WF-001, WF-002, WF-003 | — |
 | [WF-005 — Authentication and Account Security](tickets/WF-005-authentication-and-account-security.md) | Grilling | HITL | **Open** | WF-003, WF-004 | Symfony authentication contract |
@@ -75,24 +78,35 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 ## Blocking relationships
 
 ```text
-installable package releases ──→ WF-001 ───────────────┐
-                                                       ├──→ WF-004 ──→ WF-005 ──→ WF-006 ──┐
-WF-002 (sole frontier) ──→ WF-003 ─────────────────────┘                                   │
-Symfony wire/auth/realtime decisions ──→ WF-003/WF-005/WF-007                              ├──→ WF-008
-WF-002 + WF-003 + WF-004 + WF-005 + WF-006 ──→ WF-007 ────────────────────────────────────┘
+verified installed stable contracts ──→ WF-001
+WF-001 + WF-002 (closed) ──→ WF-003
+WF-001 + WF-002 + WF-003 ──→ WF-004
+WF-003 + WF-004 ──→ WF-005
+WF-001 + WF-003 + WF-004 + WF-005 ──→ WF-006
+Symfony wire/auth/realtime decisions ──→ WF-003/WF-005/WF-007
+WF-002 + WF-003 + WF-004 + WF-005 + WF-006 ──→ WF-007
+WF-001 + WF-003 + WF-005 + WF-006 + WF-007 ──→ WF-008
 WF-003 + WF-005 + WF-007 + WF-008 + completed Symfony client ──→ WF-009
 WF-001 through WF-009 ──→ WF-010 ──→ EPIC + TICKETs + vertical implementation TASKs
 ```
 
 ## Frontier
 
-[WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) is the
-one next grillable decision. It is unblocked, HITL, and can settle the local runtime contract without assuming
-the missing package release or unfinished Symfony wire and client decisions.
+None currently executable. WF-002 is closed. The next gated decision is
+[WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md): it requires
+verified installed stable Common 1.2+ / AccessControl 0.4+ artifacts, with bounded adoption owned by
+[TASK-00008](../tasks/00008-TASK.md). Observed release tags are not that evidence. WF-003 still depends on
+WF-001 and the Symfony canonical wire contract; closing WF-002 does not unblock it. No new decision is started
+by this closeout.
 
 ## Not yet specified (fog)
 
-- Exact service image versions, port assignments, health probes, and worktree-derived Compose naming.
+- Implementation must select exact compatible pinned image/tool versions, service/environment names, and
+  health probes within WF-002's accepted boundaries; these are not unresolved runtime-policy decisions.
+- Upstream shared-ingress availability/enrollment must be verified before browser acceptance. Automatic
+  per-worktree stacks and execution isolation remain upstream responsibilities.
+- Redis role/durability and detailed background behavior remain with WF-007; restricted development-UI access
+  follows the owning HTTP/security decisions. A live-reload service is a future opt-in extension, not initial scope.
 - Symfony's final OpenAPI, authentication, realtime-event, and client-source contracts.
 - The complete installed stable public capability inventory for Common `^1.2` and its compatibility with
   AccessControl `^0.4`; observed release tags alone do not complete WF-001.
@@ -105,6 +119,8 @@ the missing package release or unfinished Symfony wire and client decisions.
   migrations, middleware, workers, event publication, Twig shells, React code, or compiled assets.
 - Production deployment, hosting, infrastructure provisioning, secret distribution, backup, restore, monitoring,
   scaling, and production-readiness claims.
+- Yii-owned shared proxy provisioning, automatic per-worktree stacks, execution sandboxing, and preview
+  environments; Fight Agent OS owns the applicable upstream infrastructure/execution contracts.
 - Self-registration or a public administrator-bootstrap endpoint.
 - Releases, tags, Packagist publication, template enablement, and `create-project` distribution.
 - Copying Fight package source or consuming unpublished/internal coordinators.

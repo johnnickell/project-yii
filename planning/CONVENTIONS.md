@@ -36,6 +36,22 @@ requirement text and maps every obligation to TASK-00008/00009. Under the mainta
 TASK-00010 is `wontfix` only as a duplicate delivery assignment, not as a rejection or completion of those obligations.
 This documented collision mapping is an exception to numeric preservation, not permission to reuse an ID.
 
+## Automatic parent completion
+
+When a TASK becomes `done` or `wontfix`, complete eligible parent TICKETs and then EPICs in the same operation.
+Count live and archived children. A live, non-terminal parent with at least one child closes when every child
+is terminal: use `wontfix` if every child is `wontfix`, otherwise `done`. Parents without children or with an
+unfinished child remain open. Preserve already-terminal and archived parents.
+
+Child acceptance and intentional `wontfix` decisions remain with the child records. Parent completion requires
+no separate assessment, independent review, QA, confirmation, or skill invocation. Record any remaining work as
+an unfinished child rather than a separate parent-closeout gate. Parent status does not assert review, merge,
+release, deployment or publication, and completion never archives records automatically.
+
+Run `./bin/planning-check --write` during completion; it closes eligible parents and refreshes views.
+Then run the read-only `./bin/planning-check`. Read-only validation never writes completion metadata.
+
+
 ## Metadata and lifecycle
 
 ```yaml
@@ -68,8 +84,8 @@ full pull-request URL, not an assertion of merge state. Frontmatter uses flat, s
 | `wontfix` | Intentionally closed without implementation |
 
 Blocking is derived, never stored as a status. A terminal parent cannot have an unfinished child. `done` does not
-assert independent review, merge, release, or deployment; record these separately. Parent closeout is explicit,
-not automatic when its final child completes.
+assert independent review, merge, release, or deployment; record these separately. Apply [Automatic parent completion](#automatic-parent-completion)
+in the operation that completes the final child.
 
 ## Board, indexes, and Roadmap
 
@@ -81,8 +97,7 @@ and otherwise the first executable TASK in Ready Frontier. Say explicitly when t
 The Wayfinder pointer remains advisory, not permission to bypass an active TASK or its blockers.
 
 `ROADMAP.md` retains authored strategy and completion narrative. Its generated EPIC table shows current status;
-Planning Frontier identifies non-terminal parents missing children or needing explicit closeout because all
-children are terminal. Live EPIC/TICKET child tables include archived children; archived records retain their
+Planning Frontier identifies non-terminal parents missing children for decomposition. Live EPIC/TICKET child tables include archived children; archived records retain their
 historical text. Each level has a generated live index; archives get separate generated indexes when used.
 
 Generated blocks use `<!-- planning:NAME -->` and `<!-- /planning:NAME -->`. Edit records and authored prose,
@@ -138,7 +153,7 @@ Before a commit or PR:
 
 1. Record verified TASK acceptance, outstanding evidence, and review status honestly; mark done only when verified.
 2. Refresh Board/index/parent/Roadmap projections with `./bin/planning-check --write` and validate read-only.
-3. Update authored parent progress and strategic narrative where the outcome changed; review parent closeout.
+3. Update authored parent progress and strategic narrative where the outcome changed; apply automatic parent completion.
 4. Preserve dependency edges, and ensure their resolved status yields the correct execution frontier.
 5. Refresh Wayfinder continuity and the advisory pointer when a decision or handoff changed.
 6. Run `git diff --check` and the complete canonical `./bin/build`; inspect exit evidence, not timeout output.
