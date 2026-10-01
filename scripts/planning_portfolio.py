@@ -121,14 +121,33 @@ def generated_views(records: dict) -> dict[Path, dict[str, str]]:
         if data["id"].startswith("TASK-") or data["status"] in TERMINAL:
             continue
         children = [child for _, child in records.values() if (child.get("epic") or child.get("ticket")) == data["id"]]
-        if not children or all(child["status"] in TERMINAL for child in children):
-            reason = "Needs decomposition" if not children else "Needs explicit closeout review"
+        if not children:
+            reason = "Needs decomposition"
             frontier.append(f"- {link(roadmap, row[0], data['id'] + ' — ' + data['title'])}: {reason}.")
     views[roadmap] = {
         "epics": table(roadmap, [row for row in live if row[1]["id"].startswith("EPIC-")], records),
         "frontier": "\n".join(frontier) or "None.",
     }
     return views
+
+
+def complete_parents(records: dict) -> dict[Path, str]:
+    """Plan bottom-up parent closure from all live and archived child records."""
+    pending = {}
+    for kind, parent_key in (("TICKET-", "ticket"), ("EPIC-", "epic")):
+        for identifier, (path, data) in sorted(records.items()):
+            if not identifier.startswith(kind) or "archive" in path.parts or data["status"] in TERMINAL:
+                continue
+            children = [child for _, child in records.values() if child.get(parent_key) == identifier]
+            if not children or any(child["status"] not in TERMINAL for child in children):
+                continue
+            status = "wontfix" if all(child["status"] == "wontfix" for child in children) else "done"
+            text = path.read_text()
+            header, body = text[4:].split("\n---\n", 1)
+            header = re.sub(r"^status:[^\n]*$", f"status: {status}", header, count=1, flags=re.MULTILINE)
+            pending[path] = f"---\n{header}\n---\n{body}"
+            data["status"] = status
+    return pending
 
 
 def main() -> int:
@@ -225,12 +244,15 @@ def main() -> int:
 
     updates: dict[Path, str] = {}
     if not errors:
+        updates = complete_parents(records)
+        if not args.write and updates:
+            errors.append("parent completion out of sync; run ./bin/planning-check --write")
         for path, sections in generated_views(records).items():
             original = (
                 path.read_text(encoding="utf-8") if path.exists() else
                 f"# {path.parent.parent.name.title()} archive\n\n<!-- planning:records -->\n<!-- /planning:records -->\n"
             )
-            text = original
+            text = updates.get(path, original)
             for name, content in sections.items():
                 start, end = f"<!-- planning:{name} -->", f"<!-- /planning:{name} -->"
                 if text.count(start) != 1 or text.count(end) != 1 or text.index(start) > text.index(end):

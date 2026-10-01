@@ -18,9 +18,13 @@ Fight Common 2.0 remains `needs-info` until its contract, deprecation-removal in
 
 ## Wayfinder Review
 
-[Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) remains active.
-[WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md)
-is its current human review frontier. The bounded alignment TASKs do not authorize the broader application map.
+[Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) remains active, with
+no currently executable Wayfinder review candidate. The maintainer confirmed and closed
+[WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
+[WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md)
+is next but remains gated on verified installed stable contracts; [TASK-00008](00008-TASK.md) owns bounded
+adoption. WF-003 still waits for WF-001 and Symfony's canonical wire contract. The bounded alignment TASKs do
+not authorize the broader application map.
 
 ## Active Work
 

@@ -40,7 +40,17 @@ Before final commit and PR for any feature or bug fix:
 1. Record TASK verification honestly; mark `done` only when acceptance and required checks are complete
 2. Refresh generated views with `./bin/planning-check --write`, including `planning/tasks/BOARD.md`
 3. Verify the active/ready frontier and authored human decisions remain correct
-4. Update parent TICKET and EPIC progress; review explicit parent closeout
+4. Update parent TICKET and EPIC progress; apply automatic parent completion
 5. Update `planning/ROADMAP.md` if strategic progress changed
 6. Preserve `blocked_by` history; completed blockers must no longer prevent execution
 7. Run `./bin/planning-check` and the complete `./bin/build`; review and publication remain separate
+
+When completing a TASK, apply [Automatic parent completion](planning/CONVENTIONS.md#automatic-parent-completion)
+in the same operation; do not leave a separate parent assessment or closeout action for the user.
+
+## Certification retirement
+
+Test owned application behavior and meaningful package integrations. Do not create or restore framework-support
+certification files, receipt readers/generators, dependency certification matrices, or tests of those mechanisms.
+Validate build, configuration and planning tools directly with their owning commands, outside product suites.
+Historical certification notes remain history, not current gates.
