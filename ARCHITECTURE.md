@@ -22,4 +22,7 @@ in the 22-case suite, so Symfony Filesystem remains selected. Yii View passed th
 Storage and scheduler state default to `var/storage/flysystem` and `var/runtime/scheduler` and can be overridden per boot.
 
 Generated caches and runtime artifacts belong under `var/`, with tool caches under `var/cache/<tool>`. `.runs/`
-contains local coordination scratch and is never committed.
+contains local coordination scratch and is never committed. Shared engineering principles apply through the
+[Yii workflow binding](planning/agents/shared-workflows.md#engineering-applicability-and-exceptions), not by importing
+provider framework layouts, speculative layers or package aliases. Instruction adoption does not establish complete
+source conformance or new application behavior.
