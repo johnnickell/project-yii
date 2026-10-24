@@ -2,4 +2,11 @@
 set -eu
 
 cd "$(dirname "$0")/.."
-docker compose up --build --detach "$@"
+if ! docker compose build --pull; then
+    echo >&2 'Runtime preparation failed; check Docker/registry access and the pinned base images. Services were not recreated; any existing services remain unchanged.'
+    exit 1
+fi
+if ! docker compose up --no-build --force-recreate --detach "$@"; then
+    echo >&2 'Runtime recreation failed; inspect docker compose ps/logs before retrying ./bin/up.'
+    exit 1
+fi
