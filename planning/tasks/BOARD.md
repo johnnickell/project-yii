@@ -18,10 +18,10 @@ under **Ready Frontier**. Do not start a second TASK just because its ID is lowe
 ## Now
 
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
-[TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite.
-Its implementation and local verification are complete; independent `review` is the next handoff. This does not
-claim review/QA acceptance or authorize the broader gate redesign or deployment. Publication remains a separate
-stage. The adoption-planning branch in the original checkout remains separate.
+[TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite. Independent review
+accepted candidate A and independent behavioral QA passed; [PR #13](https://github.com/johnnickell/project-yii/pull/13)
+is open against `develop` for human review and merge. This does not authorize the broader gate redesign,
+deployment, approval, or merge. The adoption-planning branch in the original checkout remains separate.
 
 The maintainer approved stronger alignment: stable Fight Common 1.2+ / AccessControl 0.4+, a running-container
 PHP-orchestrated gate, and EPIC/TICKET/TASK planning in this checkout, including the later legacy plan merged in
@@ -88,7 +88,7 @@ None.
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
-| 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | — |
+| 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |
 | — | [TASK-00004](00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | — | — |
