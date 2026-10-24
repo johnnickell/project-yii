@@ -8,7 +8,10 @@ host_gid=$(id -g)
 
 ./bin/planning-check
 
-docker build --file etc/docker/fpm/Dockerfile --tag "$image" .
+if ! docker build --pull --file etc/docker/fpm/Dockerfile --tag "$image" .; then
+    echo >&2 'PHP runtime preparation failed; check Docker/registry access and the pinned base image. Gate not run; cached image will not be used.'
+    exit 1
+fi
 docker run --rm --user "$host_uid:$host_gid" --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
     php-fpm -tt
     composer validate

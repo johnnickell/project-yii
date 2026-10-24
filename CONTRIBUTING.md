@@ -8,4 +8,7 @@ After planning changes, run `./bin/planning-check --write` followed by `./bin/pl
 
 For a fresh checkout, use `./bin/up` followed by `./bin/composer install`; all development commands run in the
 repository Docker services, so host PHP and Composer versions are not prerequisites. Use `./bin/down` to stop the
-complete Compose runtime. Do not publish tags, packages, templates, or distributions as part of a code change.
+complete Compose runtime. Build/start requires registry access and fails closed if required image preparation fails;
+see [runtime refresh and checkout isolation](README.md#container-runtime-refresh). After runtime updates, use
+`./bin/up` to recreate the services and FPM workers; `./bin/build` does not update running containers.
+Do not publish tags, packages, templates, or distributions as part of a code change.
