@@ -44,10 +44,11 @@ None.
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is
 pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candidate-and-delivery-closeout) is
 independently accepted and QA-passed, integrated through PR #12; PR #13's separate runtime repair is also merged.
-TASK-00012 has implemented and self-verified the [Yii binding](agents/shared-workflows.md) and guidance, with independent acceptance,
-QA and publication pending. TASK-00008 and TASK-00009 remain unimplemented and retain package/gate ownership.
-The broader application map remains in its decision phase with no executable frontier; its later decomposition
-is not implied by this bounded adoption portfolio.
+TASK-00012 independently accepted candidate A, independently QA-passed, and is published for human review in
+[PR #14](https://github.com/johnnickell/project-yii/pull/14); its administrative closeout B changes delivery
+metadata only. TASK-00008 and TASK-00009 remain unimplemented and retain package/gate ownership. The broader
+application map remains in its decision phase with no executable frontier; its later decomposition is not implied
+by this bounded adoption portfolio.
 
 ## Completed / Released
 

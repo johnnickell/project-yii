@@ -2,7 +2,7 @@
 id: TICKET-00005
 epic: EPIC-00003
 title: Adopt Shared Engineering and Agent Workflow Conventions
-status: in-progress
+status: done
 order: 1
 ---
 
@@ -79,7 +79,7 @@ follow-up work, not a claim that instruction adoption proves implementation conf
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2 | [TASK-00012](../tasks/00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](00005-TICKET.md) | in-progress | [TASK-00011](../tasks/00011-TASK.md) | — |
+| 2 | [TASK-00012](../tasks/00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](00005-TICKET.md) | done | [TASK-00011](../tasks/00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
 <!-- /planning:children -->
 
 ## Progress
@@ -88,6 +88,7 @@ Requirement and separate implementation slice approved in the 2026-10-24 adoptio
 [TASK-00012](../tasks/00012-TASK.md) owns implementation after the planning amendment in
 [TASK-00011](../tasks/00011-TASK.md). This is the preferred first adoption slice; package and gate implementation
 retain their existing owners. No further decomposition is pending for this bounded requirement. TASK-00011 is integrated through PR #12.
-TASK-00012 has implemented and self-verified the [Yii binding](../agents/shared-workflows.md) and directly affected
-guidance on its approved main-checkout feature branch. Independent acceptance/QA and publication remain pending; no end-to-end
-Pi workflow or harness qualification is claimed.
+TASK-00012 independently accepted candidate A `043bbda709ee3304f286ce8e4eab1fd1b1bde124`, independently QA-passed,
+and is published for human review in [PR #14](https://github.com/johnnickell/project-yii/pull/14). Its administrative
+closeout B records acceptance and delivery metadata only; final human review/merge remains separate. No end-to-end Pi
+workflow or harness qualification is claimed.

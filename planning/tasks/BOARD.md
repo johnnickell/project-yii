@@ -32,9 +32,10 @@ accepted and QA-passed planning amendment, now integrated into `develop` through
 [TASK-00012](00012-TASK.md) (shared conventions and target bindings), [TASK-00008](00008-TASK.md) (packages/PHPCS), then
 [TASK-00009](00009-TASK.md) (running-container gate). Existing package/gate assignments are not duplicated.
 [TASK-00010](00010-TASK.md) retains the legacy source/mapping, closed only as a duplicate assignment.
-[TASK-00012](00012-TASK.md#completion-notes) is now in progress on its approved main-checkout feature branch;
-Engineer verification passed; independent Review/QA precede publication. No additional general adoption decision
-or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
+[TASK-00012](00012-TASK.md#completion-notes) independently accepted candidate A, independently QA-passed, and
+is published for human review in [PR #14](https://github.com/johnnickell/project-yii/pull/14); administrative
+closeout B changes delivery metadata only. No additional general adoption decision or decomposition is pending
+for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
 
@@ -52,9 +53,7 @@ the broader application map.
 ## Active Work
 
 <!-- planning:active -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | in-progress | [TASK-00011](00011-TASK.md) | — |
+None.
 <!-- /planning:active -->
 
 ## Ready Frontier
@@ -101,6 +100,7 @@ None.
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
 | 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | https://github.com/johnnickell/project-yii/pull/12 |
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
+| 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | done | [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |
 | — | [TASK-00004](00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | — | — |
