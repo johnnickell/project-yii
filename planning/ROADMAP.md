@@ -42,8 +42,9 @@ None.
 ### Current planning handoff
 
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is
-pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#completion-notes) owns current amendment
-verification and the independent-review handoff. TASK-00012, TASK-00008, and TASK-00009 remain unimplemented.
+pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candidate-and-delivery-closeout) is
+independently accepted and QA-passed; publication and human PR review/integration remain separate. After
+integration, TASK-00012 is preferred. TASK-00012, TASK-00008, and TASK-00009 remain unimplemented.
 The broader application map remains in its decision phase with no executable frontier; its later decomposition
 is not implied by this bounded adoption portfolio.
 

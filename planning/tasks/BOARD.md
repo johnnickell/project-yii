@@ -19,8 +19,9 @@ under **Ready Frontier**. Do not start a second TASK just because its ID is lowe
 
 On 2026-10-24 the maintainer approved comprehensive shared-standard/skill/workflow adoption, retaining Yii-native
 integration and stronger local guarantees, and latest stable Common 1.4.0 / AccessControl 0.8.0 (`^1.4` / `^0.8`).
-Use the main checkout on separate feature branches. [TASK-00011](00011-TASK.md) records and verifies this planning
-amendment. After its acceptance/integration, preferred implementation order is [TASK-00012](00012-TASK.md)
+Use the main checkout on separate feature branches. [TASK-00011](00011-TASK.md) records this independently
+accepted and QA-passed planning amendment; human PR review/integration remains pending. After its integration,
+preferred implementation order is [TASK-00012](00012-TASK.md)
 (shared conventions and target bindings), [TASK-00008](00008-TASK.md) (packages/PHPCS), then
 [TASK-00009](00009-TASK.md) (running-container gate). Existing package/gate assignments are not duplicated.
 [TASK-00010](00010-TASK.md) retains the legacy source/mapping, closed only as a duplicate assignment.
@@ -42,15 +43,16 @@ the broader application map.
 ## Active Work
 
 <!-- planning:active -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | in-progress | — | — |
+None.
 <!-- /planning:active -->
 
 ## Ready Frontier
 
 <!-- planning:ready -->
-None.
+| Order | ID | Title | Parent | Status | Blocked by | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | ready-for-agent | [TASK-00011](00011-TASK.md) | — |
+| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
 <!-- /planning:ready -->
 
 ## Waiting
@@ -58,8 +60,6 @@ None.
 <!-- planning:waiting -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | ready-for-agent | [TASK-00011](00011-TASK.md) | — |
-| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
 | 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | ready-for-agent | [TASK-00008](00008-TASK.md) | — |
 <!-- /planning:waiting -->
 
@@ -89,6 +89,7 @@ None.
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
+| 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | — |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |
 | — | [TASK-00004](00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | — | — |
