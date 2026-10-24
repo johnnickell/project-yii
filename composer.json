@@ -7,8 +7,8 @@
         "php": ">=8.5",
         "dragonmantank/cron-expression": "^3.0",
         "guzzlehttp/guzzle": "^7.10",
-        "johnnickell/fight-access-control": "dev-develop",
-        "johnnickell/fight-common": "dev-develop#fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911 as 1.2.0-dev",
+        "johnnickell/fight-access-control": "^0.8",
+        "johnnickell/fight-common": "^1.4",
         "lcobucci/jwt": "^5.6",
         "league/flysystem": "^3.36",
         "league/flysystem-local": "^3.35",
@@ -34,16 +34,6 @@
         "yiisoft/yii-console": "^2.4",
         "yiisoft/yii-http": "^1.1"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/johnnickell/fight-access-control"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/johnnickell/fight-common"
-        }
-    ],
     "config": {
         "platform": {
             "php": "8.5.4"
@@ -52,6 +42,7 @@
             "*": "dist"
         },
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false,
             "yiisoft/config": true
         },
         "sort-packages": true
@@ -71,6 +62,7 @@
         "phpunit/phpunit": "^11.5",
         "deptrac/deptrac": "^4.7",
         "rector/rector": "^2.2",
+        "slevomat/coding-standard": "^8.27",
         "squizlabs/php_codesniffer": "^4.0"
     },
     "extra": {

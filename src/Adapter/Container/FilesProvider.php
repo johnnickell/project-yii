@@ -14,27 +14,41 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class FilesProvider
+ */
 final readonly class FilesProvider implements ServiceProviderInterface
 {
+    /**
+     * Constructs FilesProvider
+     */
     public function __construct(private ProviderContext $context)
     {
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns storage and file-transfer definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         $storagePath = $this->context->absolutePath($this->context->parameters['app.storage_path']);
 
         return [
-            SymfonyFilesystem::class => SymfonyFilesystem::class,
+            SymfonyFilesystem::class  => SymfonyFilesystem::class,
             FilesystemOperator::class => static fn (): FilesystemOperator =>
                 new Filesystem(new LocalFilesystemAdapter($storagePath)),
-            FileStorage::class => FlysystemStorage::class,
-            FileTransport::class => NullFileTransport::class,
+            FileStorage::class        => FlysystemStorage::class,
+            FileTransport::class      => NullFileTransport::class
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no storage extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

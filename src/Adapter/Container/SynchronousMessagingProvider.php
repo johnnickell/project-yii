@@ -8,26 +8,39 @@ use Fight\Common\Adapter\Messaging\Command\Sync\Routing\CommandRouter;
 use Fight\Common\Adapter\Messaging\Command\Sync\Routing\InMemoryCommandRouter;
 use Fight\Common\Adapter\Messaging\Command\Sync\RoutingCommandBus;
 use Fight\Common\Adapter\Messaging\Event\Sync\SimpleEventDispatcher;
-use Fight\Common\Adapter\ServiceContainer\Yii\YiiCapabilityConfiguration;
+use Fight\Common\Application\Messaging\Command\SynchronousCommandBus;
+use Fight\Common\Application\Messaging\Event\SynchronousEventDispatcher;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class SynchronousMessagingProvider
+ */
 final readonly class SynchronousMessagingProvider implements ServiceProviderInterface
 {
-    /** @return array<string, mixed> */
+    /**
+     * Returns shared synchronous messaging definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         $router = new InMemoryCommandRouter();
         $events = new SimpleEventDispatcher();
 
         return [
-            ...YiiCapabilityConfiguration::messaging(new RoutingCommandBus($router), $events),
-            InMemoryCommandRouter::class => $router,
-            CommandRouter::class => $router,
-            SimpleEventDispatcher::class => $events,
+            SynchronousCommandBus::class      => new RoutingCommandBus($router),
+            SynchronousEventDispatcher::class => $events,
+            InMemoryCommandRouter::class      => $router,
+            CommandRouter::class              => $router,
+            SimpleEventDispatcher::class      => $events
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no synchronous messaging extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

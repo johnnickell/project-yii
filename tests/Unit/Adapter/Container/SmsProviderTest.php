@@ -12,10 +12,16 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 
+/**
+ * Class SmsProviderTest
+ */
 #[CoversClass(SmsProvider::class)]
 final class SmsProviderTest extends TestCase
 {
-    public function test_it_declares_the_null_sms_transport(): void
+    /**
+     * Tests the local no-delivery SMS selection
+     */
+    public function testItDeclaresTheNullSmsTransport(): void
     {
         $provider = new SmsProvider();
         $container = new Container(ContainerConfig::create()->withProviders([$provider]));

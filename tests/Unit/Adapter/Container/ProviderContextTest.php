@@ -8,10 +8,16 @@ use App\Adapter\Container\ProviderContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class ProviderContextTest
+ */
 #[CoversClass(ProviderContext::class)]
 final class ProviderContextTest extends TestCase
 {
-    public function test_it_resolves_relative_paths_and_preserves_absolute_paths(): void
+    /**
+     * Tests relative and absolute runtime paths
+     */
+    public function testItResolvesRelativePathsAndPreservesAbsolutePaths(): void
     {
         $context = new ProviderContext('/project', ['setting' => 'value']);
 

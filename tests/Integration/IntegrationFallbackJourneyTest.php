@@ -28,32 +28,43 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Symfony\Component\Filesystem\Filesystem as SymfonyNativeFilesystem;
+use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\MockHub;
 use Symfony\Component\Mercure\Update;
-use Symfony\Component\Filesystem\Filesystem as SymfonyNativeFilesystem;
-use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
 
+/**
+ * Class IntegrationFallbackJourneyTest
+ */
 #[CoversNothing]
 final class IntegrationFallbackJourneyTest extends TestCase
 {
-    public function test_http_and_process_fallbacks_produce_deterministic_local_results(): void
+    /**
+     * Tests deterministic local HTTP and process outcomes
+     */
+    public function testHttpAndProcessFallbacksProduceDeterministicLocalResults(): void
     {
         $http = new GuzzleClient(new Client([
-            'handler' => HandlerStack::create(new MockHandler([
+            'handler'     => HandlerStack::create(new MockHandler([
                 new Response(202, ['X-Fallback' => 'fight'], 'accepted'),
-                new Response(204, ['X-Fallback' => 'psr18']),
+                new Response(204, ['X-Fallback' => 'psr18'])
             ])),
-            'http_errors' => false,
+            'http_errors' => false
         ]));
-        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(['app.http_client' => $http]);
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer([
+            'app.http_client' => $http
+        ]);
         $request = new Request('GET', 'https://no-network.invalid/test');
 
         self::assertSame(202, $container->get(HttpClient::class)->send($request)->getStatusCode());
-        self::assertSame('psr18', $container->get(ClientInterface::class)->sendRequest($request)->getHeaderLine('X-Fallback'));
+        self::assertSame(
+            'psr18',
+            $container->get(ClientInterface::class)->sendRequest($request)->getHeaderLine('X-Fallback')
+        );
 
         $output = '';
         $container->get(ProcessRunner::class)->attach(ProcessBuilder::create()->shellCommand('printf process-ready')
@@ -64,18 +75,24 @@ final class IntegrationFallbackJourneyTest extends TestCase
         self::assertSame('process-ready', $output);
     }
 
-    public function test_safe_communication_observability_and_publication_fallbacks_have_observable_outcomes(): void
+    /**
+     * Tests safe local communication and publication outcomes
+     */
+    public function testSafeCommunicationFallbacksHaveObservableOutcomes(): void
     {
         $hub = new RecordingHub();
-        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(['app.mercure_hub' => $hub]);
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer([
+            'app.mercure_hub' => $hub
+        ]);
         self::assertInstanceOf(SymfonyMailTransport::class, $container->get(MailTransport::class));
         $filesystem = $container->get(Filesystem::class);
         self::assertInstanceOf(SymfonyFilesystem::class, $filesystem);
-        $path = sys_get_temp_dir() . '/project-yii-symfony-filesystem-' . bin2hex(random_bytes(6)) . '.txt';
+        $path = sys_get_temp_dir().'/project-yii-symfony-filesystem-'.bin2hex(random_bytes(6)).'.txt';
         $filesystem->put($path, 'symfony-filesystem-fallback');
         self::assertSame('symfony-filesystem-fallback', $filesystem->get($path));
         $filesystem->remove($path);
-        $mail = $container->get(MailFactory::class)->createMessage()->addFrom('from@example.test')->addTo('to@example.test')
+        $mail = $container->get(MailFactory::class)->createMessage()
+            ->addFrom('from@example.test')->addTo('to@example.test')
             ->setSubject('local')->addContent('safe', 'text/plain');
         $container->get(MailTransport::class)->send($mail);
         $container->get(SmsTransport::class)->send(SmsMessage::create('+15555550100', '+15555550101')->setBody('safe'));
@@ -94,18 +111,21 @@ final class IntegrationFallbackJourneyTest extends TestCase
         self::addToAssertionCount(3);
     }
 
-    public function test_native_and_fallback_seams_remain_explicit(): void
+    /**
+     * Tests explicit native and fallback capability selection
+     */
+    public function testNativeAndFallbackSeamsRemainExplicit(): void
     {
         /** @var array<string, array{owner: string, status: string}> $seams */
-        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        $seams = require dirname(__DIR__, 2).'/config/seams.php';
 
         self::assertSame(
             [
-                'native-yii-view' => ['owner' => 'starter', 'status' => 'shipped'],
-                'native-yii-mail' => ['owner' => 'starter', 'status' => 'unavailable'],
-                'symfony-mail-fallback' => ['owner' => 'starter', 'status' => 'configured'],
-                'native-yii-filesystem' => ['owner' => 'starter', 'status' => 'unavailable'],
-                'symfony-filesystem-fallback' => ['owner' => 'starter', 'status' => 'configured'],
+                'native-yii-view'             => ['owner' => 'starter', 'status' => 'shipped'],
+                'native-yii-mail'             => ['owner' => 'starter', 'status' => 'unavailable'],
+                'symfony-mail-fallback'       => ['owner' => 'starter', 'status' => 'configured'],
+                'native-yii-filesystem'       => ['owner' => 'starter', 'status' => 'unavailable'],
+                'symfony-filesystem-fallback' => ['owner' => 'starter', 'status' => 'configured']
             ],
             array_intersect_key(
                 $seams,
@@ -114,16 +134,19 @@ final class IntegrationFallbackJourneyTest extends TestCase
                     'native-yii-mail',
                     'symfony-mail-fallback',
                     'native-yii-filesystem',
-                    'symfony-filesystem-fallback',
-                ]),
-            ),
+                    'symfony-filesystem-fallback'
+                ])
+            )
         );
     }
 
-    public function test_symfony_mail_fallback_sends_safely(): void
+    /**
+     * Tests mail sending through the selected Symfony fallback
+     */
+    public function testSymfonyMailFallbackSendsSafely(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
-            providerNames: ['mail-policy', 'fight-common-mail'],
+            providerNames: ['mail-policy', 'fight-common-mail']
         );
 
         self::assertInstanceOf(SymfonyMailTransport::class, $container->get(MailTransport::class));
@@ -135,39 +158,45 @@ final class IntegrationFallbackJourneyTest extends TestCase
         $container->get(MailTransport::class)->send($mail);
         self::addToAssertionCount(1);
 
-        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        $seams = require dirname(__DIR__, 2).'/config/seams.php';
         self::assertSame('unavailable', $seams['native-yii-mail']['status']);
     }
 
-    public function test_native_filesystem_is_unselected_while_the_symfony_fallback_behaves(): void
+    /**
+     * Tests local filesystem outcomes through the selected fallback
+     */
+    public function testSymfonyFilesystemFallbackBehaves(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
-            providerNames: ['files-policy', 'fight-common-filesystem'],
+            providerNames: ['files-policy', 'fight-common-filesystem']
         );
         self::assertInstanceOf(
             SymfonyFilesystem::class,
-            $container->get(Filesystem::class),
+            $container->get(Filesystem::class)
         );
         $native = $container->get(SymfonyNativeFilesystem::class);
-        $directory = sys_get_temp_dir() . '/project-yii-symfony-native-' . bin2hex(random_bytes(6));
-        $file = $directory . '/nested/proof.txt';
+        $directory = sys_get_temp_dir().'/project-yii-symfony-native-'.bin2hex(random_bytes(6));
+        $file = $directory.'/nested/proof.txt';
         $native->mkdir(dirname($file));
         $native->dumpFile($file, 'symfony-filesystem');
         self::assertSame('symfony-filesystem', file_get_contents($file));
         $native->remove($directory);
         self::assertDirectoryDoesNotExist($directory);
 
-        $seams = require dirname(__DIR__, 2) . '/config/seams.php';
+        $seams = require dirname(__DIR__, 2).'/config/seams.php';
         self::assertSame('unavailable', $seams['native-yii-filesystem']['status']);
         self::assertSame('configured', $seams['symfony-filesystem-fallback']['status']);
     }
 
-    public function test_configured_mercure_fallback_uses_application_owned_policy_without_network_effects(): void
+    /**
+     * Tests configured publication policy without network effects
+     */
+    public function testConfiguredMercureFallbackUsesApplicationPolicy(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer([
-            'app.mercure_url' => 'https://mercure.example.test/custom',
-            'app.mercure_token' => 'configured-local-token',
-            'app.publication_result' => 'configured-publication',
+            'app.mercure_url'        => 'https://mercure.example.test/custom',
+            'app.mercure_token'      => 'configured-local-token',
+            'app.publication_result' => 'configured-publication'
         ]);
 
         $hub = $container->get(HubInterface::class);

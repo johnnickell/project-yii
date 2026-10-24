@@ -2,7 +2,8 @@
 
 Public Yii 3 application composition for Fight libraries. The starter consumes Fight Common and Fight AccessControl
 only through their public Composer packages and keeps Yii configuration, dependency injection, HTTP, console, and
-presentation composition local.
+presentation composition local. The [installed stable-package baseline](docs/stable-package-baseline.md) records
+exact artifacts, selected-contract compatibility and the limits of that verification.
 
 Run `./bin/up`, then open <http://localhost:8088/> for the hello-world runtime. Use `./bin/build` before review;
 GitHub Actions delegates to that exact command for pushes and pull requests targeting `develop`, `main`, and

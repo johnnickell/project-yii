@@ -13,28 +13,45 @@ use Symfony\Component\Mercure\Jwt\StaticTokenProvider;
 use Symfony\Component\Mercure\MockHub;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class PublicationProvider
+ */
 final readonly class PublicationProvider implements ServiceProviderInterface
 {
+    /**
+     * Constructs PublicationProvider
+     */
     public function __construct(private readonly ProviderContext $context)
     {
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns publication definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         return [
-            HubInterface::class => $this->hub(...),
-            Publisher::class => MercureHubPublisher::class,
-            PrivatePublisher::class => PrivateMercureHubPublisher::class,
+            HubInterface::class     => $this->hub(...),
+            Publisher::class        => MercureHubPublisher::class,
+            PrivatePublisher::class => PrivateMercureHubPublisher::class
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no publication extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];
     }
 
+    /**
+     * Returns the configured publication hub or local fallback
+     */
     private function hub(): HubInterface
     {
         $configured = $this->context->parameters['app.mercure_hub'] ?? null;
@@ -42,7 +59,7 @@ final readonly class PublicationProvider implements ServiceProviderInterface
         return $configured instanceof HubInterface ? $configured : new MockHub(
             $this->context->parameters['app.mercure_url'],
             new StaticTokenProvider($this->context->parameters['app.mercure_token']),
-            fn (): string => $this->context->parameters['app.publication_result'],
+            fn (): string => $this->context->parameters['app.publication_result']
         );
     }
 }

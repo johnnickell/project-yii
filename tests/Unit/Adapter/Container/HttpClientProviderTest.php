@@ -13,10 +13,16 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 
+/**
+ * Class HttpClientProviderTest
+ */
 #[CoversClass(HttpClientProvider::class)]
 final class HttpClientProviderTest extends TestCase
 {
-    public function test_it_uses_an_explicit_http_client_or_builds_the_safe_default(): void
+    /**
+     * Tests configured HTTP transport and safe default selection
+     */
+    public function testItUsesAnExplicitHttpClientOrBuildsTheSafeDefault(): void
     {
         $configured = new GuzzleClient(new \GuzzleHttp\Client(['http_errors' => false]));
         $explicit = new HttpClientProvider(new ProviderContext('/project', ['app.http_client' => $configured]));

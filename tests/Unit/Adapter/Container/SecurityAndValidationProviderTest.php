@@ -16,16 +16,22 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Validator\ValidatorInterface;
 
+/**
+ * Class SecurityAndValidationProviderTest
+ */
 #[CoversClass(SecurityAndValidationProvider::class)]
 final class SecurityAndValidationProviderTest extends TestCase
 {
-    public function test_it_builds_security_and_validation_services_from_valid_credentials(): void
+    /**
+     * Tests security service resolution with valid deployment credentials
+     */
+    public function testItBuildsSecurityAndValidationServicesFromValidCredentials(): void
     {
         $root = dirname(__DIR__, 4);
         $parameters = [
-            'app.hmac_identity' => 'identity',
+            'app.hmac_identity'    => 'identity',
             'app.hmac_private_hex' => str_repeat('ab', 32),
-            'app.jwt_secret_hex' => str_repeat('cd', 32),
+            'app.jwt_secret_hex'   => str_repeat('cd', 32)
         ];
         $provider = new SecurityAndValidationProvider(new ProviderContext($root, $parameters));
         self::assertNotEmpty($provider->getDefinitions());
@@ -38,17 +44,22 @@ final class SecurityAndValidationProviderTest extends TestCase
         self::assertInstanceOf(ValidatorInterface::class, $container->get(ValidatorInterface::class));
     }
 
-    /** @param array<string, mixed> $overrides */
+    /**
+     * Tests fail-closed handling of invalid deployment credentials
+     *
+     * @param string $service
+     * @param array<string, mixed> $overrides
+     */
     #[DataProvider('invalidCredentials')]
-    public function test_it_rejects_missing_blank_non_string_and_invalid_hex_credentials(
+    public function testItRejectsInvalidDeploymentCredentials(
         string $service,
-        array $overrides,
+        array $overrides
     ): void {
         $root = dirname(__DIR__, 4);
         $parameters = array_replace([
-            'app.hmac_identity' => 'identity',
+            'app.hmac_identity'    => 'identity',
             'app.hmac_private_hex' => str_repeat('ab', 32),
-            'app.jwt_secret_hex' => str_repeat('cd', 32),
+            'app.jwt_secret_hex'   => str_repeat('cd', 32)
         ], $overrides);
         $container = new ConfiguredApplicationFactory($root)->createContainer($parameters, ['security-and-validation']);
 

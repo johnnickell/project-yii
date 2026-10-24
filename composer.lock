@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee4f082858b9b74f97bf93c85a931145",
+    "content-hash": "d5cf6371147e70427ea6c6f34fb4f9fc",
     "packages": [
         {
             "name": "doctrine/lexer",
@@ -547,20 +547,20 @@
         },
         {
             "name": "johnnickell/fight-access-control",
-            "version": "dev-develop",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnnickell/fight-access-control.git",
-                "reference": "4259ea0b77bc2e1d87e62ab70b64af63bae99477"
+                "reference": "319738255e682d587642b67856039f882b9588d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnnickell/fight-access-control/zipball/4259ea0b77bc2e1d87e62ab70b64af63bae99477",
-                "reference": "4259ea0b77bc2e1d87e62ab70b64af63bae99477",
+                "url": "https://api.github.com/repos/johnnickell/fight-access-control/zipball/319738255e682d587642b67856039f882b9588d6",
+                "reference": "319738255e682d587642b67856039f882b9588d6",
                 "shasum": ""
             },
             "require": {
-                "johnnickell/fight-common": "^1.1",
+                "johnnickell/fight-common": "^1.3",
                 "php": ">=8.5"
             },
             "require-dev": {
@@ -570,9 +570,12 @@
                 "rector/rector": "^2.4",
                 "slevomat/coding-standard": "^8.27",
                 "squizlabs/php_codesniffer": "^4.0",
-                "symfony/process": "^7.0"
+                "symfony/process": "^7.0",
+                "zircote/swagger-php": "^6.5"
             },
-            "default-branch": true,
+            "suggest": {
+                "zircote/swagger-php": "Generate a consumer-owned OpenAPI document from the opt-in openapi/ component catalog."
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -580,33 +583,29 @@
                     "Fight\\AccessControl\\Application\\": "src/Application"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Fight\\Test\\AccessControl\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Framework-neutral identity, credential, session, authorization, and account-lifecycle contracts",
             "support": {
-                "source": "https://github.com/johnnickell/fight-access-control/tree/develop",
-                "issues": "https://github.com/johnnickell/fight-access-control/issues"
+                "issues": "https://github.com/johnnickell/fight-access-control/issues",
+                "source": "https://github.com/johnnickell/fight-access-control/tree/v0.8.0"
             },
-            "time": "2026-08-31T03:38:38+00:00"
+            "time": "2026-10-21T17:59:41+00:00"
         },
         {
             "name": "johnnickell/fight-common",
-            "version": "dev-develop",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnnickell/fight-common.git",
-                "reference": "fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911"
+                "reference": "87b9580c072f3149d574e09865daa79620c92118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnnickell/fight-common/zipball/fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911",
-                "reference": "fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911",
+                "url": "https://api.github.com/repos/johnnickell/fight-common/zipball/87b9580c072f3149d574e09865daa79620c92118",
+                "reference": "87b9580c072f3149d574e09865daa79620c92118",
                 "shasum": ""
             },
             "require": {
@@ -654,9 +653,9 @@
                 "symfony/messenger": "^8.1",
                 "symfony/process": "^8.1",
                 "symfony/routing": "^8.1",
+                "symfony/yaml": "^8.1",
                 "twig/twig": "^3.0",
                 "twilio/sdk": "^8.0",
-                "yiisoft/config": "^1.2",
                 "yiisoft/db": "^2.0",
                 "yiisoft/db-sqlite": "^2.0",
                 "yiisoft/di": "^1.4",
@@ -673,6 +672,7 @@
                 "doctrine/dbal": "Required by the custom doctrine data types",
                 "doctrine/orm": "Required by the canonical Doctrine transactional unit of work, legacy 1.x unit of work, audit repository, and base repository",
                 "dragonmantank/cron-expression": "Required by the Scheduler for cron expression parsing",
+                "ext-sodium": "Required by the optional Sodium MCP ordinary interaction state protector",
                 "guzzlehttp/guzzle": "Required by the guzzle http client adapter",
                 "guzzlehttp/promises": "Required by the guzzle http client adapter",
                 "guzzlehttp/psr7": "Required by the guzzle http client adapter",
@@ -694,9 +694,9 @@
                 "symfony/messenger": "Required by the async messenger command bus and event dispatcher",
                 "symfony/process": "Required by the Symfony process runner adapter",
                 "symfony/routing": "Required for the URL generator",
+                "symfony/yaml": "Required by the optional bounded MCP Skill frontmatter parser (8.1 or later)",
                 "twig/twig": "Required by the Twig template engine adapter",
                 "twilio/sdk": "Required by the Twilio SMS transport adapter",
-                "yiisoft/config": "Required to select Yii capability configuration groups",
                 "yiisoft/db": "Required by the Yii DB transactional unit of work adapter",
                 "yiisoft/db-sqlite": "Required to run the Yii DB transactional unit of work adapter conformance tests",
                 "yiisoft/di": "Required to boot Yii capability service providers",
@@ -706,32 +706,26 @@
                 "yiisoft/router-fastroute": "Required to run the Yii URL generator adapter conformance tests",
                 "yiisoft/view": "Required to evaluate Yii View against the shared Fight templating conformance suite"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/Domain/functions.php"
+                ],
                 "psr-4": {
                     "Fight\\Common\\": "src",
                     "Fight\\Test\\Common\\TestCase\\": "tests/TestCase"
-                },
-                "files": [
-                    "src/Domain/functions.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Fight\\Release\\": "release/src",
-                    "Fight\\Test\\Common\\": "tests"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "A shared PHP library for Hexagonal Architecture, CQRS, and reusable domain primitives",
             "support": {
-                "source": "https://github.com/johnnickell/fight-common/tree/develop",
-                "issues": "https://github.com/johnnickell/fight-common/issues"
+                "issues": "https://github.com/johnnickell/fight-common/issues",
+                "source": "https://github.com/johnnickell/fight-common/tree/v1.4.0"
             },
-            "time": "2026-09-09T18:43:20+00:00"
+            "time": "2026-10-12T02:51:09+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -2641,16 +2635,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v8.1.6",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "093b78326f649c3a9db922b9f17123b6aeb3b8fb"
+                "reference": "7850897fb8659f98491b03be79ac48600bdaf9ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/093b78326f649c3a9db922b9f17123b6aeb3b8fb",
-                "reference": "093b78326f649c3a9db922b9f17123b6aeb3b8fb",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/7850897fb8659f98491b03be79ac48600bdaf9ab",
+                "reference": "7850897fb8659f98491b03be79ac48600bdaf9ab",
                 "shasum": ""
             },
             "require": {
@@ -2698,7 +2692,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v8.1.6"
+                "source": "https://github.com/symfony/http-foundation/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -2718,7 +2712,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-30T20:10:55+00:00"
+            "time": "2026-10-08T16:57:43+00:00"
         },
         {
             "name": "symfony/mailer",
@@ -6515,6 +6509,102 @@
             "time": "2024-05-06T16:37:16+00:00"
         },
         {
+            "name": "dealerdirect/phpcodesniffer-composer-installer",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPCSStandards/composer-installer.git",
+                "reference": "963f0c67bffde0eac41b56be71ac0e8ba132f0bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPCSStandards/composer-installer/zipball/963f0c67bffde0eac41b56be71ac0e8ba132f0bd",
+                "reference": "963f0c67bffde0eac41b56be71ac0e8ba132f0bd",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.2",
+                "php": ">=5.4",
+                "squizlabs/php_codesniffer": "^3.1.0 || ^4.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2.2",
+                "ext-json": "*",
+                "ext-zip": "*",
+                "php-parallel-lint/php-parallel-lint": "^1.4.0",
+                "phpcompatibility/php-compatibility": "^9.0 || ^10.0.0@dev",
+                "yoast/phpunit-polyfills": "^1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Franck Nijhof",
+                    "email": "opensource@frenck.dev",
+                    "homepage": "https://frenck.dev",
+                    "role": "Open source developer"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/PHPCSStandards/composer-installer/graphs/contributors"
+                }
+            ],
+            "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
+            "keywords": [
+                "PHPCodeSniffer",
+                "PHP_CodeSniffer",
+                "code quality",
+                "codesniffer",
+                "composer",
+                "installer",
+                "phpcbf",
+                "phpcs",
+                "plugin",
+                "qa",
+                "quality",
+                "standard",
+                "standards",
+                "style guide",
+                "stylecheck",
+                "tests"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPCSStandards/composer-installer/issues",
+                "security": "https://github.com/PHPCSStandards/composer-installer/security/policy",
+                "source": "https://github.com/PHPCSStandards/composer-installer"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/PHPCSStandards",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/jrfnl",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/php_codesniffer",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/phpcsstandards",
+                    "type": "thanks_dev"
+                }
+            ],
+            "time": "2026-05-06T08:26:05+00:00"
+        },
+        {
             "name": "deptrac/deptrac",
             "version": "4.7.1",
             "source": {
@@ -8686,6 +8776,71 @@
             "time": "2024-10-09T05:16:32+00:00"
         },
         {
+            "name": "slevomat/coding-standard",
+            "version": "8.31.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slevomat/coding-standard.git",
+                "reference": "0a40807a48873948bfa7ffce2a4e69ba40cf5e76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/0a40807a48873948bfa7ffce2a4e69ba40cf5e76",
+                "reference": "0a40807a48873948bfa7ffce2a4e69ba40cf5e76",
+                "shasum": ""
+            },
+            "require": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7 || ^1.2.1",
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpdoc-parser": "^2.3.3",
+                "squizlabs/php_codesniffer": "^4.0.1"
+            },
+            "require-dev": {
+                "phing/phing": "3.0.1|3.1.2",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpstan/phpstan": "2.2.7",
+                "phpstan/phpstan-deprecation-rules": "2.0.5",
+                "phpstan/phpstan-phpunit": "2.0.18",
+                "phpstan/phpstan-strict-rules": "2.0.12",
+                "phpunit/phpunit": "9.6.34|10.5.63|11.4.4|11.5.56|12.5.33"
+            },
+            "type": "phpcodesniffer-standard",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SlevomatCodingStandard\\": "SlevomatCodingStandard/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
+            "keywords": [
+                "dev",
+                "phpcs"
+            ],
+            "support": {
+                "issues": "https://github.com/slevomat/coding-standard/issues",
+                "source": "https://github.com/slevomat/coding-standard/tree/8.31.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kukulich",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/slevomat/coding-standard",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-07-31T10:42:43+00:00"
+        },
+        {
             "name": "squizlabs/php_codesniffer",
             "version": "4.0.4",
             "source": {
@@ -9175,19 +9330,9 @@
             "time": "2025-11-17T20:03:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "johnnickell/fight-common",
-            "version": "dev-develop",
-            "alias": "1.2.0-dev",
-            "alias_normalized": "1.2.0.0-dev"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "johnnickell/fight-access-control": 20,
-        "johnnickell/fight-common": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -31,9 +31,11 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 - The 2026-10-24 approved package baseline is stable `fight-common` `^1.4` and `fight-access-control` `^0.8`,
   targeting the latest verified releases 1.4.0/0.8.0. [Release evidence and prior baseline history](../tickets/00003-TICKET.md#progress)
   distinguish registry metadata from installation. Development branches or aliases cannot satisfy the package
-  audit. The actual Yii installation and complete public capability inventory remain unverified.
-  [TASK-00008](../tasks/00008-TASK.md) owns bounded adoption; it does not complete this map or authorize its
-  product implementation. Shared-convention adoption in TASK-00012 does not satisfy the package gate.
+  audit. [TASK-00008](../tasks/00008-TASK.md) now records independently accepted installed 1.4.0/0.8.0 archives and
+  bounded [contract/behavior evidence](../../docs/stable-package-baseline.md), with
+  [PR #15](https://github.com/johnnickell/project-yii/pull/15) open. The complete public capability inventory remains
+  unperformed. Bounded adoption does not complete this map or authorize its product implementation. Shared-convention
+  adoption in TASK-00012 does not satisfy the package gate.
 - Fight AccessControl owns scan-only reusable component schemas under `resources/openapi/`. Yii owns one complete
   OpenAPI 3.1 document, generated in one pass from those installed resources and Yii-owned Actions, DTOs, routes,
   security declarations, and project-specific components.
@@ -51,7 +53,7 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 
 ## Decisions so far
 
-1. **[Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is open and externally gated.** It inventories released public contracts without turning every package class into an endpoint.
+1. **[Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is open and executable.** Accepted TASK-00008 evidence satisfies its installed-stable package gate; it still inventories released public contracts without turning every package class into an endpoint.
 2. **[Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) is closed.** The confirmed resolution defines project service/storage/health boundaries and acceptance journeys, shared upstream ingress, thin Compose wrappers, explicit setup, and upstream ownership of isolated execution.
 3. **[Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) is open and waiting.** It proves Yii-native Action-Domain-Responder composition while adopting Symfony's finished wire contract.
 4. **[Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) is open and waiting.** It settles MySQL adapters, atomicity, reconciliation, and invitation-led CLI bootstrap.
@@ -94,12 +96,11 @@ WF-001 through WF-009 ──→ WF-010 ──→ EPIC + TICKETs + vertical imple
 
 ## Frontier
 
-None currently executable. WF-002 is closed. The next gated decision is
-[WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md): it requires
-verified installed stable Common `^1.4` / AccessControl `^0.8` artifacts, with bounded adoption owned by
-[TASK-00008](../tasks/00008-TASK.md). Observed release tags are not that evidence. WF-003 still depends on
-WF-001 and the Symfony canonical wire contract; closing WF-002 does not unblock it. No new decision is started
-by this closeout.
+[WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is now executable:
+its verified-installed-stable package gate is satisfied by accepted TASK-00008 evidence. Its complete public
+capability inventory remains unperformed and is not completed by this closeout. WF-003 still depends on WF-001 and
+the Symfony canonical wire contract; closing WF-002 does not unblock it. No Wayfinder decision is started by this
+closeout.
 
 ## Not yet specified (fog)
 

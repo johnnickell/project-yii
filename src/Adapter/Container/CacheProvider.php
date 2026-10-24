@@ -13,9 +13,16 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Yiisoft\Cache\ArrayCache as YiiArrayCache;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class CacheProvider
+ */
 final readonly class CacheProvider implements ServiceProviderInterface
 {
-    /** @return array<string, mixed> */
+    /**
+     * Returns cache definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         $pool = new ArrayAdapter();
@@ -25,14 +32,18 @@ final readonly class CacheProvider implements ServiceProviderInterface
 
         return [
             CacheItemPoolInterface::class => $pool,
-            Psr6Cache::class => new Psr6Cache($pool, $logger),
-            Cache::class => static fn (Psr6Cache $cache): Cache => $cache,
-            YiiArrayCache::class => $yiiCache,
-            CacheInterface::class => $yiiCache,
+            Psr6Cache::class              => new Psr6Cache($pool, $logger),
+            Cache::class                  => static fn (Psr6Cache $cache): Cache => $cache,
+            YiiArrayCache::class          => $yiiCache,
+            CacheInterface::class         => $yiiCache
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no cache extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

@@ -21,7 +21,10 @@ foreach ($iterator as $file) {
     if ($file->isFile() && strtolower($file->getExtension()) === 'php') {
         $contents = (string) file_get_contents($file->getPathname());
         if (preg_match('/(?:@codeCoverageIgnore(?:Start|End)?|CodeCoverageIgnore)/i', $contents) === 1) {
-            throw new RuntimeException(sprintf('Coverage-ignore directive found in production source: %s', $file->getPathname()));
+            throw new RuntimeException(sprintf(
+                'Coverage-ignore directive found in production source: %s',
+                $file->getPathname()
+            ));
         }
         $realPath = $file->getRealPath();
         if ($realPath === false) {
@@ -62,7 +65,7 @@ $coveredFiles = [];
 foreach ($xpath->query('/coverage/project//file') as $fileNode) {
     if ($fileNode instanceof DOMElement) {
         $path = realpath($fileNode->getAttribute('name'));
-        if ($path !== false && str_starts_with($path, $sourceRoot . DIRECTORY_SEPARATOR)) {
+        if ($path !== false && str_starts_with($path, $sourceRoot.DIRECTORY_SEPARATOR)) {
             $coveredFiles[] = $path;
         }
     }
@@ -74,7 +77,7 @@ $missingFiles = array_values(array_diff($sourceFiles, $coveredFiles));
 if ($missingFiles !== []) {
     throw new RuntimeException(sprintf(
         "Clover coverage is missing production source files:\n%s",
-        implode("\n", $missingFiles),
+        implode("\n", $missingFiles)
     ));
 }
 
@@ -82,7 +85,7 @@ if ($coveredStatements !== $statements) {
     throw new RuntimeException(sprintf(
         'Production statement coverage is not exact: %d/%d statements covered.',
         $coveredStatements,
-        $statements,
+        $statements
     ));
 }
 

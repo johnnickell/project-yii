@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace App\Adapter\Http;
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Yiisoft\View\WebView;
 
+/**
+ * Class HomeHandler
+ */
 final readonly class HomeHandler implements RequestHandlerInterface
 {
+    /**
+     * Constructs HomeHandler
+     */
     public function __construct(
         private WebView $view,
         private string $routeName,
         private ResponseFactoryInterface $responseFactory,
-        private StreamFactoryInterface $streamFactory,
+        private StreamFactoryInterface $streamFactory
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->responseFactory->createResponse(200)

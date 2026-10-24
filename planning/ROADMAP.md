@@ -44,11 +44,13 @@ None.
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is
 pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candidate-and-delivery-closeout) is
 independently accepted and QA-passed, integrated through PR #12; PR #13's separate runtime repair is also merged.
-TASK-00012 independently accepted candidate A, independently QA-passed, and is published for human review in
-[PR #14](https://github.com/johnnickell/project-yii/pull/14); its administrative closeout B changes delivery
-metadata only. TASK-00008 and TASK-00009 remain unimplemented and retain package/gate ownership. The broader
-application map remains in its decision phase with no executable frontier; its later decomposition is not implied
-by this bounded adoption portfolio.
+TASK-00012 independently accepted candidate A, independently QA-passed, and is integrated through merged
+[PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base; its administrative closeout B
+changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at its exact candidate, with
+[PR #15](https://github.com/johnnickell/project-yii/pull/15) open and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
+TICKET-00003 closes automatically. TASK-00009 remains unimplemented and is now the executable gate successor.
+The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
+complete capability inventory is not implied by this bounded adoption portfolio.
 
 ## Completed / Released
 
@@ -59,7 +61,8 @@ TASK-00005 established exact coverage and the non-root FPM gate; TASK-00006 rece
 These are historical completion facts, not claims that the current lock already contains stable releases.
 TASK-00007 completed reconciliation of the later legacy plan without discarding its work; the fresh canonical
 gate passed. Fresh independent review accepted the reconciled head `97bf944` against `6aa5539`; landing records
-publication separately from human approval or merge. Stable adoption in TASK-00008 and the consolidated gate in
-TASK-00009 remain unimplemented; the approved 2026-10-24 amendment adds shared-convention implementation in
-TASK-00012 and raises the target stable versions without rewriting those historical completion facts.
+publication separately from human approval or merge. At that historical checkpoint, stable adoption in TASK-00008
+and the consolidated gate in TASK-00009 were unimplemented. The approved 2026-10-24 amendment adds shared-convention
+implementation in TASK-00012 and raises the target stable versions without rewriting those historical completion
+facts; the current handoff above records subsequent progress.
 TASK-00010's duplicate closeout is not implementation evidence.

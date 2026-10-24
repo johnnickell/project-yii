@@ -33,22 +33,23 @@ accepted and QA-passed planning amendment, now integrated into `develop` through
 [TASK-00009](00009-TASK.md) (running-container gate). Existing package/gate assignments are not duplicated.
 [TASK-00010](00010-TASK.md) retains the legacy source/mapping, closed only as a duplicate assignment.
 [TASK-00012](00012-TASK.md#completion-notes) independently accepted candidate A, independently QA-passed, and
-is published for human review in [PR #14](https://github.com/johnnickell/project-yii/pull/14); administrative
-closeout B changes delivery metadata only. No additional general adoption decision or decomposition is pending
-for [EPIC-00003](../epics/00003-EPIC.md#progress).
+is integrated through merged [PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base;
+administrative closeout B changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at
+its exact candidate; [PR #15](https://github.com/johnnickell/project-yii/pull/15) is open for human review and merge.
+The executable package-to-gate successor is TASK-00009. No additional general adoption decision or decomposition is
+pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
 
 ## Wayfinder Review
 
-[Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) remains active, with
-no currently executable Wayfinder review candidate. The maintainer confirmed and closed
-[WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
-[WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md)
-is next but remains gated on verified installed stable Common `^1.4` / AccessControl `^0.8` contracts;
-[TASK-00008](00008-TASK.md) owns bounded adoption. Shared-convention adoption does not satisfy that gate.
-WF-003 still waits for WF-001 and Symfony's canonical wire contract. The bounded adoption TASKs do not authorize
-the broader application map.
+[Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) remains active. The
+maintainer confirmed and closed [WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
+[WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md) is now
+the executable Wayfinder review candidate: accepted TASK-00008 verifies its installed stable Common `^1.4` /
+AccessControl `^0.8` gate. [Baseline findings](../../docs/stable-package-baseline.md) do not close the full inventory,
+and this closeout does not begin the decision. WF-003 still waits for WF-001 and Symfony's canonical wire contract.
+The bounded adoption TASKs do not authorize the broader application map.
 
 ## Active Work
 
@@ -61,15 +62,13 @@ None.
 <!-- planning:ready -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
+| 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | ready-for-agent | [TASK-00008](00008-TASK.md) | — |
 <!-- /planning:ready -->
 
 ## Waiting
 
 <!-- planning:waiting -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | ready-for-agent | [TASK-00008](00008-TASK.md) | — |
+None.
 <!-- /planning:waiting -->
 
 ## Needs Info
@@ -101,6 +100,7 @@ None.
 | 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | https://github.com/johnnickell/project-yii/pull/12 |
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
 | 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | done | [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
+| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | done | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/15 |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |
 | — | [TASK-00004](00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | — | — |

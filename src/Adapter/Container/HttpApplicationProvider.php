@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Adapter\Container;
 
 use App\Adapter\Http\HomeHandler;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use Fight\Common\Adapter\Http\Psr17\JSendResponseFactory;
 use Fight\Common\Adapter\Middleware\Psr15\JSendErrorMiddleware;
 use Fight\Common\Adapter\Middleware\Psr15\JsonRequestMiddleware;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -24,50 +24,65 @@ use Yiisoft\View\WebView;
 use Yiisoft\Yii\Http\Application;
 use Yiisoft\Yii\Http\Handler\NotFoundHandler;
 
+/**
+ * Class HttpApplicationProvider
+ */
 final readonly class HttpApplicationProvider implements ServiceProviderInterface
 {
+    /**
+     * Constructs HttpApplicationProvider
+     */
     public function __construct(private ProviderContext $context)
     {
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns HTTP application definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         return [
-            HomeHandler::class => fn (
+            HomeHandler::class              => fn (
                 WebView $view,
                 ResponseFactoryInterface $responseFactory,
-                StreamFactoryInterface $streamFactory,
+                StreamFactoryInterface $streamFactory
             ): HomeHandler => new HomeHandler(
                 $view,
                 $this->context->parameters['app.route_name'],
                 $responseFactory,
-                $streamFactory,
+                $streamFactory
             ),
-            Psr17Factory::class => Psr17Factory::class,
+            Psr17Factory::class             => Psr17Factory::class,
             ResponseFactoryInterface::class => fn (Psr17Factory $factory): ResponseFactoryInterface => $factory,
-            StreamFactoryInterface::class => fn (Psr17Factory $factory): StreamFactoryInterface => $factory,
-            JSendResponseFactory::class => JSendResponseFactory::class,
-            JsonRequestMiddleware::class => JsonRequestMiddleware::class,
-            JSendErrorMiddleware::class => JSendErrorMiddleware::class,
-            UrlMatcherInterface::class => fn (RouteCollection $routes): UrlMatcherInterface => new NativeUrlMatcher($routes),
-            CurrentRoute::class => CurrentRoute::class,
-            MiddlewareDispatcher::class => fn (ContainerInterface $container): MiddlewareDispatcher =>
+            StreamFactoryInterface::class   => fn (Psr17Factory $factory): StreamFactoryInterface => $factory,
+            JSendResponseFactory::class     => JSendResponseFactory::class,
+            JsonRequestMiddleware::class    => JsonRequestMiddleware::class,
+            JSendErrorMiddleware::class     => JSendErrorMiddleware::class,
+            UrlMatcherInterface::class      => fn (RouteCollection $routes): UrlMatcherInterface =>
+                new NativeUrlMatcher($routes),
+            CurrentRoute::class             => CurrentRoute::class,
+            MiddlewareDispatcher::class     => fn (ContainerInterface $container): MiddlewareDispatcher =>
                 new MiddlewareDispatcher(new MiddlewareFactory($container))->withMiddlewares([
                     JSendErrorMiddleware::class,
                     JsonRequestMiddleware::class,
-                    Router::class,
+                    Router::class
                 ]),
-            Application::class => fn (ContainerInterface $container): Application =>
+            Application::class              => fn (ContainerInterface $container): Application =>
                 new Application(
                     $container->get(MiddlewareDispatcher::class),
                     null,
-                    new NotFoundHandler($container->get(ResponseFactoryInterface::class)),
-                ),
+                    new NotFoundHandler($container->get(ResponseFactoryInterface::class))
+                )
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no HTTP application extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

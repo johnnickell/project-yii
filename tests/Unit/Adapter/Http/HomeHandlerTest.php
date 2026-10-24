@@ -10,10 +10,16 @@ use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class HomeHandlerTest
+ */
 #[CoversClass(HomeHandler::class)]
 final class HomeHandlerTest extends TestCase
 {
-    public function test_it_returns_the_rendered_home_response(): void
+    /**
+     * Tests rendered home response content and metadata
+     */
+    public function testItReturnsTheRenderedHomeResponse(): void
     {
         $handler = new ConfiguredApplicationFactory(dirname(__DIR__, 4))->createContainer()->get(HomeHandler::class);
         $response = $handler->handle(new ServerRequest('GET', '/'));
