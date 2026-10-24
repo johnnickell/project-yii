@@ -3,18 +3,21 @@
 **Labels:** `wayfinder:research`
 **Mode:** AFK
 **Status:** Open
-**Gate:** Verified installed stable Common 1.2+ / AccessControl 0.4+ contracts
+**Gate:** Verified installed stable Common ^1.4 / AccessControl ^0.8 contracts
 **Map:** [Yii AccessControl Starter Application](../yii-access-control-application-map.md)
 **Depends on:** —
 
 ## Question
 
 What is the complete, released, public consumer contract that the Yii starter must compose from
-`fight-access-control` `^0.4` and `fight-common` `^1.2`?
+`fight-access-control` `^0.8` and `fight-common` `^1.4`?
 
-The maintainer raised the baseline during alignment planning. v0.4.0/v1.2.0 tags and Composer metadata have been
-observed, but local installation and the full capability audit remain unverified. [TASK-00008](../../tasks/00008-TASK.md)
-performs bounded dependency adoption; this decision still owns the complete released-contract inventory.
+The maintainer raised the baseline on 2026-10-24 to the latest verified stable releases: AccessControl 0.8.0 and
+Common 1.4.0. [TICKET-00003](../../tickets/00003-TICKET.md#progress) records public registry references and the
+prior baseline history. Local installation and the full capability audit remain unverified.
+[TASK-00008](../../tasks/00008-TASK.md) performs bounded dependency adoption; this decision still owns the
+complete released-contract inventory. Newer out-of-envelope releases require an explicit scope amendment.
+Shared-convention adoption in TASK-00012 neither satisfies this gate nor closes the decision.
 
 ## Must decide
 

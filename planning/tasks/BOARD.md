@@ -20,15 +20,21 @@ under **Ready Frontier**. Do not start a second TASK just because its ID is lowe
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
 [TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite. Independent review
 accepted candidate A and independent behavioral QA passed; [PR #13](https://github.com/johnnickell/project-yii/pull/13)
-is open against `develop` for human review and merge. This does not authorize the broader gate redesign,
-deployment, approval, or merge. The adoption-planning branch in the original checkout remains separate.
+is open against `develop` for human review and merge. The maintainer subsequently authorized merging `develop`
+into that feature branch using the main checkout. This does not authorize the broader gate redesign,
+deployment, approval, or merging PR #13.
 
-The maintainer approved stronger alignment: stable Fight Common 1.2+ / AccessControl 0.4+, a running-container
-PHP-orchestrated gate, and EPIC/TICKET/TASK planning in this checkout, including the later legacy plan merged in
-PR #8. Its requirements are consolidated into stable adoption in [TASK-00008](00008-TASK.md) and the complete
-standards-aligned gate in [TASK-00009](00009-TASK.md). [TASK-00010](00010-TASK.md) preserves the legacy source and
-mapping, closed only as a duplicate assignment. No additional alignment decision is pending.
-Fight Common 2.0 remains `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
+On 2026-10-24 the maintainer approved comprehensive shared-standard/skill/workflow adoption, retaining Yii-native
+integration and stronger local guarantees, and latest stable Common 1.4.0 / AccessControl 0.8.0 (`^1.4` / `^0.8`).
+Use the main checkout on separate feature branches. [TASK-00011](00011-TASK.md) records this independently
+accepted and QA-passed planning amendment, now integrated into `develop` through
+[PR #12](https://github.com/johnnickell/project-yii/pull/12). Preferred implementation order remains
+[TASK-00012](00012-TASK.md) (shared conventions and target bindings), [TASK-00008](00008-TASK.md) (packages/PHPCS), then
+[TASK-00009](00009-TASK.md) (running-container gate). Existing package/gate assignments are not duplicated.
+[TASK-00010](00010-TASK.md) retains the legacy source/mapping, closed only as a duplicate assignment.
+No additional general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
+Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
+`needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
 
 ## Wayfinder Review
 
@@ -36,9 +42,10 @@ Fight Common 2.0 remains `needs-info` until its contract, deprecation-removal in
 no currently executable Wayfinder review candidate. The maintainer confirmed and closed
 [WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
 [WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md)
-is next but remains gated on verified installed stable contracts; [TASK-00008](00008-TASK.md) owns bounded
-adoption. WF-003 still waits for WF-001 and Symfony's canonical wire contract. The bounded alignment TASKs do
-not authorize the broader application map.
+is next but remains gated on verified installed stable Common `^1.4` / AccessControl `^0.8` contracts;
+[TASK-00008](00008-TASK.md) owns bounded adoption. Shared-convention adoption does not satisfy that gate.
+WF-003 still waits for WF-001 and Symfony's canonical wire contract. The bounded adoption TASKs do not authorize
+the broader application map.
 
 ## Active Work
 
@@ -51,7 +58,8 @@ None.
 <!-- planning:ready -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md) | — |
+| 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | ready-for-agent | [TASK-00011](00011-TASK.md) | — |
+| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
 <!-- /planning:ready -->
 
 ## Waiting
@@ -59,7 +67,7 @@ None.
 <!-- planning:waiting -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | ready-for-agent | [TASK-00008](00008-TASK.md) | — |
+| 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | ready-for-agent | [TASK-00008](00008-TASK.md) | — |
 <!-- /planning:waiting -->
 
 ## Needs Info
@@ -88,6 +96,7 @@ None.
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
+| 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | https://github.com/johnnickell/project-yii/pull/12 |
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |

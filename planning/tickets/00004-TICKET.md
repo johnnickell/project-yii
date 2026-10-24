@@ -3,7 +3,7 @@ id: TICKET-00004
 epic: EPIC-00003
 title: Verify Yii Through a Running-Container PHP Gate
 status: ready-for-agent
-order: 2
+order: 3
 ---
 
 # Verify Yii Through a Running-Container PHP Gate
@@ -57,10 +57,18 @@ the gate. Installed-version adoption is TICKET-00003 and precedes this work.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | ready-for-agent | [TASK-00008](../tasks/00008-TASK.md) | — |
+| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | ready-for-agent | [TASK-00008](../tasks/00008-TASK.md) | — |
 <!-- /planning:children -->
 
 ## Progress
+
+The 2026-10-24 comprehensive adoption approval retains this gate slice after TASK-00008's updated Common
+1.4.0 / AccessControl 0.8.0 baseline. TASK-00012 owns shared workflow bindings; it does not implement this gate
+or relax its coverage, test-quality, or hosted-check requirements. Apply the shared fail-fast/read-only gate
+principles through Yii's existing Compose PHP service, not the provider's service names or frontend/database
+phases. No further TASK decomposition is pending for this accepted requirement; implementation is unstarted.
+
+### Historical gate approval and consolidation
 
 The maintainer explicitly requested this changed gate lifecycle. It supersedes conflicting TASK-00005 requirements
 only when implemented; the historical acceptance remains intact. TASK-00009 owns runtime and CI verification.
