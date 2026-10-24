@@ -6,7 +6,7 @@ each. Former local PRDs retain their numeric identities here; see [conventions](
 <!-- planning:records -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | [TICKET-00005](00005-TICKET.md) | Adopt Shared Engineering and Agent Workflow Conventions | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | ready-for-agent | — | — |
+| 1 | [TICKET-00005](00005-TICKET.md) | Adopt Shared Engineering and Agent Workflow Conventions | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | in-progress | — | — |
 | 2 | [TICKET-00003](00003-TICKET.md) | Adopt Stable Fight Common and AccessControl Contracts | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | ready-for-agent | — | — |
 | 3 | [TICKET-00004](00004-TICKET.md) | Verify Yii Through a Running-Container PHP Gate | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | ready-for-agent | — | — |
 | — | [TICKET-00001](00001-TICKET.md) | Yii Starter Product and Walking-Slice Acceptance | [EPIC-00001 — Governed Yii Starter Foundation](../epics/00001-EPIC.md) | done | — | — |

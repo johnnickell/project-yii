@@ -14,13 +14,19 @@ This routing path does not require reading README, architecture, full project co
 For execution or substantive planning changes, load the applicable guidance below. The read-only routing
 path above takes precedence over broad orientation reads; it does not waive engineering or delivery rules.
 
-Read `ARCHITECTURE.md`, `planning/README.md`, `planning/CONVENTIONS.md`, and `planning/agents/` before changing behavior. Work in independently verifiable vertical slices. Use the repository-owned `./bin/build`, `./bin/phpunit`, `./bin/up`, `./bin/down`, `./bin/composer`, and `./bin/exec` commands; `./bin/build` is the single noninteractive local and hosted gate.
+Read `ARCHITECTURE.md`, `planning/README.md`, `planning/CONVENTIONS.md`, and `planning/agents/` before changing behavior.
+Use the [shared workflow binding](planning/agents/shared-workflows.md) for execution and substantive planning;
+installed shared engineering/delivery guidance is the default with its explicit Yii substitutions and stronger local guarantees.
+Work in independently verifiable vertical slices. Use the repository-owned `./bin/build`, `./bin/phpunit`, `./bin/up`, `./bin/down`, `./bin/composer`, and `./bin/exec` commands; `./bin/build` is the single noninteractive local and hosted gate.
 
 Yii owns its configuration-provider composition, DI bindings, HTTP and console entry points, Twig presentation, and future adapters. Fight Common and Fight AccessControl are public Composer dependencies only. Do not implement login, persistence, browser journeys, releases, tags, Packagist publication, template enablement, or create-project distribution without an accepted local TASK.
 
 ## Run and Worktree Isolation
 
-Coordinate-build scratch belongs in `.runs/<YYYY-MM-DD>-<slug>/`. It is gitignored and must never be staged.
+For new runs, use the [canonical base-owned evidence layout](planning/CONVENTIONS.md#execution-evidence):
+`.runs/build/<TASK-ID>/`, `.runs/reviews/<TASK-ID>/`, `.runs/qa/<TASK-ID>/` and `.runs/tasks/<TASK-ID>/runs/`.
+This supersedes the dated coordinate-build rule for new runs only; preserve historical and already-started evidence
+in place. `.runs/` is gitignored and must never be staged. Runtime/tool caches remain Yii-owned `var/`.
 
 ## Branch Conventions
 

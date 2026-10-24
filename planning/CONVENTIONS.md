@@ -36,6 +36,13 @@ phase, pending decision/owner. Keep Wayfinder inventory/frontier pointers curren
 not another backlog or proof of delivery. Preserve generated sections and all historical decisions.
 
 Routing sources: [TASK Board](tasks/BOARD.md), [Wayfinder inventory](wayfinder/README.md), [Roadmap](ROADMAP.md).
+Provider `next` and `build` are explicit-only skills (`disable-model-invocation: true`), even if absent from the
+automatic skill list. Confirm them through supplied metadata or the operator-supplied provider
+`.pi/skills/<name>/SKILL.md`; never guess a private installation, copy/install a skill or execute a recommendation.
+For unimplemented/ongoing work or confirmed repairs recommend `/skill:build TASK-NNNNN`; an explicit
+implementation-only request uses `work`. Completed implementation awaiting acceptance routes to independent
+`review`; accepted work to applicable `qa`, then authorized `land`. Unknown/stale report identity needs its evidence
+owner's reconciliation, not a guessed verdict. Preserve the current checkout, ledger and consumed repair allowance.
 
 Project Yii owns its planning. Individual records own scope, status, dependencies, and priority; generated
 indexes, child tables, the TASK Board, and Roadmap tables are projections, not additional status authorities.
@@ -161,6 +168,40 @@ The map is an index, not a second store of decisions. Wayfinder tables and front
 The Board names one unblocked Wayfinder review candidate only when an active map has a real decision frontier.
 When none exists, say so. A Closed map has no frontier and links the resulting EPIC/TICKET/TASK handoff. A planning
 handoff does not authorize runtime implementation; each executable TASK must have accepted scope.
+
+## Map-wide planning order
+
+Within one accepted map scope, finish decisions/grilling and all approved EPIC handoffs before decomposing its
+EPICs into accepted TICKETs; finish that phase across the map before decomposing TICKETs into TASKs. Respect an
+explicit narrower human choice without inventing dependencies between otherwise independent records/maps.
+An interview-mode Wayfinder decision stays inside its own resolution boundary; it does not invoke EPIC-producing
+`grill` automatically. Each grill writes at most one approved EPIC. Reuse settled decisions and live/archived IDs.
+
+Use current map/Board/Roadmap handoffs and owning progress sections to distinguish decisions resolved, EPICs
+written/approved, TICKET splits accepted and TASK splits accepted. Nonempty child tables and terminal parent
+status are not phase markers. Missing/contradictory mapping needs the planning owner, not a history-wide search.
+A Closed map may still have unfinished linked decomposition; continue that handoff without reopening decisions.
+When phases are complete, recommend read-only `next` for Board-based selection; never start implementation.
+
+## Execution evidence
+
+For new runs resolve the canonical base through Git common-directory and registered-worktree metadata:
+
+| Base-owned ignored path | Owner / purpose |
+| --- | --- |
+| `.runs/build/<TASK-ID>/` | Build coordinator context, ledger, active lock and unique attempts |
+| `.runs/reviews/<TASK-ID>/review.md` | Independent Reviewer only; canonical latest verdict, preserved history |
+| `.runs/qa/<TASK-ID>/qa.md` | Independent QA only; canonical disposition, unique `runs/<run-id>/` evidence |
+| `.runs/tasks/<TASK-ID>/runs/<run-id>/` | Unique task-owned implementation, checks and delivery evidence |
+| `.runs/prototypes/<scope>/` | Disposable design/prototype artifacts, never production code |
+| `.runs/worktrees/` | Explicitly selected registered isolated worktrees, managed through Git |
+
+This supersedes the old `.runs/<YYYY-MM-DD>-<slug>/` coordinate-build convention for **new runs only**. Preserve
+historical and in-flight runs in place, including failed evidence; adoption grants no relocation/deletion authority.
+Never stage `.runs/`. Keep application runtime and tool caches under Yii's `var/`, not provider scratch/cache paths.
+Independent owners alone replace canonical reports; implementers/coordinators may read but never fabricate or
+rewrite them. Unknown report/base ownership holds that action. See the [shared binding](agents/shared-workflows.md)
+for identity, continuation and publication contracts. Existing explicit archive rules remain unchanged.
 
 ## Explicit-only archive operation
 
