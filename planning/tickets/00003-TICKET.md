@@ -2,7 +2,7 @@
 id: TICKET-00003
 epic: EPIC-00003
 title: Adopt Stable Fight Common and AccessControl Contracts
-status: in-progress
+status: done
 order: 2
 ---
 
@@ -56,7 +56,7 @@ The subsequent build-lifecycle replacement belongs to TICKET-00004.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00008](../tasks/00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](00003-TICKET.md) | in-progress | [TASK-00007](../tasks/00007-TASK.md), [TASK-00011](../tasks/00011-TASK.md) | — |
+| 3 | [TASK-00008](../tasks/00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](00003-TICKET.md) | done | [TASK-00007](../tasks/00007-TASK.md), [TASK-00011](../tasks/00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/15 |
 <!-- /planning:children -->
 
 ## Progress
@@ -72,11 +72,13 @@ behaves correctly. At approval the Yii lock and installed metadata contained Com
 planning amendment is integrated. TASK-00012's shared instructions are now integrated through merged PR #14;
 gate replacement remains TASK-00009. No further TASK decomposition is pending for this accepted requirement.
 
-TASK-00008 is now implemented locally with the complete current gate passed, pending independent acceptance on its approved
-feature branch. [Installed artifact/contract findings](../../docs/stable-package-baseline.md) record verified
-Common 1.4.0 / AccessControl 0.8.0, released Yii collaborator changes and narrow transaction compatibility,
-consumer-owned PHPCS dependencies and bounded behavior checks. No AccessControl workflow is selected and WF-001's
-full public inventory remains open. This TICKET remains in-progress; no completion or publication is inferred.
+TASK-00008 was independently accepted and QA-passed at exact candidate
+`402ffa5fe601c29fa3a01a5be278f5b74bf8c7fa`, then published as [PR #15](https://github.com/johnnickell/project-yii/pull/15).
+[Installed artifact/contract findings](../../docs/stable-package-baseline.md) record verified Common 1.4.0 /
+AccessControl 0.8.0, released Yii collaborator changes and narrow transaction compatibility, consumer-owned PHPCS
+dependencies and bounded behavior checks. All child TASKs are terminal, so automatic parent completion marks this
+TICKET done; publication does not imply review approval, merge, release, or deployment. No AccessControl workflow
+is selected and WF-001's full public inventory remains open.
 
 ### Historical baseline approval
 

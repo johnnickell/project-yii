@@ -14,8 +14,9 @@ What is the complete, released, public consumer contract that the Yii starter mu
 
 The maintainer raised the baseline on 2026-10-24 to the latest verified stable releases: AccessControl 0.8.0 and
 Common 1.4.0. [TICKET-00003](../../tickets/00003-TICKET.md#progress) records public registry references and the
-prior baseline history. [TASK-00008](../../tasks/00008-TASK.md) now records local installation and bounded
-compatibility verification with the complete gate passed, pending independent acceptance. Its
+prior baseline history. [TASK-00008](../../tasks/00008-TASK.md) now records independently accepted local installation and bounded
+compatibility verification with the complete gate passed; [PR #15](https://github.com/johnnickell/project-yii/pull/15)
+is open. Its
 [baseline findings](../../../docs/stable-package-baseline.md) identify installed Common 1.4.0 at
 `87b9580c072f3149d574e09865daa79620c92118` and AccessControl 0.8.0 at
 `319738255e682d587642b67856039f882b9588d6`, transaction compatibility and stale package publication prose.

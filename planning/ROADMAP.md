@@ -46,11 +46,11 @@ pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candi
 independently accepted and QA-passed, integrated through PR #12; PR #13's separate runtime repair is also merged.
 TASK-00012 independently accepted candidate A, independently QA-passed, and is integrated through merged
 [PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base; its administrative closeout B
-changed delivery metadata only. TASK-00008 has a local stable-package implementation with the complete gate
-passed, pending independent acceptance, with [bounded artifact/contract findings](../docs/stable-package-baseline.md).
-TASK-00009 remains unimplemented and retains gate ownership. The broader
-application map remains in its decision phase with no executable frontier; its later decomposition is not implied
-by this bounded adoption portfolio.
+changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at its exact candidate, with
+[PR #15](https://github.com/johnnickell/project-yii/pull/15) open and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
+TICKET-00003 closes automatically. TASK-00009 remains unimplemented and is now the executable gate successor.
+The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
+complete capability inventory is not implied by this bounded adoption portfolio.
 
 ## Completed / Released
 
