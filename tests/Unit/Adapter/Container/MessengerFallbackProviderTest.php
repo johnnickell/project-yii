@@ -11,10 +11,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 
+/**
+ * Class MessengerFallbackProviderTest
+ */
 #[CoversClass(MessengerFallbackProvider::class)]
 final class MessengerFallbackProviderTest extends TestCase
 {
-    public function test_it_wires_async_buses_to_the_in_memory_transport(): void
+    /**
+     * Tests local asynchronous fallback selection
+     */
+    public function testItWiresAsyncBusesToTheInMemoryTransport(): void
     {
         $provider = new MessengerFallbackProvider();
         self::assertNotEmpty($provider->getDefinitions());

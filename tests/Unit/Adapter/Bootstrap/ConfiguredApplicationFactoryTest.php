@@ -11,10 +11,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Di\Container;
 
+/**
+ * Class ConfiguredApplicationFactoryTest
+ */
 #[CoversClass(ConfiguredApplicationFactory::class)]
 final class ConfiguredApplicationFactoryTest extends TestCase
 {
-    public function test_it_builds_the_configured_container_and_application(): void
+    /**
+     * Tests configured container and application creation
+     */
+    public function testItBuildsTheConfiguredContainerAndApplication(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 4));
 
@@ -22,7 +28,10 @@ final class ConfiguredApplicationFactoryTest extends TestCase
         self::assertSame(200, $factory->createApplication()->handle(new ServerRequest('GET', '/'))->getStatusCode());
     }
 
-    public function test_it_builds_only_named_providers_and_rejects_unknown_names(): void
+    /**
+     * Tests explicit provider selection and unknown-name rejection
+     */
+    public function testItBuildsOnlyNamedProvidersAndRejectsUnknownNames(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 4));
         self::assertInstanceOf(Container::class, $factory->createContainer(providerNames: ['cache-policy']));

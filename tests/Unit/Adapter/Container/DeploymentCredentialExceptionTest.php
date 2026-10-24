@@ -10,10 +10,16 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException;
 
+/**
+ * Class DeploymentCredentialExceptionTest
+ */
 #[CoversClass(DeploymentCredentialException::class)]
 final class DeploymentCredentialExceptionTest extends TestCase
 {
-    public function test_it_is_a_container_runtime_exception(): void
+    /**
+     * Tests the credential failure contract
+     */
+    public function testItIsAContainerRuntimeException(): void
     {
         $exception = new DeploymentCredentialException('missing deployment credential');
 

@@ -11,10 +11,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Class CacheProviderTest
+ */
 #[CoversClass(CacheProvider::class)]
 final class CacheProviderTest extends TestCase
 {
-    public function test_it_exposes_working_project_and_psr_caches(): void
+    /**
+     * Tests project and PSR cache behavior
+     */
+    public function testItExposesWorkingProjectAndPsrCaches(): void
     {
         $provider = new CacheProvider();
         self::assertSame([], $provider->getExtensions());
@@ -24,6 +30,9 @@ final class CacheProviderTest extends TestCase
             ->createContainer(providerNames: ['cache-policy']);
         self::assertTrue($container->get(CacheInterface::class)->set('key', 'value'));
         self::assertSame('value', $container->get(CacheInterface::class)->get('key'));
-        self::assertSame('loaded', $container->get(Cache::class)->read('fight-key', static fn (): string => 'loaded', 60));
+        self::assertSame(
+            'loaded',
+            $container->get(Cache::class)->read('fight-key', static fn (): string => 'loaded', 60)
+        );
     }
 }

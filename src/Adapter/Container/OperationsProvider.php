@@ -10,13 +10,23 @@ use Fight\Common\Application\Scheduler\Scheduler;
 use Fight\Common\Domain\Value\DateTime\Timezone;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class OperationsProvider
+ */
 final readonly class OperationsProvider implements ServiceProviderInterface
 {
+    /**
+     * Constructs OperationsProvider
+     */
     public function __construct(private ProviderContext $context)
     {
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns process and scheduler definitions with the configured runtime path
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         $schedulerPath = $this->context->absolutePath($this->context->parameters['app.scheduler_path']);
@@ -26,12 +36,16 @@ final readonly class OperationsProvider implements ServiceProviderInterface
 
         return [
             ProcessRunner::class => SymfonyProcessRunner::class,
-            Scheduler::class => static fn (ProcessRunner $runner): Scheduler =>
-                Scheduler::withProcessRunner(new Timezone('UTC'), $schedulerPath, $runner),
+            Scheduler::class     => static fn (ProcessRunner $runner): Scheduler =>
+                Scheduler::withProcessRunner(new Timezone('UTC'), $schedulerPath, $runner)
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no operations extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

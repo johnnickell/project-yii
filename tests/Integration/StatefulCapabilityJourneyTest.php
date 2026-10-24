@@ -8,21 +8,30 @@ use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
 use Fight\Common\Application\FileStorage\FileStorage;
 use Fight\Common\Application\Repository\TransactionalUnitOfWork;
 use Fight\Common\Application\Scheduler\Scheduler;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\TestCase;
 use Yiisoft\Db\Cache\SchemaCache;
 use Yiisoft\Db\Connection\ConnectionInterface;
 
+/**
+ * Class StatefulCapabilityJourneyTest
+ */
 #[CoversNothing]
 final class StatefulCapabilityJourneyTest extends TestCase
 {
-    public function test_transactions_commit_and_roll_back_at_the_booted_yii_connection(): void
+    /**
+     * Tests commit, rollback and reuse on the booted persistence connection
+     */
+    public function testTransactionsCommitAndRollBackAtTheBootedYiiConnection(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $connection = $container->get(ConnectionInterface::class);
         $connection->createCommand('CREATE TABLE journey (value TEXT NOT NULL)')->execute();
         $unitOfWork = $container->get(TransactionalUnitOfWork::class);
-        $unitOfWork->commitTransactional(static fn () => $connection->createCommand("INSERT INTO journey VALUES ('committed')")->execute());
+        $inserted = $unitOfWork->commitTransactional(
+            static fn () => $connection->createCommand("INSERT INTO journey VALUES ('committed')")->execute()
+        );
+        self::assertSame(1, $inserted);
 
         try {
             $unitOfWork->commitTransactional(static function () use ($connection): void {
@@ -35,19 +44,54 @@ final class StatefulCapabilityJourneyTest extends TestCase
         }
 
         self::assertSame(['committed'], $connection->createCommand('SELECT value FROM journey')->queryColumn());
+        self::assertNull($connection->getTransaction());
+        self::assertSame('reused', $unitOfWork->commitTransactional(static fn (): string => 'reused'));
     }
 
-    public function test_storage_and_scheduler_use_independent_configured_runtime_roots(): void
+    /**
+     * Tests nested rejection rolls back the outer transaction without poisoning reuse
+     */
+    public function testNestedTransactionsRejectAndRollBackAtTheBootedConnection(): void
     {
-        $base = sys_get_temp_dir() . '/project-yii-state-' . bin2hex(random_bytes(6));
+        $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
+        $connection = $container->get(ConnectionInterface::class);
+        $connection->createCommand('CREATE TABLE nested_journey (value TEXT NOT NULL)')->execute();
+        $unitOfWork = $container->get(TransactionalUnitOfWork::class);
+
+        try {
+            $unitOfWork->commitTransactional(static function () use ($connection, $unitOfWork): void {
+                $connection->createCommand("INSERT INTO nested_journey VALUES ('outer')")->execute();
+                $unitOfWork->commitTransactional(
+                    static fn () => $connection->createCommand("INSERT INTO nested_journey VALUES ('inner')")->execute()
+                );
+            });
+            self::fail('Nested transactions must be rejected.');
+        } catch (\LogicException $exception) {
+            self::assertSame('Nested transactional execution is not supported.', $exception->getMessage());
+        }
+
+        self::assertSame([], $connection->createCommand('SELECT value FROM nested_journey')->queryColumn());
+        self::assertNull($connection->getTransaction());
+        self::assertSame(1, $unitOfWork->commitTransactional(
+            static fn () => $connection->createCommand("INSERT INTO nested_journey VALUES ('reused')")->execute()
+        ));
+        self::assertSame(['reused'], $connection->createCommand('SELECT value FROM nested_journey')->queryColumn());
+    }
+
+    /**
+     * Tests isolated storage and scheduling state across application boots
+     */
+    public function testStorageAndSchedulerUseIndependentConfiguredRuntimeRoots(): void
+    {
+        $base = sys_get_temp_dir().'/project-yii-state-'.bin2hex(random_bytes(6));
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $first = $factory->createContainer([
-            'app.storage_path' => $base . '/first-storage',
-            'app.scheduler_path' => $base . '/first-scheduler',
+            'app.storage_path'   => $base.'/first-storage',
+            'app.scheduler_path' => $base.'/first-scheduler'
         ]);
         $second = $factory->createContainer([
-            'app.storage_path' => $base . '/second-storage',
-            'app.scheduler_path' => $base . '/second-scheduler',
+            'app.storage_path'   => $base.'/second-storage',
+            'app.scheduler_path' => $base.'/second-scheduler'
         ]);
 
         $first->get(FileStorage::class)->putFile('journey.txt', 'first-root');
@@ -55,18 +99,25 @@ final class StatefulCapabilityJourneyTest extends TestCase
         self::assertFalse($second->get(FileStorage::class)->hasFile('journey.txt'));
 
         $ran = false;
-        $first->get(Scheduler::class)->addJob('isolated-job', static fn (): bool => true, static function () use (&$ran): bool {
-            $ran = true;
+        $first->get(Scheduler::class)->addJob(
+            'isolated-job',
+            static fn (): bool => true,
+            static function () use (&$ran): bool {
+                $ran = true;
 
-            return true;
-        });
+                return true;
+            }
+        );
         $first->get(Scheduler::class)->run();
         self::assertTrue($ran);
-        self::assertFileExists($base . '/first-scheduler/isolated-job.lock');
-        self::assertFileDoesNotExist($base . '/second-scheduler/isolated-job.lock');
+        self::assertFileExists($base.'/first-scheduler/isolated-job.lock');
+        self::assertFileDoesNotExist($base.'/second-scheduler/isolated-job.lock');
     }
 
-    public function test_booted_schema_cache_is_only_the_persistence_metadata_collaborator(): void
+    /**
+     * Tests schema metadata cache behavior
+     */
+    public function testBootedSchemaCacheIsOnlyThePersistenceMetadataCollaborator(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer();
         $schemaCache = $container->get(SchemaCache::class);

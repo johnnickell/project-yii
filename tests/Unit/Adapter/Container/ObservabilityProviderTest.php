@@ -12,10 +12,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class ObservabilityProviderTest
+ */
 #[CoversClass(ObservabilityProvider::class)]
 final class ObservabilityProviderTest extends TestCase
 {
-    public function test_it_exposes_the_shared_logger_and_health_contracts(): void
+    /**
+     * Tests selected logging and health contracts
+     */
+    public function testItExposesTheSharedLoggerAndHealthContracts(): void
     {
         $provider = new ObservabilityProvider(new ProviderContext('/project', ['app.log_targets' => []]));
         self::assertNotEmpty($provider->getDefinitions());

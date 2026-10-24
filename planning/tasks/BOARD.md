@@ -33,8 +33,9 @@ accepted and QA-passed planning amendment, now integrated into `develop` through
 [TASK-00009](00009-TASK.md) (running-container gate). Existing package/gate assignments are not duplicated.
 [TASK-00010](00010-TASK.md) retains the legacy source/mapping, closed only as a duplicate assignment.
 [TASK-00012](00012-TASK.md#completion-notes) independently accepted candidate A, independently QA-passed, and
-is published for human review in [PR #14](https://github.com/johnnickell/project-yii/pull/14); administrative
-closeout B changes delivery metadata only. No additional general adoption decision or decomposition is pending
+is integrated through merged [PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base;
+administrative closeout B changed delivery metadata only. TASK-00008 now has a local stable-package implementation
+and bounded installed-contract evidence with the complete gate passed, pending independent acceptance. No additional general adoption decision or decomposition is pending
 for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
@@ -46,22 +47,24 @@ no currently executable Wayfinder review candidate. The maintainer confirmed and
 [WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
 [WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md)
 is next but remains gated on verified installed stable Common `^1.4` / AccessControl `^0.8` contracts;
-[TASK-00008](00008-TASK.md) owns bounded adoption. Shared-convention adoption does not satisfy that gate.
+[TASK-00008](00008-TASK.md) owns bounded adoption and now records local installed-artifact evidence pending
+independent acceptance. [Baseline findings](../../docs/stable-package-baseline.md) do not close the full inventory.
+Shared-convention adoption alone does not satisfy that gate.
 WF-003 still waits for WF-001 and Symfony's canonical wire contract. The bounded adoption TASKs do not authorize
 the broader application map.
 
 ## Active Work
 
 <!-- planning:active -->
-None.
+| Order | ID | Title | Parent | Status | Blocked by | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | in-progress | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
 <!-- /planning:active -->
 
 ## Ready Frontier
 
 <!-- planning:ready -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | ready-for-agent | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | — |
+None.
 <!-- /planning:ready -->
 
 ## Waiting

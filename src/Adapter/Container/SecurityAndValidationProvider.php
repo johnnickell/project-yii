@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Adapter\Container;
 
-use Fight\Common\Adapter\Auth\Security\PhpPasswordHasher;
-use Fight\Common\Adapter\Auth\Security\PhpPasswordValidator;
 use Fight\Common\Adapter\Auth\Hmac\HmacRequestService;
 use Fight\Common\Adapter\Auth\Security\JwtDecoder;
 use Fight\Common\Adapter\Auth\Security\JwtEncoder;
+use Fight\Common\Adapter\Auth\Security\PhpPasswordHasher;
+use Fight\Common\Adapter\Auth\Security\PhpPasswordValidator;
 use Fight\Common\Application\Auth\RequestService;
 use Fight\Common\Application\Auth\Security\PasswordHasher;
 use Fight\Common\Application\Auth\Security\PasswordValidator;
@@ -18,64 +18,84 @@ use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Validator\Validator;
 use Yiisoft\Validator\ValidatorInterface;
 
+/**
+ * Class SecurityAndValidationProvider
+ */
 final readonly class SecurityAndValidationProvider implements ServiceProviderInterface
 {
+    /**
+     * Constructs SecurityAndValidationProvider
+     */
     public function __construct(private ProviderContext $context)
     {
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns fail-closed security and validation definitions
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         return [
-            RequestService::class => fn (): RequestService => new HmacRequestService(
+            RequestService::class     => fn (): RequestService => new HmacRequestService(
                 self::requiredNonBlankString(
                     $this->context->parameters['app.hmac_identity'] ?? null,
-                    'FIGHT_HMAC_PUBLIC',
+                    'FIGHT_HMAC_PUBLIC'
                 ),
                 self::requiredHexSecret(
                     $this->context->parameters['app.hmac_private_hex'] ?? null,
-                    'FIGHT_HMAC_PRIVATE',
-                ),
+                    'FIGHT_HMAC_PRIVATE'
+                )
             ),
-            TokenEncoder::class => fn (): TokenEncoder => new JwtEncoder(
+            TokenEncoder::class       => fn (): TokenEncoder => new JwtEncoder(
                 self::requiredHexSecret(
                     $this->context->parameters['app.jwt_secret_hex'] ?? null,
-                    'FIGHT_JWT_SECRET',
+                    'FIGHT_JWT_SECRET'
                 ),
-                'HS256',
+                'HS256'
             ),
-            TokenDecoder::class => fn (): TokenDecoder => new JwtDecoder(
+            TokenDecoder::class       => fn (): TokenDecoder => new JwtDecoder(
                 self::requiredHexSecret(
                     $this->context->parameters['app.jwt_secret_hex'] ?? null,
-                    'FIGHT_JWT_SECRET',
+                    'FIGHT_JWT_SECRET'
                 ),
-                'HS256',
+                'HS256'
             ),
-            PasswordHasher::class => static fn (): PasswordHasher => new PhpPasswordHasher(PASSWORD_ARGON2ID),
-            PasswordValidator::class => static fn (): PasswordValidator => new PhpPasswordValidator(PASSWORD_ARGON2ID),
-            ValidatorInterface::class => Validator::class,
+            PasswordHasher::class     => static fn (): PasswordHasher => new PhpPasswordHasher(PASSWORD_ARGON2ID),
+            PasswordValidator::class  => static fn (): PasswordValidator => new PhpPasswordValidator(PASSWORD_ARGON2ID),
+            ValidatorInterface::class => Validator::class
         ];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no security extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];
     }
 
+    /**
+     * Returns a configured nonblank credential or rejects deployment
+     */
     private static function requiredNonBlankString(mixed $value, string $environmentVariable): string
     {
         if (!is_string($value) || trim($value) === '') {
             throw new DeploymentCredentialException(sprintf(
                 'Security credential %s must be configured as a nonblank string.',
-                $environmentVariable,
+                $environmentVariable
             ));
         }
 
         return $value;
     }
 
+    /**
+     * Returns a configured 32-byte hexadecimal secret or rejects deployment
+     */
     private static function requiredHexSecret(mixed $value, string $environmentVariable): string
     {
         $value = self::requiredNonBlankString($value, $environmentVariable);
@@ -83,7 +103,7 @@ final readonly class SecurityAndValidationProvider implements ServiceProviderInt
         if (preg_match('/\\A[0-9a-fA-F]{64}\\z/D', $value) !== 1) {
             throw new DeploymentCredentialException(sprintf(
                 'Security credential %s must contain exactly 64 hexadecimal characters (32 bytes).',
-                $environmentVariable,
+                $environmentVariable
             ));
         }
 

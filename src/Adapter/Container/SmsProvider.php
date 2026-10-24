@@ -8,15 +8,26 @@ use Fight\Common\Adapter\Sms\Null\NullSmsTransport;
 use Fight\Common\Application\Sms\Transport\SmsTransport;
 use Yiisoft\Di\ServiceProviderInterface;
 
+/**
+ * Class SmsProvider
+ */
 final readonly class SmsProvider implements ServiceProviderInterface
 {
-    /** @return array<string, mixed> */
+    /**
+     * Returns the no-delivery SMS definition
+     *
+     * @return array<string, mixed>
+     */
     public function getDefinitions(): array
     {
         return [SmsTransport::class => NullSmsTransport::class];
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Returns no SMS extensions
+     *
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return [];

@@ -5,25 +5,31 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Adapter\Bootstrap\ConfiguredApplicationFactory;
-use Fight\Common\Application\Routing\UrlGenerator;
-use Fight\Common\Application\Templating\TemplateEngine;
 use Fight\Common\Adapter\Http\Psr17\JSendResponseFactory;
 use Fight\Common\Application\Http\JSend\JSendEnvelope;
+use Fight\Common\Application\Routing\UrlGenerator;
+use Fight\Common\Application\Templating\TemplateEngine;
 use Fight\Common\Domain\Exception\ValidationException;
 use Fight\Common\Domain\Type\Arrayable;
 use Nyholm\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Yiisoft\View\View;
 use Yiisoft\View\ViewInterface;
 use Yiisoft\View\WebView;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Class HttpApplicationJourneyTest
+ */
 #[CoversNothing]
 final class HttpApplicationJourneyTest extends TestCase
 {
-    public function test_the_same_configured_factory_as_the_web_entrypoint_handles_the_request_lifecycle(): void
+    /**
+     * Tests the request lifecycle through the web entrypoint composition
+     */
+    public function testTheConfiguredFactoryHandlesTheRequestLifecycle(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $response = $factory->createApplication()->handle(new ServerRequest('GET', 'https://yii.example.test/'));
@@ -34,13 +40,16 @@ final class HttpApplicationJourneyTest extends TestCase
         self::assertStringContainsString('<h1>Hello, Fight Yii!</h1>', (string) $response->getBody());
     }
 
-    public function test_configured_routing_and_yii_view_twig_services_have_expected_outcomes(): void
+    /**
+     * Tests configured route generation and native view rendering
+     */
+    public function testConfiguredRoutingAndViewServicesHaveExpectedOutcomes(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $parameters = [
-            'app.route_path' => '/configured-hello',
-            'app.route_name' => 'configured-hello',
-            'app.templates_path' => 'tests/Fixture/Http/configured-templates',
+            'app.route_path'     => '/configured-hello',
+            'app.route_name'     => 'configured-hello',
+            'app.templates_path' => 'tests/Fixture/Http/configured-templates'
         ];
         $application = $factory->createApplication($parameters);
 
@@ -61,16 +70,19 @@ final class HttpApplicationJourneyTest extends TestCase
         self::assertSame('/configured-hello', $container->get(UrlGenerator::class)->generate('configured-hello'));
         self::assertStringContainsString(
             'Configured Yii request',
-            $container->get(TemplateEngine::class)->render('home.twig'),
+            $container->get(TemplateEngine::class)->render('home.twig')
         );
     }
 
-    public function test_shared_json_and_jsend_middleware_execute_through_the_yii_router(): void
+    /**
+     * Tests shared JSON and JSend behavior through native routing
+     */
+    public function testSharedJsonAndJsendMiddlewareExecuteThroughTheYiiRouter(): void
     {
         $factory = new ConfiguredApplicationFactory(dirname(__DIR__, 2));
         $successAction = static function (
             ServerRequestInterface $request,
-            JSendResponseFactory $responses,
+            JSendResponseFactory $responses
         ): ResponseInterface {
             $data = $request->getParsedBody();
 
@@ -80,67 +92,71 @@ final class HttpApplicationJourneyTest extends TestCase
                     public function __construct(private array $data)
                     {
                     }
+
+                    /**
+                     * @inheritDoc
+                     */
                     public function toArray(): array
                     {
                         return $this->data;
                     }
                 }),
                 201,
-                ['X-Route-Outcome' => 'created'],
+                ['X-Route-Outcome' => 'created']
             );
         };
         $parameters = [
-            'app.route_path' => '/json',
-            'app.route_name' => 'json',
+            'app.route_path'    => '/json',
+            'app.route_name'    => 'json',
             'app.route_methods' => ['POST'],
-            'app.route_action' => $successAction,
+            'app.route_action'  => $successAction
         ];
 
         $response = $factory->createApplication($parameters)->handle(
             new ServerRequest('POST', 'https://yii.example.test/json')
                 ->withHeader('Content-Type', 'application/json; charset=utf-8')
-                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{"role":"editor"}')),
+                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{"role":"editor"}'))
         );
         self::assertSame(201, $response->getStatusCode());
         self::assertSame('application/json', $response->getHeaderLine('Content-Type'));
         self::assertSame('created', $response->getHeaderLine('X-Route-Outcome'));
         self::assertSame(
             ['status' => 'success', 'data' => ['role' => 'editor']],
-            json_decode((string) $response->getBody(), true, flags: JSON_THROW_ON_ERROR),
+            json_decode((string) $response->getBody(), true, flags: JSON_THROW_ON_ERROR)
         );
 
         $validation = $factory->createApplication([
             ...$parameters,
             'app.route_action' => static fn (): never => throw new ValidationException([
-                'role' => ['Role is required'],
-            ]),
+                'role' => ['Role is required']
+            ])
         ])->handle(new ServerRequest('POST', 'https://yii.example.test/json'));
         self::assertSame(400, $validation->getStatusCode());
         self::assertSame(
             ['status' => 'fail', 'data' => ['role' => ['Role is required']]],
-            json_decode((string) $validation->getBody(), true, flags: JSON_THROW_ON_ERROR),
+            json_decode((string) $validation->getBody(), true, flags: JSON_THROW_ON_ERROR)
         );
 
         $failure = $factory->createApplication([
             ...$parameters,
-            'app.route_action' => static fn (): never => throw new \RuntimeException('route failed'),
+            'app.route_action' => static fn (): never => throw new \RuntimeException('route failed')
         ])->handle(new ServerRequest('POST', 'https://yii.example.test/json'));
         self::assertSame(500, $failure->getStatusCode());
         self::assertSame(
             ['status' => 'error', 'message' => 'route failed'],
-            json_decode((string) $failure->getBody(), true, flags: JSON_THROW_ON_ERROR),
+            json_decode((string) $failure->getBody(), true, flags: JSON_THROW_ON_ERROR)
         );
 
         $malformed = $factory->createApplication($parameters)->handle(
             new ServerRequest('POST', 'https://yii.example.test/json')
                 ->withHeader('Content-Type', 'application/json')
-                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{not-json')),
+                ->withBody(new \Nyholm\Psr7\Factory\Psr17Factory()->createStream('{not-json'))
         );
         self::assertSame(500, $malformed->getStatusCode());
         self::assertSame('application/json', $malformed->getHeaderLine('Content-Type'));
         self::assertSame(
             ['status' => 'error', 'message' => 'Syntax error'],
-            json_decode((string) $malformed->getBody(), true, flags: JSON_THROW_ON_ERROR),
+            json_decode((string) $malformed->getBody(), true, flags: JSON_THROW_ON_ERROR)
         );
     }
 }

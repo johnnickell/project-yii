@@ -12,15 +12,25 @@ use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Di\ServiceProviderInterface;
 use Yiisoft\Yii\Http\Application;
 
+/**
+ * Class ConfiguredApplicationFactory
+ */
 final readonly class ConfiguredApplicationFactory
 {
+    /**
+     * Constructs ConfiguredApplicationFactory
+     */
     public function __construct(private string $root)
     {
     }
 
     /**
+     * Creates the selected Yii container from runtime policy
+     *
      * @param array<string, mixed> $parameterOverrides
-     * @param list<string> $providerNames
+     * @param array $providerNames
+     *
+     * @phpstan-param list<string> $providerNames
      */
     public function createContainer(array $parameterOverrides = [], array $providerNames = []): Container
     {
@@ -32,7 +42,7 @@ final readonly class ConfiguredApplicationFactory
             if ($unknownProviderNames !== []) {
                 throw new \InvalidArgumentException(sprintf(
                     'Unknown configured provider name(s): %s',
-                    implode(', ', $unknownProviderNames),
+                    implode(', ', $unknownProviderNames)
                 ));
             }
 
@@ -47,6 +57,18 @@ final readonly class ConfiguredApplicationFactory
     }
 
     /**
+     * Creates the configured HTTP application
+     *
+     * @param array<string, mixed> $parameterOverrides
+     */
+    public function createApplication(array $parameterOverrides = []): Application
+    {
+        return $this->createContainer($parameterOverrides)->get(Application::class);
+    }
+
+    /**
+     * Creates a provider with its declared runtime context
+     *
      * @param string|array{class: class-string<ServiceProviderInterface>, runtime?: bool} $provider
      * @param array<string, mixed> $parameters
      */
@@ -60,11 +82,5 @@ final readonly class ConfiguredApplicationFactory
         }
 
         return new $className();
-    }
-
-    /** @param array<string, mixed> $parameterOverrides */
-    public function createApplication(array $parameterOverrides = []): Application
-    {
-        return $this->createContainer($parameterOverrides)->get(Application::class);
     }
 }

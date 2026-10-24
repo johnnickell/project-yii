@@ -2,7 +2,7 @@
 id: TICKET-00003
 epic: EPIC-00003
 title: Adopt Stable Fight Common and AccessControl Contracts
-status: ready-for-agent
+status: in-progress
 order: 2
 ---
 
@@ -56,7 +56,7 @@ The subsequent build-lifecycle replacement belongs to TICKET-00004.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 3 | [TASK-00008](../tasks/00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](00003-TICKET.md) | ready-for-agent | [TASK-00007](../tasks/00007-TASK.md), [TASK-00011](../tasks/00011-TASK.md) | — |
+| 3 | [TASK-00008](../tasks/00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](00003-TICKET.md) | in-progress | [TASK-00007](../tasks/00007-TASK.md), [TASK-00011](../tasks/00011-TASK.md) | — |
 <!-- /planning:children -->
 
 ## Progress
@@ -66,11 +66,17 @@ On 2026-10-24 the maintainer approved latest stable package adoption in the main
 `87b9580c072f3149d574e09865daa79620c92118`; [AccessControl Packagist metadata](https://repo.packagist.org/p2/johnnickell/fight-access-control.json)
 identifies v0.8.0 at `319738255e682d587642b67856039f882b9588d6`. Both require PHP >=8.5; AccessControl declares
 Common `^1.3`, which permits 1.4.0. This is registry metadata, not proof that the complete Yii graph installs or
-behaves correctly. The Yii lock and installed metadata still contain Common development reference
+behaves correctly. At approval the Yii lock and installed metadata contained Common development reference
 `fad24ae9fdcf4ac00fa55c59ef7d35f7c7531911` and AccessControl development reference
 `4259ea0b77bc2e1d87e62ab70b64af63bae99477`. TASK-00008 owns the upgrade and verification after TASK-00011's
-planning amendment is integrated. Shared instructions are a separate TASK-00012 slice; gate replacement remains
-TASK-00009. No further TASK decomposition is pending for this accepted requirement.
+planning amendment is integrated. TASK-00012's shared instructions are now integrated through merged PR #14;
+gate replacement remains TASK-00009. No further TASK decomposition is pending for this accepted requirement.
+
+TASK-00008 is now implemented locally with the complete current gate passed, pending independent acceptance on its approved
+feature branch. [Installed artifact/contract findings](../../docs/stable-package-baseline.md) record verified
+Common 1.4.0 / AccessControl 0.8.0, released Yii collaborator changes and narrow transaction compatibility,
+consumer-owned PHPCS dependencies and bounded behavior checks. No AccessControl workflow is selected and WF-001's
+full public inventory remains open. This TICKET remains in-progress; no completion or publication is inferred.
 
 ### Historical baseline approval
 

@@ -9,10 +9,16 @@ use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class HttpApplicationTest
+ */
 #[CoversNothing]
 final class HttpApplicationTest extends TestCase
 {
-    public function test_a_configured_request_reaches_the_home_route(): void
+    /**
+     * Tests the configured home request
+     */
+    public function testAConfiguredRequestReachesTheHomeRoute(): void
     {
         $response = new ConfiguredApplicationFactory(dirname(__DIR__, 2))
             ->createApplication()

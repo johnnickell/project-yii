@@ -31,8 +31,10 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 - The 2026-10-24 approved package baseline is stable `fight-common` `^1.4` and `fight-access-control` `^0.8`,
   targeting the latest verified releases 1.4.0/0.8.0. [Release evidence and prior baseline history](../tickets/00003-TICKET.md#progress)
   distinguish registry metadata from installation. Development branches or aliases cannot satisfy the package
-  audit. The actual Yii installation and complete public capability inventory remain unverified.
-  [TASK-00008](../tasks/00008-TASK.md) owns bounded adoption; it does not complete this map or authorize its
+  audit. [TASK-00008](../tasks/00008-TASK.md) now records locally installed 1.4.0/0.8.0 archives and bounded
+  [contract/behavior evidence](../../docs/stable-package-baseline.md) with the complete gate passed, pending
+  independent acceptance. The complete public capability inventory remains unperformed. Bounded adoption does not complete
+  this map or authorize its
   product implementation. Shared-convention adoption in TASK-00012 does not satisfy the package gate.
 - Fight AccessControl owns scan-only reusable component schemas under `resources/openapi/`. Yii owns one complete
   OpenAPI 3.1 document, generated in one pass from those installed resources and Yii-owned Actions, DTOs, routes,

@@ -15,8 +15,8 @@ use Fight\Common\Application\Observability\MetricsCollector;
 use Fight\Common\Domain\Observability\AuditEntry;
 use Fight\Common\Domain\Observability\HealthResult;
 use Fight\Common\Domain\Observability\HealthStatus;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
@@ -26,13 +26,19 @@ use Yiisoft\Cache\ArrayCache;
 use Yiisoft\Log\Logger;
 use Yiisoft\Log\PsrTarget;
 
+/**
+ * Class CacheAndObservabilityJourneyTest
+ */
 #[CoversNothing]
 final class CacheAndObservabilityJourneyTest extends TestCase
 {
-    public function test_booted_cache_group_owns_native_psr16_and_fight_psr6_behavior(): void
+    /**
+     * Tests native and shared cache behavior in the selected composition
+     */
+    public function testBootedCacheGroupOwnsNativeAndFightCacheBehavior(): void
     {
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
-            providerNames: ['cache-policy'],
+            providerNames: ['cache-policy']
         );
 
         $native = $container->get(ArrayCache::class);
@@ -45,6 +51,7 @@ final class CacheAndObservabilityJourneyTest extends TestCase
         $loads = 0;
         $loader = static function () use (&$loads): string {
             ++$loads;
+
             return 'fight-value';
         };
         self::assertSame('fight-value', $container->get(Cache::class)->read('fight-key', $loader, 60));
@@ -52,12 +59,18 @@ final class CacheAndObservabilityJourneyTest extends TestCase
         self::assertSame(1, $loads);
     }
 
-    public function test_booted_observability_group_exposes_native_logging_and_shared_health(): void
+    /**
+     * Tests native logging and aggregated health outcomes
+     */
+    public function testBootedObservabilityGroupExposesLoggingAndHealth(): void
     {
         $sink = new class extends AbstractLogger {
             /** @var list<array{level: mixed, message: string}> */
             private array $messages = [];
 
+            /**
+             * @inheritDoc
+             */
             public function log(mixed $level, string|Stringable $message, array $context = []): void
             {
                 $this->messages[] = ['level' => $level, 'message' => (string) $message];
@@ -71,7 +84,7 @@ final class CacheAndObservabilityJourneyTest extends TestCase
         };
         $container = new ConfiguredApplicationFactory(dirname(__DIR__, 2))->createContainer(
             ['app.log_targets' => [new PsrTarget($sink)]],
-            ['observability-policy'],
+            ['observability-policy']
         );
 
         $logger = $container->get(Logger::class);
@@ -83,11 +96,17 @@ final class CacheAndObservabilityJourneyTest extends TestCase
         $health = $container->get(HealthAggregator::class);
         self::assertInstanceOf(HealthReporter::class, $health);
         $health->addCheck(new class implements HealthCheck {
+            /**
+             * @inheritDoc
+             */
             public function check(): HealthResult
             {
                 return new HealthResult($this->name(), HealthStatus::healthy(), 'ready');
             }
 
+            /**
+             * @inheritDoc
+             */
             public function name(): string
             {
                 return 'yii-composition';
