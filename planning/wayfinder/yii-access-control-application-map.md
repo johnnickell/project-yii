@@ -28,10 +28,12 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 ## Notes
 
 - This is planning-only charting. It does not authorize runtime, API, persistence, worker, or frontend changes.
-- The approved package baseline is stable `fight-common` `^1.2` and `fight-access-control` `^0.4`.
-  Development branches or aliases cannot satisfy the package audit. Released tags have been observed; the actual
-  Yii installation and complete public capability inventory remain unverified. [TASK-00008](../tasks/00008-TASK.md)
-  owns bounded adoption; it does not complete this map or authorize its product implementation.
+- The 2026-10-24 approved package baseline is stable `fight-common` `^1.4` and `fight-access-control` `^0.8`,
+  targeting the latest verified releases 1.4.0/0.8.0. [Release evidence and prior baseline history](../tickets/00003-TICKET.md#progress)
+  distinguish registry metadata from installation. Development branches or aliases cannot satisfy the package
+  audit. The actual Yii installation and complete public capability inventory remain unverified.
+  [TASK-00008](../tasks/00008-TASK.md) owns bounded adoption; it does not complete this map or authorize its
+  product implementation. Shared-convention adoption in TASK-00012 does not satisfy the package gate.
 - Fight AccessControl owns scan-only reusable component schemas under `resources/openapi/`. Yii owns one complete
   OpenAPI 3.1 document, generated in one pass from those installed resources and Yii-owned Actions, DTOs, routes,
   security declarations, and project-specific components.
@@ -64,7 +66,7 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 
 | Ticket | Type | Mode | Status | Depends On | Gate |
 |---|---|---|---|---|---|
-| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Verified installed stable Common 1.2+ / AccessControl 0.4+ contracts |
+| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Verified installed stable Common ^1.4 / AccessControl ^0.8 contracts |
 | [WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) | Grilling | HITL | **Closed** | — | — |
 | [WF-003 — Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) | Prototype | HITL | **Open** | WF-001, WF-002 | Symfony canonical wire contract |
 | [WF-004 — Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) | Prototype | HITL | **Open** | WF-001, WF-002, WF-003 | — |
@@ -94,7 +96,7 @@ WF-001 through WF-009 ──→ WF-010 ──→ EPIC + TICKETs + vertical imple
 
 None currently executable. WF-002 is closed. The next gated decision is
 [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md): it requires
-verified installed stable Common 1.2+ / AccessControl 0.4+ artifacts, with bounded adoption owned by
+verified installed stable Common `^1.4` / AccessControl `^0.8` artifacts, with bounded adoption owned by
 [TASK-00008](../tasks/00008-TASK.md). Observed release tags are not that evidence. WF-003 still depends on
 WF-001 and the Symfony canonical wire contract; closing WF-002 does not unblock it. No new decision is started
 by this closeout.
@@ -108,8 +110,8 @@ by this closeout.
 - Redis role/durability and detailed background behavior remain with WF-007; restricted development-UI access
   follows the owning HTTP/security decisions. A live-reload service is a future opt-in extension, not initial scope.
 - Symfony's final OpenAPI, authentication, realtime-event, and client-source contracts.
-- The complete installed stable public capability inventory for Common `^1.2` and its compatibility with
-  AccessControl `^0.4`; observed release tags alone do not complete WF-001.
+- The complete installed stable public capability inventory for Common `^1.4` and its compatibility with
+  AccessControl `^0.8`; registry release metadata alone does not complete WF-001.
 - Whether generated `public/dist/*` assets are committed or remain build-only output.
 - The final EPIC/TICKET split and implementation-TASK granularity; WF-010 owns that handoff after decisions close.
 
