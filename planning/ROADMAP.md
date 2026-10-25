@@ -58,7 +58,7 @@ None.
 The maintainer approved standalone [TASK-00014](tasks/00014-TASK.md) on 2026-10-25 to prevent repeated stale
 post-merge routing, adapting Fight Common's live checks, explicit reconciliation and generated current summaries.
 Its scope/record is accepted; no parent decomposition is needed. The planning baseline was integrated through
-PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`. Implementation is now in progress in the main checkout
+PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`. Implementation is complete in the main checkout
 on the approved TASK branch. Candidate A is independently accepted and QA-passed; OPEN
 [PR #18](https://github.com/johnnickell/project-yii/pull/18) awaits human review and merge. Planning publication is historical,
 not implementation delivery. This does not
