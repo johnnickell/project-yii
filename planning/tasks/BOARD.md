@@ -30,7 +30,7 @@ No TASK is currently executable; unresolved work may remain.
 ## Current Delivery
 
 <!-- planning:delivery -->
-- [TASK-00014](00014-TASK.md): Published; verify live state — https://github.com/johnnickell/project-yii/pull/18.
+None. No explicit current publication handoffs.
 <!-- /planning:delivery -->
 
 Publication snapshots require `--check-delivery` before routing; these rows do not assert unconditional OPEN state.
@@ -43,9 +43,12 @@ as a standalone bug, using the main checkout. Port Fight Common's bounded live d
 idempotent intake reconciliation and generated current summaries with Yii-native validation guarantees. PR #16 is
 already merged and locally integrated; no human merge or routine cleanup handoff remains for TASK-00009.
 The planning baseline was integrated through PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`.
-TASK-00014 candidate A is independently accepted and QA-passed; its OPEN [PR #18](https://github.com/johnnickell/project-yii/pull/18)
-awaits human review and merge. The earlier planning-publication instruction is historical, not an implementation delivery handoff.
-Preserve its PR #16 reconciliation and manual guidance. The WF-001 package audit remains separate.
+TASK-00014 candidate A is independently accepted and QA-passed. At its publication checkpoint,
+[PR #18](https://github.com/johnnickell/project-yii/pull/18) awaited human review/merge; intake reconciliation now verifies it
+MERGED on 2026-10-25 at `f8d41eefa2eb3b4cb550ab7bb940248be30b2d38`, integrated in this checkout, with
+[exact delivery evidence](00014-TASK.md#delivery-reconciliation--pr-18). No merge or routine cleanup handoff remains.
+The earlier planning-publication instruction is historical, not an implementation delivery handoff.
+Preserve its PR #16 reconciliation and manual guidance. WF-001's research closeout below is separate.
 
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
 [TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite. Independent review
@@ -82,10 +85,13 @@ Concrete conflicts or releases outside the approved envelope need scoped owner d
 [Yii AccessControl Starter Application](../wayfinder/yii-access-control-application-map.md) remains active. The
 maintainer confirmed and closed [WF-002 — Local Development Runtime Contract](../wayfinder/tickets/WF-002-local-development-runtime-contract.md).
 [WF-001 — Released Package Contract Audit](../wayfinder/tickets/WF-001-released-package-contract-audit.md) is now
-the executable Wayfinder review candidate: accepted TASK-00008 verifies its installed stable Common `^1.4` /
-AccessControl `^0.8` gate. [Baseline findings](../../docs/stable-package-baseline.md) do not close the full inventory,
-and this closeout does not begin the decision. WF-003 still waits for WF-001 and Symfony's canonical wire contract.
-The bounded adoption TASKs do not authorize the broader application map.
+Closed with the [complete source/workflow audit](../wayfinder/research/wf-001-released-package-contract-audit.md):
+1,124 unique declarations, 4,817 direct public members and 125 schema components have explicit dispositions.
+This is research, not implementation or consumer qualification. No Wayfinder decision is currently evidenced as
+available. [WF-003 — Yii ADR and Shared OpenAPI Contract](../wayfinder/tickets/WF-003-yii-adr-and-shared-openapi-contract.md)
+is next in map order but needs the Symfony wire-contract owner's immutable accepted artifact (repository, full
+revision, artifact path and acceptance reference), then Yii map-owner gate verification. Do not begin its prototype
+or decompose the broader application yet; the bounded adoption TASKs do not authorize that implementation.
 
 ## Active Work
 

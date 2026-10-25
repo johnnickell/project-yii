@@ -23,7 +23,8 @@ Symfony starter's canonical client-facing wire contract?
 - Decide content negotiation, JSON media type, pagination/filter conventions, correlation metadata, idempotency
   inputs where required, and stable error identifiers without leaking internal exception or coordinator types.
 - Generate exactly one Yii-owned OpenAPI 3.1 document in one pass by scanning installed Fight AccessControl
-  `resources/openapi/` schemas plus Yii Actions, request/response DTOs, routes, security declarations, and local
+  `openapi/` schemas (explicit `openapi/bootstrap.php`, as verified by [WF-001](../research/wf-001-released-package-contract-audit.md))
+  plus Yii Actions, request/response DTOs, routes, security declarations, and local
   components; do not copy Symfony's complete artifact or merge independently generated specifications.
 - Own the generator command, checked-in artifact, Swagger UI integration, drift check, servers, tags, paths,
   operations, security schemes, status codes, and Yii-specific errors while comparing normalized client-facing

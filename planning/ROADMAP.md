@@ -59,10 +59,11 @@ The maintainer approved standalone [TASK-00014](tasks/00014-TASK.md) on 2026-10-
 post-merge routing, adapting Fight Common's live checks, explicit reconciliation and generated current summaries.
 Its scope/record is accepted; no parent decomposition is needed. The planning baseline was integrated through
 PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`. Implementation is complete in the main checkout
-on the approved TASK branch. Candidate A is independently accepted and QA-passed; OPEN
-[PR #18](https://github.com/johnnickell/project-yii/pull/18) awaits human review and merge. Planning publication is historical,
-not implementation delivery. This does not
-reopen EPIC-00003 or replace the broader application's WF-001 decision frontier.
+on the approved TASK branch. Candidate A is independently accepted and QA-passed. At publication,
+[PR #18](https://github.com/johnnickell/project-yii/pull/18) awaited human review/merge; intake reconciliation now
+verifies it MERGED and locally integrated at `f8d41eefa2eb3b4cb550ab7bb940248be30b2d38`, with
+[exact delivery evidence](tasks/00014-TASK.md#delivery-reconciliation--pr-18). No human merge or routine cleanup
+handoff remains. Planning publication is historical, not implementation delivery; this does not reopen EPIC-00003.
 
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is
 pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candidate-and-delivery-closeout) is
@@ -81,8 +82,13 @@ implementation behavior. Hosted CI remains optional and unobserved. With all thr
 EPIC-00003 completes automatically. [Current integration](tasks/00009-TASK.md#current-integration--pr-16) verifies
 PR #16 merged into `develop` on 2026-10-25 at `26f8ebb06fd07e9aebeb7fb51a33e32ca32509c8` and is locally
 integrated; no human merge handoff remains. No new decomposition or second gate TASK is needed.
-The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
-complete capability inventory is not implied by this bounded adoption portfolio.
+The broader application map remains in its decision phase. [WF-001](wayfinder/tickets/WF-001-released-package-contract-audit.md)
+now closes its separate [released-contract research](wayfinder/research/wf-001-released-package-contract-audit.md),
+with complete declaration/workflow dispositions and explicit consumer-proof limits; bounded adoption alone did not
+complete it. [WF-003](wayfinder/tickets/WF-003-yii-adr-and-shared-openapi-contract.md) is next after closed WF-001/WF-002,
+but no available decision frontier is evidenced until the Symfony wire-contract owner supplies the immutable accepted
+artifact (repository, full revision, path and acceptance reference) and the Yii map owner verifies that gate.
+No broader-application EPIC/TICKET/TASK decomposition or product implementation is authorized by this research.
 
 ## Completed / Released
 

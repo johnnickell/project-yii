@@ -121,8 +121,11 @@ Implementation results and independent acceptance status live in [TASK-00008](..
 
 ## WF-001 continuity
 
-These installed artifacts and bounded compatibility findings are input to
+These historical bounded compatibility findings were input to
 [WF-001](../planning/wayfinder/tickets/WF-001-released-package-contract-audit.md), not its complete inventory.
-Independent TASK acceptance is pending. WF-001 still owns every released public capability/workflow disposition,
-User and Agent security contracts, unsupported boundaries and documentation gaps. The map stays active; no login,
+TASK-00008 subsequently completed independent acceptance and QA and integrated through PR #15, as recorded in its
+[current handoff](../planning/tasks/00008-TASK.md#current-integration--2026-10-25).
+On 2026-10-25 WF-001 closed with its separate [released-contract audit and complete surface inventory](../planning/wayfinder/research/wf-001-released-package-contract-audit.md),
+including User/Agent workflows, unsupported/internal boundaries, documentary gaps and unverified consumer obligations.
+The map stays active; its next decision WF-003 needs the accepted immutable Symfony wire artifact. No login,
 persistence workflow, endpoint, worker, client, native-adapter reselection or Common 2.0 adoption follows.

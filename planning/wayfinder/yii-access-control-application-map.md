@@ -33,10 +33,13 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
   distinguish registry metadata from installation. Development branches or aliases cannot satisfy the package
   audit. [TASK-00008](../tasks/00008-TASK.md) now records independently accepted installed 1.4.0/0.8.0 archives and
   bounded [contract/behavior evidence](../../docs/stable-package-baseline.md), with
-  [PR #15](https://github.com/johnnickell/project-yii/pull/15) open. The complete public capability inventory remains
-  unperformed. Bounded adoption does not complete this map or authorize its product implementation. Shared-convention
-  adoption in TASK-00012 does not satisfy the package gate.
-- Fight AccessControl owns scan-only reusable component schemas under `resources/openapi/`. Yii owns one complete
+  [PR #15](https://github.com/johnnickell/project-yii/pull/15) integrated per the TASK handoff.
+  [WF-001's released-contract audit](research/wf-001-released-package-contract-audit.md) now completes the static
+  public capability inventory with explicit dispositions and consumer-proof limits. Neither bounded adoption nor
+  that research completes this map or authorizes product implementation. Shared-convention adoption in TASK-00012
+  did not satisfy the package gate.
+- Fight AccessControl 0.8.0 owns scan-only reusable component schemas under `openapi/` (verified by WF-001),
+  loaded explicitly through `openapi/bootstrap.php`. Yii owns one complete
   OpenAPI 3.1 document, generated in one pass from those installed resources and Yii-owned Actions, DTOs, routes,
   security declarations, and project-specific components.
 - `Domain <- Application <- Adapter` remains the dependency direction. Fight packages are public Composer
@@ -53,7 +56,7 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 
 ## Decisions so far
 
-1. **[Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is open and executable.** Accepted TASK-00008 evidence satisfies its installed-stable package gate; it still inventories released public contracts without turning every package class into an endpoint.
+1. **[Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is closed.** Its [source-linked census and workflow classifications](research/wf-001-released-package-contract-audit.md) account for the exact installed releases, including internal/unsupported boundaries and downstream consumer obligations; this is not implementation or consumer qualification.
 2. **[Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) is closed.** The confirmed resolution defines project service/storage/health boundaries and acceptance journeys, shared upstream ingress, thin Compose wrappers, explicit setup, and upstream ownership of isolated execution.
 3. **[Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) is open and waiting.** It proves Yii-native Action-Domain-Responder composition while adopting Symfony's finished wire contract.
 4. **[Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) is open and waiting.** It settles MySQL adapters, atomicity, reconciliation, and invitation-led CLI bootstrap.
@@ -68,7 +71,7 @@ requirement TICKETs, vertical implementation TASKs, acceptance journeys, documen
 
 | Ticket | Type | Mode | Status | Depends On | Gate |
 |---|---|---|---|---|---|
-| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Open** | — | Verified installed stable Common ^1.4 / AccessControl ^0.8 contracts |
+| [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) | Research | AFK | **Closed** | — | Verified installed stable Common ^1.4 / AccessControl ^0.8 contracts |
 | [WF-002 — Local Development Runtime Contract](tickets/WF-002-local-development-runtime-contract.md) | Grilling | HITL | **Closed** | — | — |
 | [WF-003 — Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) | Prototype | HITL | **Open** | WF-001, WF-002 | Symfony canonical wire contract |
 | [WF-004 — Yii DB Persistence and Administrator Bootstrap](tickets/WF-004-yii-db-persistence-and-administrator-bootstrap.md) | Prototype | HITL | **Open** | WF-001, WF-002, WF-003 | — |
@@ -96,11 +99,13 @@ WF-001 through WF-009 ──→ WF-010 ──→ EPIC + TICKETs + vertical imple
 
 ## Frontier
 
-[WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md) is now executable:
-its verified-installed-stable package gate is satisfied by accepted TASK-00008 evidence. Its complete public
-capability inventory remains unperformed and is not completed by this closeout. WF-003 still depends on WF-001 and
-the Symfony canonical wire contract; closing WF-002 does not unblock it. No Wayfinder decision is started by this
-closeout.
+No decision is currently evidenced as available. [WF-001 — Released Package Contract Audit](tickets/WF-001-released-package-contract-audit.md)
+and WF-002 are Closed. [WF-003 — Yii ADR and Shared OpenAPI Contract](tickets/WF-003-yii-adr-and-shared-openapi-contract.md)
+is next in authored order, but its Symfony canonical wire-contract gate has no linked immutable accepted artifact here.
+The Symfony wire-contract owner must supply repository, full revision, artifact path and acceptance reference;
+the Yii map owner verifies satisfaction before `/skill:wayfinder work WF-003`. This is an input gap, not an inferred
+state of the Symfony repository. All later decisions retain their dependencies; no prototype or decomposition is
+started by WF-001's research closeout.
 
 ## Not yet specified (fog)
 
@@ -111,8 +116,9 @@ closeout.
 - Redis role/durability and detailed background behavior remain with WF-007; restricted development-UI access
   follows the owning HTTP/security decisions. A live-reload service is a future opt-in extension, not initial scope.
 - Symfony's final OpenAPI, authentication, realtime-event, and client-source contracts.
-- The complete installed stable public capability inventory for Common `^1.4` and its compatibility with
-  AccessControl `^0.8`; registry release metadata alone does not complete WF-001.
+- WF-001's [audit](research/wf-001-released-package-contract-audit.md) settles installed stable surface accounting,
+  not real persistence/crypto/provider qualification. WF-006 needs the AccessControl owner's clarification of the
+  documented User-resolver wiring whose implementation is annotated `@internal`; no public API promotion is inferred.
 - Whether generated `public/dist/*` assets are committed or remain build-only output.
 - The final EPIC/TICKET split and implementation-TASK granularity; WF-010 owns that handoff after decisions close.
 
