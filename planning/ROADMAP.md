@@ -16,7 +16,8 @@
 | Route | TASK | Title | Status | Unresolved blockers |
 | --- | --- | --- | --- | --- |
 | Needs Info | [TASK-00003](tasks/00003-TASK.md) | Prepare Fight Common 2.0 Migration | needs-info | — |
-| Active Work | [TASK-00014](tasks/00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | in-progress | — |
+
+No TASK is currently executable; unresolved work may remain.
 <!-- /planning:execution -->
 
 This generated execution route is separate from the authored planning/decomposition handoff below.
@@ -58,7 +59,8 @@ The maintainer approved standalone [TASK-00014](tasks/00014-TASK.md) on 2026-10-
 post-merge routing, adapting Fight Common's live checks, explicit reconciliation and generated current summaries.
 Its scope/record is accepted; no parent decomposition is needed. The planning baseline was integrated through
 PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`. Implementation is now in progress in the main checkout
-on the approved TASK branch; independent Review and QA remain pending. Planning publication is historical,
+on the approved TASK branch. Candidate A is independently accepted and QA-passed; OPEN
+[PR #18](https://github.com/johnnickell/project-yii/pull/18) awaits human review and merge. Planning publication is historical,
 not implementation delivery. This does not
 reopen EPIC-00003 or replace the broader application's WF-001 decision frontier.
 
