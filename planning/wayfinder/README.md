@@ -8,7 +8,7 @@ none is available, offer to chart a new feature.
 
 | Map | Status | Frontier | Outcome |
 |---|---|---|---|
-| [Yii AccessControl Starter Application](yii-access-control-application-map.md) | Active | [WF-001](tickets/WF-001-released-package-contract-audit.md) is executable — accepted TASK-00008 evidence satisfies its verified installed-stable Common ^1.4 / AccessControl ^0.8 gate; WF-002 is closed | Implementation-ready EPIC, requirement TICKETs, vertical TASKs, journeys, and documentation for a complete local-development Yii AccessControl starter. |
+| [Yii AccessControl Starter Application](yii-access-control-application-map.md) | Active | No available frontier: WF-001 and WF-002 are Closed; [WF-003](tickets/WF-003-yii-adr-and-shared-openapi-contract.md) is next but waits for the Symfony wire-contract owner's immutable accepted artifact (repository, revision, path and acceptance reference), then Yii map-owner gate verification | Implementation-ready EPIC, requirement TICKETs, vertical TASKs, journeys, and documentation for a complete local-development Yii AccessControl starter. |
 
 Use `_MAP_TEMPLATE.md` and `tickets/_WAYFINDER_TICKET_TEMPLATE.md` for new work. `research/` holds linked
 evidence, never a parallel decision record. Archive only through `../../bin/archive-planning` after a map is Closed,
