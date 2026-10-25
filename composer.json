@@ -58,10 +58,11 @@
         }
     },
     "require-dev": {
+        "deptrac/deptrac": "^4.7",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
-        "deptrac/deptrac": "^4.7",
         "rector/rector": "^2.2",
+        "rregeer/phpunit-coverage-check": "^0.3.1",
         "slevomat/coding-standard": "^8.27",
         "squizlabs/php_codesniffer": "^4.0"
     },

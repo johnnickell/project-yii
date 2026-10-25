@@ -5,15 +5,25 @@ only through their public Composer packages and keeps Yii configuration, depende
 presentation composition local. The [installed stable-package baseline](docs/stable-package-baseline.md) records
 exact artifacts, selected-contract compatibility and the limits of that verification.
 
-Run `./bin/up`, then open <http://localhost:8088/> for the hello-world runtime. Use `./bin/build` before review;
-GitHub Actions delegates to that exact command for pushes and pull requests targeting `develop`, `main`, and
-`release/**`.
+Prepare a checkout explicitly, then verify it:
+
+```sh
+./bin/up
+./bin/composer install --no-interaction --prefer-dist --no-progress
+./bin/build
+```
+
+Open <http://localhost:8088/> for the hello-world runtime. GitHub Actions performs the same preparation and delegates
+verification to `./bin/build` for pushes and pull requests targeting `develop`, `main`, and `release/**`.
 
 ## Commands
 
 - `./bin/console list` runs the Yii-native console.
-- `./bin/phpunit` runs the PHPUnit integration suite in the application container.
-- `./bin/build` is the complete noninteractive quality gate used locally and by GitHub Actions.
+- `./bin/phpunit` runs all configured PHPUnit suites in the running application container; pass `--testsuite Unit`
+  for a focused run.
+- `./bin/build` is the complete noninteractive quality gate used locally and by GitHub Actions. It requires the
+  running `app` service and locked development dependencies; it never builds images or installs dependencies.
+  Named PHP phases stop on the first failure. See [Contributing](CONTRIBUTING.md) for checks and coverage ownership.
 
 This repository is MIT-licensed source, not a release or package-distribution claim. Do not add copied shared
 source, credentials, production data, tags, Packagist publication, template enablement, or create-project
@@ -22,11 +32,17 @@ distribution without a separately accepted local TASK. Planning follows EPIC →
 
 ## Container runtime refresh
 
-The Dockerfiles pin PHP `8.5.12-fpm` and NGINX `1.30.6-alpine`. `./bin/build` refreshes the PHP base with
-`docker build --pull`; `./bin/up` refreshes both service builds, then force-recreates containers so no old FPM
-workers remain. Registry/Docker/build failures stop the command rather than running a cached gate or recreating
-services from stale images. Existing services may still be running after a failed preparation; inspect them and
-retry after fixing access. A successful build alone does not refresh running services: run `./bin/up` too.
+The Dockerfiles pin PHP `8.5.12-fpm` and NGINX `1.30.6-alpine`. `./bin/up` refreshes both service builds with
+`--pull`, prepares writable `vendor/` and `var/` directories, then force-recreates containers so no old FPM workers
+remain. Directory preparation uses a one-shot root container to create those generated directories and assign
+their directories and regular files to the image's `systemuser` (uid/gid 1000), without following symlinks or
+touching sockets; checkout/source ownership is unchanged. This supports
+Linux checkouts owned by a different UID, including hosted runners. Composer, verification and FPM still run
+non-root. Host tools must account for runtime-owned generated files. The non-root PHP image includes PCOV and
+Python 3 for the existing planning validator. `./bin/build` only verifies the prepared running service and does
+not refresh images or workers. Registry/Docker/build failures stop preparation rather than recreating services
+from stale images. Existing services may still be running after a failed preparation; inspect them and
+retry after fixing access. A successful image build alone does not refresh running services: run `./bin/up` too.
 Explicit release pins still need deliberate updates when later security releases appear.
 
 For parallel checkouts, set a unique `COMPOSE_PROJECT_NAME` and unused `PROJECT_YII_HTTP_PORT` (default `8088`)

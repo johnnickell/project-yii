@@ -2,7 +2,7 @@
 id: TICKET-00004
 epic: EPIC-00003
 title: Verify Yii Through a Running-Container PHP Gate
-status: ready-for-agent
+status: done
 order: 3
 ---
 
@@ -57,7 +57,7 @@ the gate. Installed-version adoption is TICKET-00003 and precedes this work.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | ready-for-agent | [TASK-00008](../tasks/00008-TASK.md) | — |
+| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | done | [TASK-00008](../tasks/00008-TASK.md) | https://github.com/johnnickell/project-yii/pull/16 |
 <!-- /planning:children -->
 
 ## Progress
@@ -66,7 +66,24 @@ The 2026-10-24 comprehensive adoption approval retains this gate slice after TAS
 1.4.0 / AccessControl 0.8.0 baseline. TASK-00012 owns shared workflow bindings; it does not implement this gate
 or relax its coverage, test-quality, or hosted-check requirements. Apply the shared fail-fast/read-only gate
 principles through Yii's existing Compose PHP service, not the provider's service names or frontend/database
-phases. No further TASK decomposition is pending for this accepted requirement; implementation is unstarted.
+phases. No further TASK decomposition is pending for this accepted requirement. TASK-00008 is integrated through
+merged PR #15 at `f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009's prior measured hold is
+[resolved by the owner](../tasks/00009-TASK.md#current-work--owner-clarification-applied): “wiring-only means bin/*
+scripts or infrastructure tests, not PHP code. Cover the PHP code”. Direct tests of owned PHP providers/composition
+contracts are allowed and all PHP source stays in the exact Unit-only denominator. The historical 235/237 filtered
+measurement is preserved, not a current prerequisite. Work has implemented and locally verified the running-service
+PHP gate and explicit local/CI setup. One canonical PHPUnit run retains 88 tests / 320 assertions; Unit-only exact
+coverage remains 237/237 across all 19 PHP files, with boundary-only coverage separately measured at 0/237. The
+bespoke verifier and disposable no-dev boot are retired, not replaced by a production-install claim. Independent
+Review requested REV-01 for Linux workspace ownership at candidate `b4a2741c2dd9f552f1e02aaba3938bbe064df22c`.
+Work reproduced and repaired it in explicit `bin/up` directory preparation, preserving non-root install/FPM/gate
+and source ownership. Fresh UID-1001 Linux-workspace up/install/full-gate checks pass with the unchanged exact
+coverage and suite counts; actual hosted execution is not claimed. See the [current repair](../tasks/00009-TASK.md#current-repair--rev-01-linux-workspace-ownership).
+Independent Review accepted the repaired exact candidate `d810303ebeeea9c1114e77ac2025da3a3138d197` and independent
+QA passed all seven selected scenarios; visual evidence is N/A for this non-visual contract. Administrative
+closeout B records that accepted A evidence and [PR #16](https://github.com/johnnickell/project-yii/pull/16) without
+changing implementation behavior. With its only child terminal, this TICKET completes automatically; hosted CI
+remains optional and unobserved, while human review/merge of PR #16 remains separate.
 
 ### Historical gate approval and consolidation
 

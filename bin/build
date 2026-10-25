@@ -1,38 +1,10 @@
 #!/usr/bin/env sh
 set -eu
 
-worktree_checksum=$(pwd -P | cksum | awk '{print $1}')
-image="project-yii-build-$worktree_checksum"
-host_uid=$(id -u)
-host_gid=$(id -g)
-
-./bin/planning-check
-
-if ! docker build --pull --file etc/docker/fpm/Dockerfile --tag "$image" .; then
-    echo >&2 'PHP runtime preparation failed; check Docker/registry access and the pinned base image. Gate not run; cached image will not be used.'
+cd "$(dirname "$0")/.."
+if ! docker compose ps --status running --services | grep -qx app; then
+    echo >&2 'Build requires the running Compose app service. Run ./bin/up, then ./bin/composer install --no-interaction --prefer-dist --no-progress, then ./bin/build.'
     exit 1
 fi
-docker run --rm --user "$host_uid:$host_gid" --volume "$(pwd):/app" --workdir /app "$image" sh -ec '
-    php-fpm -tt
-    composer validate
-    composer install --no-interaction --prefer-dist --no-progress
-    vendor/bin/phpcs
-    vendor/bin/phpstan analyse --no-progress
-    vendor/bin/deptrac analyse --no-progress --fail-on-uncovered
-    vendor/bin/rector process --dry-run --no-progress-bar
-    mkdir -p var/coverage
-    rm -f var/coverage/unit-clover.xml
-    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Unit --coverage-clover var/coverage/unit-clover.xml
-    php scripts/verify-coverage.php var/coverage/unit-clover.xml src
-    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Integration
-    PROJECT_YII_IN_BUILD=1 ./bin/phpunit --testsuite Functional
 
-    work_root=$(mktemp -d)
-    trap "rm -rf \"$work_root\"" EXIT
-    production_root="$work_root/production"
-    mkdir "$production_root"
-    tar --exclude=.git --exclude=vendor --exclude=.runs --exclude=var -cf - . | tar -C "$production_root" -xf -
-    cd "$production_root"
-    composer install --no-dev --no-interaction --prefer-dist --no-progress
-    php tests/Functional/production-boot.php
-'
+exec docker compose exec -T app php scripts/build.php

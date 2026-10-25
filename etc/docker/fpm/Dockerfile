@@ -5,7 +5,7 @@ FROM php:8.5.12-fpm
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends $PHPIZE_DEPS git openssh-client unzip \
+    && apt-get install --yes --no-install-recommends $PHPIZE_DEPS git openssh-client unzip python3 \
     && pecl install pcov-1.0.12 \
     && docker-php-ext-enable pcov \
     && apt-get purge --yes --auto-remove $PHPIZE_DEPS \
@@ -23,6 +23,8 @@ COPY etc/docker/fpm/entrypoint.sh /usr/local/bin/project-yii-fpm
 RUN chmod 0755 /usr/local/bin/project-yii-fpm \
     && mkdir -p /usr/local/var/run \
     && chown systemuser:systemuser /usr/local/var/run
+
+ENV COMPOSER_CACHE_DIR=/app/var/cache/composer
 
 WORKDIR /app
 

@@ -3,7 +3,7 @@
     <description>Common's shipped standard with Yii-owned scan scope.</description>
     <file>src</file>
     <file>tests</file>
-    <file>scripts/verify-coverage.php</file>
+    <file>scripts/build.php</file>
     <arg name="colors"/>
     <arg name="parallel" value="8"/>
     <config name="installed_paths" value="vendor/slevomat/coding-standard"/>

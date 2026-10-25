@@ -80,6 +80,11 @@ dependencies and bounded behavior checks. All child TASKs are terminal, so autom
 TICKET done; publication does not imply review approval, merge, release, or deployment. No AccessControl workflow
 is selected and WF-001's full public inventory remains open.
 
+Current integration (2026-10-25): GitHub reports PR #15 merged at
+`f40543de48705007f17cd8c02ea29c1c2c015a11`; accepted candidate A is an ancestor of that base. This supersedes
+only the earlier delivery-pending instruction, not its historical acceptance evidence. TASK-00009 Work intake
+uses the integrated package baseline and records its separate coverage/test-quality hold.
+
 ### Historical baseline approval
 
 The maintainer approved stable adoption. Upstream release metadata confirms AccessControl v0.4.0 requires Common

@@ -4,7 +4,10 @@
          bootstrap="tests/bootstrap.php"
          cacheDirectory="var/cache/phpunit"
          colors="true"
-         requireCoverageMetadata="true">
+         requireCoverageMetadata="true"
+         failOnWarning="true"
+         failOnRisky="true"
+         failOnEmptyTestSuite="true">
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
@@ -16,6 +19,7 @@
             <directory suffix="Test.php">tests/Functional</directory>
         </testsuite>
     </testsuites>
+    <coverage includeUncoveredFiles="true" disableCodeCoverageIgnore="true"/>
     <source ignoreDirectDeprecations="true" ignoreIndirectDeprecations="true">
         <include>
             <directory>src</directory>
