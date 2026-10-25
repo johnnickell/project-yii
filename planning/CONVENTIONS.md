@@ -7,8 +7,10 @@ This read-only path precedes general orientation; full implementation, review, Q
 still apply when the selected workflow is invoked.
 
 1. Run the documented read-only planning validator once when available. Failure stops selection with the
-   actual error and planning-owner handoff; do not refresh views. Without a validator, disclose that limitation
-   and check selected record metadata against the authored Board; do not claim generated freshness.
+   actual error and planning-owner handoff; do not refresh views. This offline check does not verify current PR
+   state. Before repeating a publication/merge handoff, apply [live handoff verification](#live-handoff-verification).
+   Without a validator, disclose that limitation and check selected record metadata against the authored Board;
+   do not claim generated freshness.
 2. Read only the Board's current human decision, active work, and (if no active work) first ready entry.
    Use local section names and authoritative order. Return all active TASKs, not a new winner. Inspect selected
    TASK metadata and its current handoff, plus blocker metadata only as needed. An unresolved contradiction
@@ -46,6 +48,33 @@ owner's reconciliation, not a guessed verdict. Preserve the current checkout, le
 
 Project Yii owns its planning. Individual records own scope, status, dependencies, and priority; generated
 indexes, child tables, the TASK Board, and Roadmap tables are projections, not additional status authorities.
+
+## Live handoff verification
+
+Before routing from an authored current publication/merge handoff, inspect only its named PR through existing
+read-only operator access, for example `gh pr view <PR-URL> --json number,url,title,state,mergedAt,baseRefName,headRefName,headRefOid,mergeCommit`.
+Match the target origin, exact PR URL/number, TASK/title, feature branch and `develop` base. Do not scan historical
+PRs, fetch, merge, publish or refresh views during read-only routing.
+
+- OPEN: human review/merge remains pending. A `done` status alone is not technical acceptance or QA evidence.
+- MERGED: resolve the old human merge handoff only when the TASK is `done`, exact merge time/commit are present,
+  and local Git proves published head → merge commit → current HEAD ancestry with replacement objects and lazy
+  fetching disabled (`git --no-replace-objects`, `GIT_NO_LAZY_FETCH=1`). Continue normal Board/Wayfinder selection;
+  do not ask the maintainer for routine cleanup of a verified ended handoff. This proves integration, not new
+  review, QA, release or deployment authority.
+- CLOSED without merge, unavailable/mismatched/contradictory metadata, non-`done` scope or absent local ancestry:
+  name the exact evidence or integration gap and its owner. Do not infer OPEN, MERGED, acceptance or completion.
+
+At authorized substantive planning or Work/Land intake, reconcile verified ended current handoffs in the owning
+TASK and affected authored Board/Roadmap/parent summaries. Preserve historical publication checkpoints and exact
+observed head/merge/time/local-HEAD evidence; refresh and validate views explicitly. Repeating reconciliation of
+unchanged evidence must need no further edit. Read-only routing, Review, QA, `./bin/planning-check` and `./bin/build`
+never perform this retirement or network-dependent mutation.
+
+Yii currently has no `--check-delivery` or `--reconcile-delivery` flags. The steps above are bounded manual checks,
+not a claim that the offline validator enforces delivery freshness. Fight Common's
+[TASK-00176](https://github.com/johnnickell/fight-common/pull/234) supplies the reference automation; porting its
+explicit markers, generated summaries and check/reconciliation modes requires an accepted local tooling TASK.
 
 ## Hierarchy and identities
 

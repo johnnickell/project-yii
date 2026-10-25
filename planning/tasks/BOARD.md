@@ -17,6 +17,14 @@ under **Ready Frontier**. Do not start a second TASK just because its ID is lowe
 
 ## Now
 
+On 2026-10-25 the maintainer approved [TASK-00014 — Keep Yii Post-Merge Routing and Delivery Handoffs Current](00014-TASK.md)
+as a standalone bug, using the main checkout. Port Fight Common's bounded live delivery checking, explicit
+idempotent intake reconciliation and generated current summaries with Yii-native validation guarantees. PR #16 is
+already merged and locally integrated; no human merge or routine cleanup handoff remains for TASK-00009.
+TASK-00014 is ready for explicit execution, not implemented or independently accepted. The maintainer authorized
+publication of this planning baseline only; integrate it before branching from `develop` for implementation.
+Preserve its PR #16 reconciliation and manual guidance. The WF-001 package audit remains separate.
+
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
 [TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite. Independent review
 accepted candidate A and independent behavioral QA passed; [PR #13](https://github.com/johnnickell/project-yii/pull/13)
@@ -40,8 +48,9 @@ its exact candidate; [PR #15](https://github.com/johnnickell/project-yii/pull/15
 [owner's clarification](00009-TASK.md#current-work--owner-clarification-applied), resolved REV-01, and independent
 QA passed all seven scenarios (visual N/A). Its administrative closeout B records factual completion and
 [PR #16](https://github.com/johnnickell/project-yii/pull/16) only; no requirement, instruction or behavior changed.
-Hosted CI is optional and unobserved. The PR is open for human review and merge; do not start another TASK or infer
-approval, merge, release or deployment from this closeout.
+Hosted CI is optional and unobserved. [Current integration](00009-TASK.md#current-integration--pr-16) verifies
+PR #16 merged into `develop` on 2026-10-25 at `26f8ebb06fd07e9aebeb7fb51a33e32ca32509c8`, already integrated
+in this checkout. No human merge handoff remains for TASK-00009; this does not authorize release or deployment.
 No additional general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
@@ -65,7 +74,9 @@ None.
 ## Ready Frontier
 
 <!-- planning:ready -->
-None.
+| Order | ID | Title | Parent | Status | Blocked by | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | ready-for-agent | — | — |
 <!-- /planning:ready -->
 
 ## Waiting

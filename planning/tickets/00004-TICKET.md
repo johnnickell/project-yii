@@ -83,7 +83,9 @@ Independent Review accepted the repaired exact candidate `d810303ebeeea9c1114e77
 QA passed all seven selected scenarios; visual evidence is N/A for this non-visual contract. Administrative
 closeout B records that accepted A evidence and [PR #16](https://github.com/johnnickell/project-yii/pull/16) without
 changing implementation behavior. With its only child terminal, this TICKET completes automatically; hosted CI
-remains optional and unobserved, while human review/merge of PR #16 remains separate.
+remains optional and unobserved. [Current integration](../tasks/00009-TASK.md#current-integration--pr-16) verifies
+PR #16 merged into `develop` on 2026-10-25 at `26f8ebb06fd07e9aebeb7fb51a33e32ca32509c8` and is locally
+integrated; no human merge handoff remains.
 
 ### Historical gate approval and consolidation
 
