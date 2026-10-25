@@ -47,8 +47,12 @@ independently accepted and QA-passed, integrated through PR #12; PR #13's separa
 TASK-00012 independently accepted candidate A, independently QA-passed, and is integrated through merged
 [PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base; its administrative closeout B
 changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at its exact candidate, with
-[PR #15](https://github.com/johnnickell/project-yii/pull/15) open and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
-TICKET-00003 closes automatically. TASK-00009 remains unimplemented and is now the executable gate successor.
+[PR #15](https://github.com/johnnickell/project-yii/pull/15) merged at
+`f40543de48705007f17cd8c02ea29c1c2c015a11` and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
+TICKET-00003 is done. TASK-00009 Work intake is active, but its replacement remains unimplemented pending the
+[local requirement owner's coverage/test-quality decision](tasks/00009-TASK.md#current-work-hold--direct-coverage-versus-wiring-only-tests).
+Filtering only one wiring-only test leaves 235/237 direct Unit statements covered; no denominator exclusion,
+coverage weakening or test-policy exception has been adopted. No new decomposition or second gate TASK is needed.
 The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
 complete capability inventory is not implied by this bounded adoption portfolio.
 

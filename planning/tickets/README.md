@@ -8,7 +8,7 @@ each. Former local PRDs retain their numeric identities here; see [conventions](
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [TICKET-00005](00005-TICKET.md) | Adopt Shared Engineering and Agent Workflow Conventions | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | done | — | — |
 | 2 | [TICKET-00003](00003-TICKET.md) | Adopt Stable Fight Common and AccessControl Contracts | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | done | — | — |
-| 3 | [TICKET-00004](00004-TICKET.md) | Verify Yii Through a Running-Container PHP Gate | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | ready-for-agent | — | — |
+| 3 | [TICKET-00004](00004-TICKET.md) | Verify Yii Through a Running-Container PHP Gate | [EPIC-00003 — Adopt Shared Standards and Current Stable Fight Packages](../epics/00003-EPIC.md) | in-progress | — | — |
 | — | [TICKET-00001](00001-TICKET.md) | Yii Starter Product and Walking-Slice Acceptance | [EPIC-00001 — Governed Yii Starter Foundation](../epics/00001-EPIC.md) | done | — | — |
 | — | [TICKET-00002](00002-TICKET.md) | Fight Common Version Adoption and Yii Quality | [EPIC-00002 — Maintained Yii Package Composition and Quality](../epics/00002-EPIC.md) | needs-info | — | — |
 <!-- /planning:records -->

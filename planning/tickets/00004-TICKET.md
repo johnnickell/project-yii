@@ -2,7 +2,7 @@
 id: TICKET-00004
 epic: EPIC-00003
 title: Verify Yii Through a Running-Container PHP Gate
-status: ready-for-agent
+status: in-progress
 order: 3
 ---
 
@@ -57,7 +57,7 @@ the gate. Installed-version adoption is TICKET-00003 and precedes this work.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | ready-for-agent | [TASK-00008](../tasks/00008-TASK.md) | — |
+| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | in-progress | [TASK-00008](../tasks/00008-TASK.md) | — |
 <!-- /planning:children -->
 
 ## Progress
@@ -66,7 +66,12 @@ The 2026-10-24 comprehensive adoption approval retains this gate slice after TAS
 1.4.0 / AccessControl 0.8.0 baseline. TASK-00012 owns shared workflow bindings; it does not implement this gate
 or relax its coverage, test-quality, or hosted-check requirements. Apply the shared fail-fast/read-only gate
 principles through Yii's existing Compose PHP service, not the provider's service names or frontend/database
-phases. No further TASK decomposition is pending for this accepted requirement; implementation is unstarted.
+phases. No further TASK decomposition is pending for this accepted requirement. TASK-00008 is integrated through
+merged PR #15 at `f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009 Work intake now records a
+[concrete coverage/test-quality hold](../tasks/00009-TASK.md#current-work-hold--direct-coverage-versus-wiring-only-tests):
+removing only one wiring-only SMS test leaves 235/237 direct Unit statements covered. No replacement has been
+implemented or accepted. The local requirement owner must reconcile coverage of pure DI declarations with the
+wiring-test prohibition before Work resumes; neither requirement is silently weakened. This TICKET stays open.
 
 ### Historical gate approval and consolidation
 
