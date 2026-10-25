@@ -9,6 +9,7 @@ work and the execution frontier. Standalone bugs/chores may omit a parent TICKET
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
 | 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | https://github.com/johnnickell/project-yii/pull/12 |
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
+| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | ready-for-agent | — | — |
 | 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | done | [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
 | 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | done | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/15 |
 | 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | done | [TASK-00008](00008-TASK.md) | https://github.com/johnnickell/project-yii/pull/16 |

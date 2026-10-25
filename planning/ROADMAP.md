@@ -41,6 +41,13 @@ None.
 
 ### Current planning handoff
 
+The maintainer approved standalone [TASK-00014](tasks/00014-TASK.md) on 2026-10-25 to prevent repeated stale
+post-merge routing, adapting Fight Common's live checks, explicit reconciliation and generated current summaries.
+Its scope/record is accepted and ready for explicit execution in the main checkout; no parent decomposition is
+needed. The maintainer authorized publishing this planning baseline only; integrate it before starting the
+implementation branch from `develop`. No implementation or independent acceptance is claimed. This does not
+reopen EPIC-00003 or replace the broader application's WF-001 decision frontier.
+
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is
 pending for this adoption scope. [TASK-00011](tasks/00011-TASK.md#accepted-candidate-and-delivery-closeout) is
 independently accepted and QA-passed, integrated through PR #12; PR #13's separate runtime repair is also merged.
@@ -55,8 +62,9 @@ TICKET-00003 is done. TASK-00009 independently accepted candidate A
 REV-01, and independently QA-passed seven scenarios (visual N/A). Its administrative closeout B records
 [PR #16](https://github.com/johnnickell/project-yii/pull/16) and automatic parent completion only; it changes no
 implementation behavior. Hosted CI remains optional and unobserved. With all three requirement TICKETs terminal,
-EPIC-00003 completes automatically; human review/merge of PR #16 remains separate. No new decomposition or second
-gate TASK is needed.
+EPIC-00003 completes automatically. [Current integration](tasks/00009-TASK.md#current-integration--pr-16) verifies
+PR #16 merged into `develop` on 2026-10-25 at `26f8ebb06fd07e9aebeb7fb51a33e32ca32509c8` and is locally
+integrated; no human merge handoff remains. No new decomposition or second gate TASK is needed.
 The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
 complete capability inventory is not implied by this bounded adoption portfolio.
 

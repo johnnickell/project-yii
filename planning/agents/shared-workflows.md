@@ -85,6 +85,11 @@ sanitized Before/After table only for applicable visual evidence; non-visual wor
 visual N/A. Local ignored paths alone are not published PR evidence. Title: `TASK-NNNNN — <TASK title>`, base:
 `develop`. Missing publication/upload capability holds that effect; never invent a URL or commit private evidence.
 
+Before repeating a current publication/merge handoff, apply [live handoff verification](../CONVENTIONS.md#live-handoff-verification).
+At authorized Work, Land or substantive planning intake, reconcile verified ended handoffs as specified there;
+read-only routing resolves them without writing or asking for routine cleanup. Land verifies current PR state
+again at its final handoff. Offline planning/build success is not evidence that a published PR remains OPEN.
+
 For delegated stages, the coordinator records a private reusable project context: exact target/provider resources,
 Git root/remote/common directory, selected checkout/canonical base, branch/base/head, local records/templates,
 substitutions/exclusions, commands, completion/hosted policy and evidence paths. Every fresh child reads that
