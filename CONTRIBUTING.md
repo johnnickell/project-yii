@@ -4,7 +4,12 @@ Read `AGENTS.md`, `ARCHITECTURE.md`, `planning/CONVENTIONS.md`, and the focused 
 proposing a change. EPICs own destinations, TICKETs own requirements, and TASKs own bounded implementation.
 Create or update an accepted local TASK, choose the checkout with the maintainer, and branch from `develop` as
 `feature/task-NNNNN-<slug>`. Keep work to a vertical slice and run `./bin/build` before requesting review.
-After planning changes, run `./bin/planning-check --write` followed by `./bin/planning-check`.
+At authorized Work, Land or substantive planning intake, run `./bin/planning-check --reconcile-delivery` to
+retire only verified ended publication markers and preserve merge/integration evidence; uncertainty prevents all
+planned writes. After planning changes, run `./bin/planning-check --write` followed by `./bin/planning-check`.
+Read-only routing uses `./bin/planning-check --check-delivery`; Land repeats it at intake, pre-publication and
+final handoff. Live modes query only explicit `delivery: awaiting-merge` TASKs, not historical PRs. Ordinary
+checks/writer/build stay offline; see [delivery conventions](planning/CONVENTIONS.md#live-handoff-verification).
 Use the [shared workflow binding](planning/agents/shared-workflows.md) for installed skills, Yii resource substitutions,
 canonical evidence and independent Review/QA/Land handoffs. A next recommendation does not authorize execution;
 explicit Build delegates its bounded delivery stages, while work alone stops at a committed Review handoff.
@@ -25,9 +30,11 @@ see [runtime refresh and checkout isolation](README.md#container-runtime-refresh
 
 `./bin/build` is a thin entrypoint into `scripts/build.php` in the already-running `app` service. Missing service,
 locked development tools, enabled PCOV or runtime tools fail with setup guidance; the gate does not repair them.
-It validates FPM, Composer metadata/lock and installed platform requirements, planning (read-only), PHP syntax,
+It checks offline planning freshness before expensive phases, then validates FPM, Composer metadata/lock and
+installed platform requirements, PHP syntax,
 Common PHPCS formatting, PHPStan, inward Deptrac boundaries and Rector dry-run before one PHPUnit invocation runs
-every configured Unit, Integration and Functional suite exactly once. No frontend/browser suites are configured.
+every configured Unit, Integration and Functional suite exactly once, followed by final offline planning
+validation. No frontend/browser suites are configured.
 `./bin/phpunit`, `./bin/exec`, `./bin/composer` and `./bin/console` use the same running service. Runtime/tool caches
 belong in `var/`; the Composer cache is `var/cache/composer`.
 

@@ -85,10 +85,15 @@ sanitized Before/After table only for applicable visual evidence; non-visual wor
 visual N/A. Local ignored paths alone are not published PR evidence. Title: `TASK-NNNNN — <TASK title>`, base:
 `develop`. Missing publication/upload capability holds that effect; never invent a URL or commit private evidence.
 
-Before repeating a current publication/merge handoff, apply [live handoff verification](../CONVENTIONS.md#live-handoff-verification).
-At authorized Work, Land or substantive planning intake, reconcile verified ended handoffs as specified there;
-read-only routing resolves them without writing or asking for routine cleanup. Land verifies current PR state
-again at its final handoff. Offline planning/build success is not evidence that a published PR remains OPEN.
+Before routing, run `./bin/planning-check --check-delivery` under
+[live handoff verification](../CONVENTIONS.md#live-handoff-verification). Land runs this bounded read-only mode
+at intake, pre-publication and final handoff; verify its newly published subject directly before setting
+`delivery: awaiting-merge` and its exact `pr` URL. Never infer a marker from historical prose, `done` or a PR link.
+At authorized Work, Land or substantive planning intake run `./bin/planning-check --reconcile-delivery` before
+edits. Only that explicit write mode retires verified ended markers/evidence and refreshes views. Read-only
+routing resolves integrated merges without writes or routine cleanup; uncertainty holds the exact owner/input.
+Preserve the existing manual authored-handoff procedure in conventions. Offline planning/build success is not
+evidence that a published PR remains OPEN; no live mode grants publication, fetch, merge or credential setup.
 
 For delegated stages, the coordinator records a private reusable project context: exact target/provider resources,
 Git root/remote/common directory, selected checkout/canonical base, branch/base/head, local records/templates,

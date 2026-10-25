@@ -10,6 +10,20 @@
 | — | [EPIC-00002](epics/00002-EPIC.md) | Maintained Yii Package Composition and Quality | — | needs-info | — | — |
 <!-- /planning:epics -->
 
+## Current Execution
+
+<!-- planning:execution -->
+| Route | TASK | Title | Status | Unresolved blockers |
+| --- | --- | --- | --- | --- |
+| Needs Info | [TASK-00003](tasks/00003-TASK.md) | Prepare Fight Common 2.0 Migration | needs-info | — |
+
+No TASK is currently executable; unresolved work may remain.
+<!-- /planning:execution -->
+
+This generated execution route is separate from the authored planning/decomposition handoff below.
+Current publication snapshots live on the [Board](tasks/BOARD.md#current-delivery); verify with
+`./bin/planning-check --check-delivery` before routing a delivery handoff.
+
 ## Planning Frontier
 
 <!-- planning:frontier -->
@@ -43,9 +57,11 @@ None.
 
 The maintainer approved standalone [TASK-00014](tasks/00014-TASK.md) on 2026-10-25 to prevent repeated stale
 post-merge routing, adapting Fight Common's live checks, explicit reconciliation and generated current summaries.
-Its scope/record is accepted and ready for explicit execution in the main checkout; no parent decomposition is
-needed. The maintainer authorized publishing this planning baseline only; integrate it before starting the
-implementation branch from `develop`. No implementation or independent acceptance is claimed. This does not
+Its scope/record is accepted; no parent decomposition is needed. The planning baseline was integrated through
+PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`. Implementation is complete in the main checkout
+on the approved TASK branch. Candidate A is independently accepted and QA-passed; OPEN
+[PR #18](https://github.com/johnnickell/project-yii/pull/18) awaits human review and merge. Planning publication is historical,
+not implementation delivery. This does not
 reopen EPIC-00003 or replace the broader application's WF-001 decision frontier.
 
 The broadened EPIC and all three requirement areas are accepted and decomposed; no further TICKET/TASK split is

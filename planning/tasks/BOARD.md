@@ -2,7 +2,9 @@
 
 ## Routing index
 
-Read only current human decisions and active work below; otherwise the first ready TASK.
+Validate with `./bin/planning-check --check-delivery`, then read generated Current Execution and Current Delivery
+plus current human decisions below; otherwise the first ready TASK. Live checks resolve verified integrated merges
+read-only; unavailable or uncertain evidence is an owner/input gap, never a routine cleanup request.
 Use [lightweight routing](../CONVENTIONS.md#lightweight-work-routing) for validation and evidence limits.
 [Wayfinder status and frontiers](../wayfinder/README.md) answer the decision-routing question.
 Use the [Roadmap](../ROADMAP.md) and current handoffs for planning phases; do not infer full decomposition from closed maps.
@@ -15,14 +17,34 @@ TASK files own status, blockers, and `order`; generated sections below project e
 Return the human decision under **Now** and the active TASK. If none is active, return the first executable TASK
 under **Ready Frontier**. Do not start a second TASK just because its ID is lower. State when no work is executable.
 
+## Current Execution
+
+<!-- planning:next -->
+| Route | TASK | Title | Status | Unresolved blockers |
+| --- | --- | --- | --- | --- |
+| Needs Info | [TASK-00003](00003-TASK.md) | Prepare Fight Common 2.0 Migration | needs-info | — |
+
+No TASK is currently executable; unresolved work may remain.
+<!-- /planning:next -->
+
+## Current Delivery
+
+<!-- planning:delivery -->
+- [TASK-00014](00014-TASK.md): Published; verify live state — https://github.com/johnnickell/project-yii/pull/18.
+<!-- /planning:delivery -->
+
+Publication snapshots require `--check-delivery` before routing; these rows do not assert unconditional OPEN state.
+No marker means no current delivery handoff, even when historical prose or a PR link exists.
+
 ## Now
 
 On 2026-10-25 the maintainer approved [TASK-00014 — Keep Yii Post-Merge Routing and Delivery Handoffs Current](00014-TASK.md)
 as a standalone bug, using the main checkout. Port Fight Common's bounded live delivery checking, explicit
 idempotent intake reconciliation and generated current summaries with Yii-native validation guarantees. PR #16 is
 already merged and locally integrated; no human merge or routine cleanup handoff remains for TASK-00009.
-TASK-00014 is ready for explicit execution, not implemented or independently accepted. The maintainer authorized
-publication of this planning baseline only; integrate it before branching from `develop` for implementation.
+The planning baseline was integrated through PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`.
+TASK-00014 candidate A is independently accepted and QA-passed; its OPEN [PR #18](https://github.com/johnnickell/project-yii/pull/18)
+awaits human review and merge. The earlier planning-publication instruction is historical, not an implementation delivery handoff.
 Preserve its PR #16 reconciliation and manual guidance. The WF-001 package audit remains separate.
 
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
@@ -74,9 +96,7 @@ None.
 ## Ready Frontier
 
 <!-- planning:ready -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | ready-for-agent | — | — |
+None.
 <!-- /planning:ready -->
 
 ## Waiting
@@ -113,6 +133,7 @@ None.
 | 1 | [TASK-00007](00007-TASK.md) | Migrate Local Planning to EPIC, TICKET, and TASK | — | done | — | https://github.com/johnnickell/project-yii/pull/9 |
 | 1 | [TASK-00011](00011-TASK.md) | Record the Comprehensive Yii Adoption Plan | — | done | — | https://github.com/johnnickell/project-yii/pull/12 |
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
+| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | done | — | https://github.com/johnnickell/project-yii/pull/18 |
 | 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | done | [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
 | 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | done | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/15 |
 | 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | done | [TASK-00008](00008-TASK.md) | https://github.com/johnnickell/project-yii/pull/16 |

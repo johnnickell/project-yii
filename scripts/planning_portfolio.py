@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Validate local EPIC/TICKET/TASK records and refresh their generated views on request."""
+"""Validate Yii planning, refresh views, or explicitly verify/reconcile current delivery."""
 
 from __future__ import annotations
 
 import argparse
+import datetime
+import json
 import os
 import re
+import selectors
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,8 +25,17 @@ LEVELS = {"epics": "EPIC", "tickets": "TICKET", "tasks": "TASK"}
 LINK = re.compile(r"\!?\[[^\]]*\]\(([^\s)]+)")
 
 
+def read_text(path: Path) -> str:
+    # Administrative writes must retain unrelated bytes, including CRLF/mixed line endings.
+    return path.read_bytes().decode("utf-8")
+
+
 def frontmatter(path: Path) -> dict[str, str]:
-    text = path.read_text(encoding="utf-8")
+    return parse_frontmatter(read_text(path))
+
+
+def parse_frontmatter(text: str) -> dict[str, str]:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
     if not text.startswith("---\n") or "\n---\n" not in text[4:]:
         raise ValueError("missing or unterminated frontmatter")
     block = text[4:].split("\n---\n", 1)[0]
@@ -84,6 +97,52 @@ def table(source: Path, rows: list[tuple[Path, dict[str, str]]], records: dict) 
     return "\n".join(lines)
 
 
+def task_groups(records: dict) -> dict[str, list]:
+    """One authoritative classification and priority order for TASK tables and routing."""
+    sections: dict[str, list] = {name: [] for name in
+                               ("active", "ready", "waiting", "needs-info", "human", "triage", "closed")}
+    tasks = sorted((row for row in records.values()
+                    if row[1]["id"].startswith("TASK-") and not archived(row[0])), key=priority)
+    for row in tasks:
+        data = row[1]
+        status = data["status"]
+        if status == "ready-for-agent":
+            section = "waiting" if any(records[item][1]["status"] not in TERMINAL
+                                       for item in blockers(data)) else "ready"
+        else:
+            section = {"in-progress": "active", "needs-info": "needs-info", "ready-for-human": "human",
+                       "needs-triage": "triage", "done": "closed", "wontfix": "closed"}[status]
+        sections[section].append(row)
+    return sections
+
+
+def routing_summary(source: Path, groups: dict[str, list], records: dict) -> str:
+    labels = {"active": "Active Work", "ready": "Ready Frontier", "waiting": "Waiting",
+              "needs-info": "Needs Info", "human": "Human Action", "triage": "Needs Triage"}
+    selected = [(name, row) for name in ("human", "needs-info") for row in groups[name]]
+    if groups["active"]:
+        selected.extend(("active", row) for row in groups["active"])
+    elif groups["ready"]:
+        selected.append(("ready", groups["ready"][0]))
+    else:
+        selected.extend((name, row) for name in ("triage", "waiting") for row in groups[name][:1])
+    lines = ["| Route | TASK | Title | Status | Unresolved blockers |",
+             "| --- | --- | --- | --- | --- |"]
+    for name, (path, data) in selected:
+        unresolved = [item for item in blockers(data) if records[item][1]["status"] not in TERMINAL]
+        cells = [labels[name], link(source, path, data["id"]), data["title"].replace("|", "&#124;"),
+                 data["status"], ", ".join(link(source, records[item][0], item) for item in unresolved) or "—"]
+        lines.append("| " + " | ".join(cells) + " |")
+    if not groups["active"] and not groups["ready"]:
+        lines.extend(["", "No TASK is currently executable; unresolved work may remain."])
+    return "\n".join(lines)
+
+
+def current_delivery(records: dict) -> list[tuple[str, Path, dict]]:
+    return [(data["id"], path, data) for path, data in
+            sorted(records.values(), key=priority) if data.get("delivery") == "awaiting-merge"]
+
+
 def generated_views(records: dict) -> dict[Path, dict[str, str]]:
     live = [(path, data) for path, data in records.values() if not archived(path)]
     views: dict[Path, dict[str, str]] = {}
@@ -100,19 +159,14 @@ def generated_views(records: dict) -> dict[Path, dict[str, str]]:
             views[path] = {"children": table(path, children, records)}
 
     board = PLANNING / "tasks/BOARD.md"
-    sections: dict[str, list] = {name: [] for name in ("active", "ready", "waiting", "needs-info", "human", "triage", "closed")}
-    for row in live:
-        data = row[1]
-        if not data["id"].startswith("TASK-"):
-            continue
-        status = data["status"]
-        if status == "ready-for-agent":
-            section = "waiting" if any(records[item][1]["status"] not in TERMINAL for item in blockers(data)) else "ready"
-        else:
-            section = {"in-progress": "active", "needs-info": "needs-info", "ready-for-human": "human",
-                       "needs-triage": "triage", "done": "closed", "wontfix": "closed"}[status]
-        sections[section].append(row)
+    sections = task_groups(records)
     views[board] = {name: table(board, rows, records) for name, rows in sections.items()}
+    views[board]["next"] = routing_summary(board, sections, records)
+    handoffs = current_delivery(records)
+    views[board]["delivery"] = "\n".join(
+        f"- {link(board, path, identifier)}: Published; verify live state — {data['pr']}."
+        for identifier, path, data in handoffs
+    ) or "None. No explicit current publication handoffs."
 
     roadmap = PLANNING / "ROADMAP.md"
     frontier = []
@@ -127,6 +181,7 @@ def generated_views(records: dict) -> dict[Path, dict[str, str]]:
     views[roadmap] = {
         "epics": table(roadmap, [row for row in live if row[1]["id"].startswith("EPIC-")], records),
         "frontier": "\n".join(frontier) or "None.",
+        "execution": routing_summary(roadmap, sections, records),
     }
     return views
 
@@ -142,18 +197,193 @@ def complete_parents(records: dict) -> dict[Path, str]:
             if not children or any(child["status"] not in TERMINAL for child in children):
                 continue
             status = "wontfix" if all(child["status"] == "wontfix" for child in children) else "done"
-            text = path.read_text()
-            header, body = text[4:].split("\n---\n", 1)
-            header = re.sub(r"^status:[^\n]*$", f"status: {status}", header, count=1, flags=re.MULTILINE)
-            pending[path] = f"---\n{header}\n---\n{body}"
+            text = read_text(path)
+            header, boundary, body = re.split(r"((?:\r\n|\r|\n)---(?:\r\n|\r|\n))", text, maxsplit=1)
+            lines = []
+            for line in header.splitlines(keepends=True):
+                key, separator, value = line.partition(":")
+                if separator and key.strip() == "status":
+                    ending = re.search(r"(?:\r\n|\r|\n)$", value)
+                    line = key + ": " + status + (ending[0] if ending else "")
+                lines.append(line)
+            planned = "".join(lines) + boundary + body
+            if parse_frontmatter(planned) != {**data, "status": status}:
+                raise ValueError(f"{path.relative_to(ROOT)}: planned parent closure changed unexpected metadata")
+            pending[path] = planned
             data["status"] = status
+    return pending
+
+
+def newline(text: str) -> str:
+    match = re.search(r"\r\n|\r|\n", text)
+    return match[0] if match else "\n"
+
+
+def local_git(*arguments: str) -> str:
+    """Inspect existing local objects; never substitute ancestry or fetch missing objects."""
+    return subprocess.run(
+        ["git", "--no-replace-objects", "-c", f"safe.directory={ROOT.resolve()}", *arguments],
+        cwd=ROOT, capture_output=True, text=True, timeout=5, check=True,
+        env={**os.environ, "GIT_NO_LAZY_FETCH": "1"},
+    ).stdout.strip()
+
+
+def delivery_repository(handoffs: list) -> str:
+    if len(handoffs) > 16:
+        raise ValueError("at most 16 explicit current delivery handoffs may be checked per invocation")
+    try:
+        origin = local_git("remote", "get-url", "origin")
+    except (OSError, subprocess.SubprocessError):
+        raise ValueError("cannot read target origin; planning owner must recover repository identity") from None
+    match = re.fullmatch(r"(?:git@github\.com:|https://github\.com/)([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+?)(?:\.git)?", origin)
+    if not match:
+        raise ValueError("origin must identify one GitHub repository; planning owner must resolve target identity")
+    repository = match[1]
+    for identifier, path, data in handoffs:
+        if not re.fullmatch(rf"https://github\.com/{re.escape(repository)}/pull/[1-9][0-9]*", data["pr"]):
+            raise ValueError(f"{identifier}: PR URL/repository does not match target origin; planning owner must correct identity")
+    return repository
+
+
+def delivery_metadata(number: int, repository: str) -> dict:
+    """Bound both request time and buffered output, without echoing private CLI diagnostics."""
+    command = ["gh", "pr", "view", str(number), "--repo", repository, "--json",
+               "number,url,title,state,mergedAt,baseRefName,headRefName,headRefOid,mergeCommit"]
+    try:
+        with subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                              env={**os.environ, "GH_PROMPT_DISABLED": "1"}) as process:
+            try:
+                output = bytearray()
+                deadline = time.monotonic() + 15
+                with selectors.DefaultSelector() as selector:
+                    selector.register(process.stdout, selectors.EVENT_READ)
+                    while True:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0 or not selector.select(remaining):
+                            raise ValueError("PR request exceeded 15 seconds")
+                        chunk = os.read(process.stdout.fileno(), 16385 - len(output))
+                        if not chunk:
+                            break
+                        output.extend(chunk)
+                        if len(output) > 16384:
+                            raise ValueError("PR metadata exceeds 16384 bytes")
+                if process.wait(timeout=max(0.001, deadline - time.monotonic())):
+                    raise ValueError("gh request failed; evidence owner must recover tooling/authentication/API access")
+            finally:
+                if process.poll() is None:
+                    process.kill()
+            try:
+                def unique_fields(pairs: list) -> dict:
+                    values = {}
+                    for key, value in pairs:
+                        if key in values:
+                            raise ValueError("duplicate PR metadata field")
+                        values[key] = value
+                    return values
+                pr = json.loads(output, object_pairs_hook=unique_fields)
+            except (UnicodeError, json.JSONDecodeError, RecursionError):
+                raise ValueError("malformed PR metadata; evidence owner must recover authoritative metadata") from None
+    except (OSError, subprocess.SubprocessError):
+        raise ValueError("PR evidence unavailable; evidence owner must recover gh tooling/authentication/API access") from None
+    if not isinstance(pr, dict):
+        raise ValueError("PR metadata must be an object")
+    return pr
+
+
+def verify_delivery(handoffs: list) -> tuple[list, list[str]]:
+    """Only explicit handoffs are observed; errors never authorize partial retirement."""
+    resolved, errors = [], []
+    if not handoffs:
+        return resolved, errors
+    try:
+        repository = delivery_repository(handoffs)
+    except ValueError as exception:
+        return [], [str(exception)]
+    for identifier, path, data in handoffs:
+        label = f"{path.relative_to(ROOT)} ({identifier})"
+        try:
+            number = int(data["pr"].rsplit("/", 1)[1])
+            pr = delivery_metadata(number, repository)
+            if (type(pr.get("number")) is not int or pr["number"] != number
+                    or pr.get("url") != data["pr"]
+                    or pr.get("title") != identifier + " — " + data["title"]
+                    or pr.get("baseRefName") != "develop"
+                    or not isinstance(pr.get("headRefName"), str)
+                    or not re.fullmatch(rf"feature/task-{identifier[5:]}-[a-z0-9][a-z0-9-]*", pr["headRefName"])
+                    or not isinstance(pr.get("headRefOid"), str)
+                    or not re.fullmatch(r"[0-9a-f]{40}", pr["headRefOid"])):
+                raise ValueError("PR identity mismatch (number/URL/TASK/title/feature branch/base/published head); planning owner must reconcile identity")
+            state = pr.get("state")
+            if not isinstance(state, str) or state not in {"OPEN", "MERGED", "CLOSED"} or "mergedAt" not in pr or "mergeCommit" not in pr:
+                raise ValueError("missing or invalid PR state/merge metadata; evidence owner must recover authoritative evidence")
+            if state == "MERGED":
+                stamp, commit = pr["mergedAt"], pr["mergeCommit"]
+                if not isinstance(stamp, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", stamp):
+                    raise ValueError("invalid merge timestamp; evidence owner must recover exact merge time")
+                try:
+                    datetime.datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+                except ValueError:
+                    raise ValueError("invalid merge calendar time; evidence owner must recover exact merge time") from None
+                if (not isinstance(commit, dict) or not isinstance(commit.get("oid"), str)
+                        or not re.fullmatch(r"[0-9a-f]{40}", commit["oid"])):
+                    raise ValueError("invalid merge commit; evidence owner must recover exact merge identity")
+                if data["status"] != "done":
+                    raise ValueError("MERGED but TASK is not done; planning owner must resolve current scope, not infer acceptance")
+                try:
+                    local_head = local_git("rev-parse", "--verify", "HEAD^{commit}")
+                    local_git("merge-base", "--is-ancestor", pr["headRefOid"], commit["oid"])
+                    local_git("merge-base", "--is-ancestor", commit["oid"], local_head)
+                except (OSError, subprocess.SubprocessError):
+                    raise ValueError("local integration UNVERIFIED (missing objects or ancestry); Git owner must obtain/integrate the exact merge through authorized work. No fetch or merge performed") from None
+                pr["localHead"] = local_head
+                resolved.append((identifier, path, pr))
+                print(f"Delivery resolved: {identifier} PR #{number} is MERGED and locally integrated; no human merge or cleanup request remains.")
+            elif pr["mergedAt"] is not None or pr["mergeCommit"] is not None:
+                raise ValueError("contradictory state/merge evidence; evidence owner must recover authoritative metadata")
+            elif state == "CLOSED":
+                raise ValueError("CLOSED WITHOUT MERGE; planning owner must correct the current handoff")
+            else:
+                print(f"Delivery fresh: {identifier} PR #{number} is OPEN; human review/merge remains pending.")
+        except ValueError as exception:
+            errors.append(f"{label}: {exception}. No fresh pass or acceptance is inferred.")
+    return resolved, errors
+
+
+def reconcile_delivery(records: dict, resolved: list) -> dict[Path, str]:
+    pending = {}
+    observed = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for identifier, path, pr in resolved:
+        text = read_text(path)
+        header, boundary, body = re.split(r"((?:\r\n|\r|\n)---(?:\r\n|\r|\n))", text, maxsplit=1)
+        end = boundary.index("---")
+        # Use exactly the reader's stripped-key semantics; leave every other byte alone.
+        header = "".join(line for line in (header + boundary[:end]).splitlines(keepends=True)
+                         if line.partition(":")[0].strip() != "delivery")
+        retired = header + boundary[end:] + body
+        expected = {key: value for key, value in records[identifier][1].items() if key != "delivery"}
+        if parse_frontmatter(retired) != expected:
+            raise ValueError(f"{identifier}: planned retirement did not preserve expected frontmatter")
+        evidence = (
+            f"\n\n### Delivery reconciliation — PR #{pr['number']}\n\n"
+            f"Observed {observed}: {pr['url']} is MERGED into `{pr['baseRefName']}` at `{pr['mergedAt']}`. "
+            f"Published head `{pr['headRefOid']}` is an ancestor of merge `{pr['mergeCommit']['oid']}`, "
+            f"integrated in local HEAD `{pr['localHead']}`. Retired only the ended delivery marker; "
+            "historical publication, implementation acceptance and QA remain separate. "
+            "No approval, merge, release or deployment was performed by reconciliation.\n"
+        )
+        pending[path] = retired + evidence.replace("\n", newline(text))
+        records[identifier][1].pop("delivery")
     return pending
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--write", action="store_true", help="refresh generated views after validation")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--write", action="store_true", help="close eligible parents and refresh generated views")
+    mode.add_argument("--check-delivery", action="store_true", help="read-only local validation and bounded live current-handoff verification")
+    mode.add_argument("--reconcile-delivery", action="store_true", help="authorized write: retire verified merged/integrated done handoffs and refresh views")
     args = parser.parse_args()
+    writing = args.write or args.reconcile_delivery
     errors: list[str] = []
     records: dict[str, tuple[Path, dict[str, str]]] = {}
     for directory, prefix in LEVELS.items():
@@ -180,6 +410,11 @@ def main() -> int:
                 errors.append(f"{path.relative_to(ROOT)}: order must be a positive integer")
             if data.get("pr") and not re.fullmatch(r"https://[^\s|]+/pull/\d+", data["pr"]):
                 errors.append(f"{path.relative_to(ROOT)}: pr must be a full PR URL")
+            if data.get("delivery"):
+                if prefix != "TASK" or archived(path) or data["delivery"] != "awaiting-merge":
+                    errors.append(f"{path.relative_to(ROOT)}: delivery must be awaiting-merge on a live TASK, or empty")
+                if not data.get("pr"):
+                    errors.append(f"{path.relative_to(ROOT)}: current delivery requires a PR URL")
             if archived(path) and data.get("status") not in TERMINAL:
                 errors.append(f"{path.relative_to(ROOT)}: archived record is not terminal")
             if "prd" in data:
@@ -243,13 +478,23 @@ def main() -> int:
         errors.append(".runs/ must be gitignored")
 
     updates: dict[Path, str] = {}
+    resolved: list = []
+    handoffs = current_delivery(records) if not errors else []
     if not errors:
-        updates = complete_parents(records)
-        if not args.write and updates:
+        try:
+            updates = complete_parents(records)
+            if args.reconcile_delivery:
+                resolved, delivery_errors = verify_delivery(handoffs)
+                errors.extend(delivery_errors)
+                if not errors:
+                    updates.update(reconcile_delivery(records, resolved))
+        except ValueError as exception:
+            errors.append(str(exception))
+        if not writing and updates:
             errors.append("parent completion out of sync; run ./bin/planning-check --write")
         for path, sections in generated_views(records).items():
             original = (
-                path.read_text(encoding="utf-8") if path.exists() else
+                read_text(path) if path.exists() else
                 f"# {path.parent.parent.name.title()} archive\n\n<!-- planning:records -->\n<!-- /planning:records -->\n"
             )
             text = updates.get(path, original)
@@ -260,10 +505,11 @@ def main() -> int:
                     continue
                 before, rest = text.split(start, 1)
                 _, after = rest.split(end, 1)
-                text = f"{before}{start}\n{content}\n{end}{after}"
+                eol = newline(original)
+                text = f"{before}{start}{eol}{content.replace(chr(10), eol)}{eol}{end}{after}"
             if text != original or not path.exists():
                 updates[path] = text
-                if not args.write:
+                if not writing:
                     errors.append(f"{path.relative_to(ROOT)}: stale view; run ./bin/planning-check --write")
     if errors:
         print("Planning validation failed:")
@@ -272,9 +518,22 @@ def main() -> int:
         return 1
     for path, text in updates.items():
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
+        path.write_bytes(text.encode("utf-8"))
     active = sum(data["status"] not in TERMINAL for _, data in records.values())
-    print(f"Planning validation passed: {len(records)} records, {active} active; {len(updates)} views refreshed")
+    print(f"Planning validation passed (offline): {len(records)} records, {active} active; {len(updates)} files refreshed")
+    if args.reconcile_delivery:
+        print(f"Delivery reconciliation passed: {len(resolved)} ended handoff(s) retired; OPEN markers preserved.")
+    elif args.check_delivery:
+        resolved, delivery_errors = verify_delivery(handoffs)
+        if delivery_errors:
+            print("Delivery verification failed or incomplete:")
+            for error in delivery_errors:
+                print(f"- {error}")
+            return 1
+        print(f"Delivery verification passed: {len(handoffs) - len(resolved)} OPEN handoff(s), "
+              f"{len(resolved)} merged/integrated handoff(s) resolved read-only; no historical PRs queried.")
+    else:
+        print("Delivery freshness NOT CHECKED; routing and Land use --check-delivery.")
     return 0
 
 
