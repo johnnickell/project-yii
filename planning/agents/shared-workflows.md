@@ -46,20 +46,26 @@ No local ADR is implied by a provider ADR; propose a scoped local decision when 
 
 **Stronger Yii test policy:** retain exact **100% Unit-only owned-production statement coverage**, including missing
 source-file and coverage-ignore rejection, without baselines or suppressions. Combined-suite coverage or the
-provider's practical Adapter target cannot substitute. Product suites protect owned behavior and meaningful
-package integrations, not wiring, wrappers, planning/build/configuration/static-analysis tools, tests of tests,
-receipts or framework certification. Validate those directly with their owning commands; never seed invalid
-planning/source fixtures to prove detection. Do not manufacture product tests solely to satisfy a denominator.
-A concrete conflict between coverage and test quality needs its files, denominator/evidence and owning TASK
-recorded; preserve both requirements while seeking a scoped resolution.
+provider's practical Adapter target cannot substitute. Product suites protect owned PHP contracts and meaningful
+package integrations, including PHP providers and composition declarations in the denominator. The requirement
+owner clarified for TASK-00009: “wiring-only means bin/* scripts or infrastructure tests, not PHP code. Cover the
+PHP code”. Direct tests of those PHP contracts are permitted; do not exclude or manipulate PHP source coverage.
+Do not test wrappers, infrastructure/tooling, planning/build/coverage/static-analysis mechanisms, tests of tests,
+receipts or framework certification in product suites. Validate those directly with their owning commands;
+never seed invalid planning/source fixtures to prove detection. A genuinely distinct acceptance conflict needs
+its files, evidence and owning TASK recorded, not revival of the resolved PHP-provider hold.
 
 [TASK-00008](../tasks/00008-TASK.md) owns stable packages/PHPCS compatibility;
 [TASK-00009](../tasks/00009-TASK.md) owns gate/test-tooling replacement, including obsolete machinery retirement.
 Instruction adoption repairs neither. Do not restore certification infrastructure or historical candidate lanes.
-Until verified replacement, current [bin/build](../../bin/build) remains authoritative: planning, pulled disposable
-PHP image, FPM, Composer validation/locked install, PHPCS, PHPStan, Deptrac, Rector, Unit coverage, Integration,
-Functional and disposable no-dev production boot. Its in-gate installs are current behavior, not the accepted
-future explicit-setup lifecycle. Keep runtime/tool caches in `var/`; do not import provider cache paths.
+[bin/build](../../bin/build) verifies in the running Compose `app` service through named fail-fast PHP phases.
+Prepare explicitly with `./bin/up` and `./bin/composer install --no-interaction --prefer-dist --no-progress`.
+The gate never builds images or installs dependencies. It retains planning, FPM, Composer validation, PHP syntax,
+PHPCS, PHPStan, Deptrac, Rector and all configured PHPUnit suites once. Unit `CoversClass` attribution alone
+contributes to exact coverage; boundary/journey suites declare `CoversNothing`. PHPUnit includes uncovered `src/`
+files and disables coverage-ignore metadata; the gate rejects ignore directives and uses the installed standard
+`coverage-check` at 100. Disposable no-dev installation/boot is retired, not equivalent to the retained dev-graph
+HTTP/console journeys. Keep runtime/tool caches in `var/`; do not import provider cache paths.
 
 ## Target resource substitutions
 

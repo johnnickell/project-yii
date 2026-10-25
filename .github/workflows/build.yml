@@ -17,4 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: ./bin/build
+      - name: Prepare the running environment
+        run: ./bin/up
+      - name: Install the locked development dependencies
+        run: ./bin/composer install --no-interaction --prefer-dist --no-progress
+      - name: Verify
+        run: ./bin/build
+      - name: Stop the environment
+        if: always()
+        run: ./bin/down

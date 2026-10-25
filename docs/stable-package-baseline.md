@@ -95,6 +95,10 @@ now supply the collaborators expected by the released bounded providers, which r
 
 ## Coding standard and verification boundary
 
+The following records TASK-00008's historical gate and scan scope. TASK-00009 replaces that lifecycle and removes
+`scripts/verify-coverage.php`; current setup, scan/coverage ownership and intentionally retired production-install
+proof are documented in [Contributing](../CONTRIBUTING.md#verification-contract).
+
 `phpcs.xml.dist` imports Common's `src/Standards/Phpcs/ruleset.xml` exactly as documented in the installed
 `docs/coding-standard.md`. Yii retains its existing scan scope: `src`, `tests`, and `scripts/verify-coverage.php`;
 no exclusions, baselines, severity reductions or suppressions are added. Source/test formatting, docblocks,
@@ -106,7 +110,7 @@ execution at the configured root, and nested transaction rollback/reuse. Existin
 credential rejection, messaging envelopes, cache, logging, storage and fallback journeys. Tool/configuration
 checks run their owning commands; no certification tests or mechanisms are added.
 
-The complete current `./bin/build` remains authoritative, including disposable-image and no-dev production boot.
+At the TASK-00008 checkpoint, the complete `./bin/build` included disposable-image and no-dev production boot.
 TASK-00008 does not implement TASK-00009's running-container gate or rewrite inherited suite attribution.
 The complete local gate passes: Unit 28 tests / 85 assertions, Integration 58 / 230, Functional 2 / 5;
 Unit-only owned-production statement coverage is exactly 237/237 with PCOV 1.0.12 on PHP 8.5.12. Planning,

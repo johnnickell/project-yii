@@ -37,10 +37,13 @@ is integrated through merged [PR #14](https://github.com/johnnickell/project-yii
 administrative closeout B changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at
 its exact candidate; [PR #15](https://github.com/johnnickell/project-yii/pull/15) is merged at
 `f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009 Work intake is active on the approved main checkout,
-with a [measured coverage/test-quality hold](00009-TASK.md#current-work-hold--direct-coverage-versus-wiring-only-tests).
-The local requirement owner must reconcile direct Unit coverage of pure DI declarations with the prohibition on
-wiring-only tests; do not start another TASK or treat the old gate's pass as replacement acceptance. No additional
-general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
+after the [owner's clarification](00009-TASK.md#current-work--owner-clarification-applied): “wiring-only means bin/*
+scripts or infrastructure tests, not PHP code. Cover the PHP code”. Direct tests of owned PHP providers/composition
+contracts are allowed; all owned PHP stays in the exact Unit-only denominator. The prior measured hold is resolved
+and preserved as history. Work has implemented and locally verified the replacement (88 tests / 320 assertions,
+237/237 Unit-only statements across all 19 PHP source files). Next is independent Review, then applicable QA through
+the existing coordinator; do not start another TASK or mistake local verification for independent acceptance.
+No additional general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
 

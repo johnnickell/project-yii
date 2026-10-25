@@ -49,10 +49,14 @@ TASK-00012 independently accepted candidate A, independently QA-passed, and is i
 changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at its exact candidate, with
 [PR #15](https://github.com/johnnickell/project-yii/pull/15) merged at
 `f40543de48705007f17cd8c02ea29c1c2c015a11` and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
-TICKET-00003 is done. TASK-00009 Work intake is active, but its replacement remains unimplemented pending the
-[local requirement owner's coverage/test-quality decision](tasks/00009-TASK.md#current-work-hold--direct-coverage-versus-wiring-only-tests).
-Filtering only one wiring-only test leaves 235/237 direct Unit statements covered; no denominator exclusion,
-coverage weakening or test-policy exception has been adopted. No new decomposition or second gate TASK is needed.
+TICKET-00003 is done. TASK-00009 initial Work has resumed after the
+[owner's PHP-contract clarification](tasks/00009-TASK.md#current-work--owner-clarification-applied): the wiring-only
+prohibition applies to bin/* and infrastructure tests, not owned PHP providers/composition. Direct PHP-contract
+tests are permitted and every owned PHP statement stays in the exact Unit-only denominator. The prior 235/237
+filtered measurement and hold remain historical, not a current blocker. Work has implemented and locally verified
+the running-service PHP gate, explicit local/CI setup and obsolete/no-dev machinery retirement: 88 tests / 320
+assertions and 237/237 Unit-only statements across all 19 source files. Independent Review/QA of the replacement
+are still pending. No new decomposition or second gate TASK is needed.
 The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
 complete capability inventory is not implied by this bounded adoption portfolio.
 

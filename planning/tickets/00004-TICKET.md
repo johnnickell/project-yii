@@ -67,11 +67,15 @@ The 2026-10-24 comprehensive adoption approval retains this gate slice after TAS
 or relax its coverage, test-quality, or hosted-check requirements. Apply the shared fail-fast/read-only gate
 principles through Yii's existing Compose PHP service, not the provider's service names or frontend/database
 phases. No further TASK decomposition is pending for this accepted requirement. TASK-00008 is integrated through
-merged PR #15 at `f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009 Work intake now records a
-[concrete coverage/test-quality hold](../tasks/00009-TASK.md#current-work-hold--direct-coverage-versus-wiring-only-tests):
-removing only one wiring-only SMS test leaves 235/237 direct Unit statements covered. No replacement has been
-implemented or accepted. The local requirement owner must reconcile coverage of pure DI declarations with the
-wiring-test prohibition before Work resumes; neither requirement is silently weakened. This TICKET stays open.
+merged PR #15 at `f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009's prior measured hold is
+[resolved by the owner](../tasks/00009-TASK.md#current-work--owner-clarification-applied): “wiring-only means bin/*
+scripts or infrastructure tests, not PHP code. Cover the PHP code”. Direct tests of owned PHP providers/composition
+contracts are allowed and all PHP source stays in the exact Unit-only denominator. The historical 235/237 filtered
+measurement is preserved, not a current prerequisite. Work has implemented and locally verified the running-service
+PHP gate and explicit local/CI setup. One canonical PHPUnit run retains 88 tests / 320 assertions; Unit-only exact
+coverage remains 237/237 across all 19 PHP files, with boundary-only coverage separately measured at 0/237. The
+bespoke verifier and disposable no-dev boot are retired, not replaced by a production-install claim. Independent
+Review/QA are still pending; this TICKET stays open with its in-progress child.
 
 ### Historical gate approval and consolidation
 
