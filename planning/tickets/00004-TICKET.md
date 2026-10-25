@@ -2,7 +2,7 @@
 id: TICKET-00004
 epic: EPIC-00003
 title: Verify Yii Through a Running-Container PHP Gate
-status: in-progress
+status: done
 order: 3
 ---
 
@@ -57,7 +57,7 @@ the gate. Installed-version adoption is TICKET-00003 and precedes this work.
 <!-- planning:children -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | in-progress | [TASK-00008](../tasks/00008-TASK.md) | — |
+| 4 | [TASK-00009](../tasks/00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](00004-TICKET.md) | done | [TASK-00008](../tasks/00008-TASK.md) | https://github.com/johnnickell/project-yii/pull/16 |
 <!-- /planning:children -->
 
 ## Progress
@@ -79,7 +79,11 @@ Review requested REV-01 for Linux workspace ownership at candidate `b4a2741c2dd9
 Work reproduced and repaired it in explicit `bin/up` directory preparation, preserving non-root install/FPM/gate
 and source ownership. Fresh UID-1001 Linux-workspace up/install/full-gate checks pass with the unchanged exact
 coverage and suite counts; actual hosted execution is not claimed. See the [current repair](../tasks/00009-TASK.md#current-repair--rev-01-linux-workspace-ownership).
-Fresh independent Review and applicable QA remain pending; this TICKET stays open with its in-progress child.
+Independent Review accepted the repaired exact candidate `d810303ebeeea9c1114e77ac2025da3a3138d197` and independent
+QA passed all seven selected scenarios; visual evidence is N/A for this non-visual contract. Administrative
+closeout B records that accepted A evidence and [PR #16](https://github.com/johnnickell/project-yii/pull/16) without
+changing implementation behavior. With its only child terminal, this TICKET completes automatically; hosted CI
+remains optional and unobserved, while human review/merge of PR #16 remains separate.
 
 ### Historical gate approval and consolidation
 

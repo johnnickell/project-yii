@@ -36,16 +36,12 @@ accepted and QA-passed planning amendment, now integrated into `develop` through
 is integrated through merged [PR #14](https://github.com/johnnickell/project-yii/pull/14) on the TASK-00008 base;
 administrative closeout B changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at
 its exact candidate; [PR #15](https://github.com/johnnickell/project-yii/pull/15) is merged at
-`f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009 Work intake is active on the approved main checkout,
-after the [owner's clarification](00009-TASK.md#current-work--owner-clarification-applied): “wiring-only means bin/*
-scripts or infrastructure tests, not PHP code. Cover the PHP code”. Direct tests of owned PHP providers/composition
-contracts are allowed; all owned PHP stays in the exact Unit-only denominator. The prior measured hold is resolved
-and preserved as history. Work has implemented and locally verified the replacement (88 tests / 320 assertions,
-237/237 Unit-only statements across all 19 PHP source files). Initial independent Review requested REV-01 for Linux
-workspace ownership; Work's [bounded preparation repair](00009-TASK.md#current-repair--rev-01-linux-workspace-ownership)
-passes fresh Linux UID-1001 and existing-runtime checks. Next is fresh independent Review, then applicable QA
-through the existing coordinator (1/5 repair cycles consumed); do not start another TASK or mistake local
-verification for independent acceptance. Actual hosted execution is not claimed.
+`f40543de48705007f17cd8c02ea29c1c2c015a11`. TASK-00009 independently accepted candidate A `d810303ebeeea9c1114e77ac2025da3a3138d197` after the
+[owner's clarification](00009-TASK.md#current-work--owner-clarification-applied), resolved REV-01, and independent
+QA passed all seven scenarios (visual N/A). Its administrative closeout B records factual completion and
+[PR #16](https://github.com/johnnickell/project-yii/pull/16) only; no requirement, instruction or behavior changed.
+Hosted CI is optional and unobserved. The PR is open for human review and merge; do not start another TASK or infer
+approval, merge, release or deployment from this closeout.
 No additional general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.
@@ -63,9 +59,7 @@ The bounded adoption TASKs do not authorize the broader application map.
 ## Active Work
 
 <!-- planning:active -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | in-progress | [TASK-00008](00008-TASK.md) | — |
+None.
 <!-- /planning:active -->
 
 ## Ready Frontier
@@ -110,6 +104,7 @@ None.
 | 1 | [TASK-00013](00013-TASK.md) | Refresh and Enforce Patched Yii Container Runtimes | — | done | — | https://github.com/johnnickell/project-yii/pull/13 |
 | 2 | [TASK-00012](00012-TASK.md) | Bind Shared Engineering and Agent Workflows to Yii | [TICKET-00005 — Adopt Shared Engineering and Agent Workflow Conventions](../tickets/00005-TICKET.md) | done | [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/14 |
 | 3 | [TASK-00008](00008-TASK.md) | Install and Verify the Stable Fight Package Baseline | [TICKET-00003 — Adopt Stable Fight Common and AccessControl Contracts](../tickets/00003-TICKET.md) | done | [TASK-00007](00007-TASK.md), [TASK-00011](00011-TASK.md) | https://github.com/johnnickell/project-yii/pull/15 |
+| 4 | [TASK-00009](00009-TASK.md) | Replace the Disposable Build with a Running-Container PHP Gate | [TICKET-00004 — Verify Yii Through a Running-Container PHP Gate](../tickets/00004-TICKET.md) | done | [TASK-00008](00008-TASK.md) | https://github.com/johnnickell/project-yii/pull/16 |
 | — | [TASK-00001](00001-TASK.md) | Establish the Governed Yii Starter Foundation | [TICKET-00001 — Yii Starter Product and Walking-Slice Acceptance](../tickets/00001-TICKET.md) | done | — | — |
 | — | [TASK-00002](00002-TASK.md) | Adopt Fight Common 1.2 | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | [TASK-00004](00004-TASK.md) | — |
 | — | [TASK-00004](00004-TASK.md) | Establish the Yii Complete Platform Profile | [TICKET-00002 — Fight Common Version Adoption and Yii Quality](../tickets/00002-TICKET.md) | done | — | — |

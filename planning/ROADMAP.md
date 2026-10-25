@@ -5,7 +5,7 @@
 <!-- planning:epics -->
 | Order | ID | Title | Parent | Status | Blocked by | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | [EPIC-00003](epics/00003-EPIC.md) | Adopt Shared Standards and Current Stable Fight Packages | — | in-progress | — | — |
+| 1 | [EPIC-00003](epics/00003-EPIC.md) | Adopt Shared Standards and Current Stable Fight Packages | — | done | — | — |
 | — | [EPIC-00001](epics/00001-EPIC.md) | Governed Yii Starter Foundation | — | done | — | — |
 | — | [EPIC-00002](epics/00002-EPIC.md) | Maintained Yii Package Composition and Quality | — | needs-info | — | — |
 <!-- /planning:epics -->
@@ -49,17 +49,14 @@ TASK-00012 independently accepted candidate A, independently QA-passed, and is i
 changed delivery metadata only. TASK-00008 is independently accepted and QA-passed at its exact candidate, with
 [PR #15](https://github.com/johnnickell/project-yii/pull/15) merged at
 `f40543de48705007f17cd8c02ea29c1c2c015a11` and [bounded artifact/contract findings](../docs/stable-package-baseline.md).
-TICKET-00003 is done. TASK-00009 initial Work has resumed after the
-[owner's PHP-contract clarification](tasks/00009-TASK.md#current-work--owner-clarification-applied): the wiring-only
-prohibition applies to bin/* and infrastructure tests, not owned PHP providers/composition. Direct PHP-contract
-tests are permitted and every owned PHP statement stays in the exact Unit-only denominator. The prior 235/237
-filtered measurement and hold remain historical, not a current blocker. Work has implemented and locally verified
-the running-service PHP gate, explicit local/CI setup and obsolete/no-dev machinery retirement: 88 tests / 320
-assertions and 237/237 Unit-only statements across all 19 source files. Initial independent Review requested
-REV-01 (Linux workspace ownership); Work's [explicit-preparation repair](tasks/00009-TASK.md#current-repair--rev-01-linux-workspace-ownership)
-passes fresh UID-1001 Linux-workspace and existing-runtime checks, with source ownership/non-root execution
-preserved. Fresh independent Review and applicable QA remain pending; actual hosted execution is not claimed.
-No new decomposition or second gate TASK is needed.
+TICKET-00003 is done. TASK-00009 independently accepted candidate A
+`d810303ebeeea9c1114e77ac2025da3a3138d197` after the
+[owner's PHP-contract clarification](tasks/00009-TASK.md#current-work--owner-clarification-applied), resolved
+REV-01, and independently QA-passed seven scenarios (visual N/A). Its administrative closeout B records
+[PR #16](https://github.com/johnnickell/project-yii/pull/16) and automatic parent completion only; it changes no
+implementation behavior. Hosted CI remains optional and unobserved. With all three requirement TICKETs terminal,
+EPIC-00003 completes automatically; human review/merge of PR #16 remains separate. No new decomposition or second
+gate TASK is needed.
 The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
 complete capability inventory is not implied by this bounded adoption portfolio.
 
