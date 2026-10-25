@@ -41,10 +41,10 @@ $runtimeCheck = 'for tool in composer php-fpm python3 grep; do ';
 $runtimeCheck .= 'command -v "$tool" >/dev/null || ';
 $runtimeCheck .= '{ echo >&2 "Missing runtime tool: $tool; rebuild/recreate with ./bin/up."; exit 1; }; done';
 $phase('Runtime prerequisites', ['sh', '-ec', $runtimeCheck]);
+$phase('Planning freshness preflight (offline, read-only)', ['./bin/planning-check']);
 $phase('FPM configuration', ['php-fpm', '-tt']);
 $phase('Composer validation', ['composer', 'validate', '--strict']);
 $phase('Installed platform requirements', ['composer', 'check-platform-reqs']);
-$phase('Planning validation (read-only)', ['./bin/planning-check']);
 
 $phpFiles = ['rector.php'];
 foreach (['config', 'public', 'scripts', 'src', 'tests'] as $directory) {
@@ -83,4 +83,5 @@ $phase('PHPUnit — all configured suites once, Unit-only coverage', [
     '--log-junit', 'var/coverage/phpunit-junit.xml'
 ]);
 $phase('Exact coverage threshold (100%, unrounded)', [PHP_BINARY, 'vendor/bin/coverage-check', $clover, '100']);
+$phase('Final planning validation (offline, read-only)', ['./bin/planning-check']);
 fwrite(STDOUT, "\nBuild passed.\n");

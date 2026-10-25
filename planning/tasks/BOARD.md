@@ -2,7 +2,9 @@
 
 ## Routing index
 
-Read only current human decisions and active work below; otherwise the first ready TASK.
+Validate with `./bin/planning-check --check-delivery`, then read generated Current Execution and Current Delivery
+plus current human decisions below; otherwise the first ready TASK. Live checks resolve verified integrated merges
+read-only; unavailable or uncertain evidence is an owner/input gap, never a routine cleanup request.
 Use [lightweight routing](../CONVENTIONS.md#lightweight-work-routing) for validation and evidence limits.
 [Wayfinder status and frontiers](../wayfinder/README.md) answer the decision-routing question.
 Use the [Roadmap](../ROADMAP.md) and current handoffs for planning phases; do not infer full decomposition from closed maps.
@@ -15,14 +17,33 @@ TASK files own status, blockers, and `order`; generated sections below project e
 Return the human decision under **Now** and the active TASK. If none is active, return the first executable TASK
 under **Ready Frontier**. Do not start a second TASK just because its ID is lower. State when no work is executable.
 
+## Current Execution
+
+<!-- planning:next -->
+| Route | TASK | Title | Status | Unresolved blockers |
+| --- | --- | --- | --- | --- |
+| Needs Info | [TASK-00003](00003-TASK.md) | Prepare Fight Common 2.0 Migration | needs-info | — |
+| Active Work | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | in-progress | — |
+<!-- /planning:next -->
+
+## Current Delivery
+
+<!-- planning:delivery -->
+None. No explicit current publication handoffs.
+<!-- /planning:delivery -->
+
+Publication snapshots require `--check-delivery` before routing; these rows do not assert unconditional OPEN state.
+No marker means no current delivery handoff, even when historical prose or a PR link exists.
+
 ## Now
 
 On 2026-10-25 the maintainer approved [TASK-00014 — Keep Yii Post-Merge Routing and Delivery Handoffs Current](00014-TASK.md)
 as a standalone bug, using the main checkout. Port Fight Common's bounded live delivery checking, explicit
 idempotent intake reconciliation and generated current summaries with Yii-native validation guarantees. PR #16 is
 already merged and locally integrated; no human merge or routine cleanup handoff remains for TASK-00009.
-TASK-00014 is ready for explicit execution, not implemented or independently accepted. The maintainer authorized
-publication of this planning baseline only; integrate it before branching from `develop` for implementation.
+The planning baseline was integrated through PR #17 at `30c02ce69625eecafe8884eda83d4e4715bfd900`.
+TASK-00014 implementation is in progress on its approved feature branch; independent acceptance/QA remain pending.
+The earlier planning-publication instruction is historical, not an implementation delivery handoff.
 Preserve its PR #16 reconciliation and manual guidance. The WF-001 package audit remains separate.
 
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
@@ -68,15 +89,15 @@ The bounded adoption TASKs do not authorize the broader application map.
 ## Active Work
 
 <!-- planning:active -->
-None.
+| Order | ID | Title | Parent | Status | Blocked by | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | in-progress | — | — |
 <!-- /planning:active -->
 
 ## Ready Frontier
 
 <!-- planning:ready -->
-| Order | ID | Title | Parent | Status | Blocked by | PR |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | [TASK-00014](00014-TASK.md) | Keep Yii Post-Merge Routing and Delivery Handoffs Current | — | ready-for-agent | — | — |
+None.
 <!-- /planning:ready -->
 
 ## Waiting

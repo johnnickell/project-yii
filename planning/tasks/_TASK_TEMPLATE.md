@@ -7,6 +7,7 @@ status: needs-triage
 order:
 blocked_by:
 pr:
+delivery:
 ---
 
 # Bounded executable outcome
@@ -15,6 +16,8 @@ pr:
 
 State the independently reviewable vertical slice and its accepted requirement/decision authority.
 For standalone bugs/chores use an empty ticket field and the appropriate kind.
+Leave delivery empty until Land verifies an exact OPEN publication; then use `awaiting-merge` with its PR URL.
+See [delivery conventions](../CONVENTIONS.md#live-handoff-verification).
 
 ## Scope
 

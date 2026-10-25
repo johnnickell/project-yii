@@ -6,12 +6,15 @@ For “What's next?”, `next`, or an unqualified `/ask-matt`, use the routing e
 This read-only path precedes general orientation; full implementation, review, QA and delivery requirements
 still apply when the selected workflow is invoked.
 
-1. Run the documented read-only planning validator once when available. Failure stops selection with the
-   actual error and planning-owner handoff; do not refresh views. This offline check does not verify current PR
-   state. Before repeating a publication/merge handoff, apply [live handoff verification](#live-handoff-verification).
+1. Run `./bin/planning-check --check-delivery` once. It validates local planning read-only, then queries only
+   explicitly current delivery handoffs. Failure stops selection with the actual owner/input gap; do not refresh
+   views or retire markers. Verified MERGED/integrated `done` handoffs resolve read-only, so continue selection
+   without routine cleanup. Apply [live handoff verification](#live-handoff-verification) for evidence and manual
+   fallback; ordinary offline validation alone does not verify current PR state.
    Without a validator, disclose that limitation and check selected record metadata against the authored Board;
    do not claim generated freshness.
-2. Read only the Board's current human decision, active work, and (if no active work) first ready entry.
+2. Read only the Board's generated Current Execution/Current Delivery, current human decision, active work,
+   and (if no active work) first ready entry.
    Use local section names and authoritative order. Return all active TASKs, not a new winner. Inspect selected
    TASK metadata and its current handoff, plus blocker metadata only as needed. An unresolved contradiction
    is a named input gap, not permission to audit every record or infer acceptance from `done`.
@@ -51,7 +54,28 @@ indexes, child tables, the TASK Board, and Roadmap tables are projections, not a
 
 ## Live handoff verification
 
-Before routing from an authored current publication/merge handoff, inspect only its named PR through existing
+Use `./bin/planning-check --check-delivery` at read-only routing and Land intake, pre-publication and final
+handoff. It validates records/views before live queries; no writes, fetch, merge, setup or publication occur.
+An optional `delivery: awaiting-merge` on a live TASK is the sole automated current-publication marker. Land sets
+it only after verifying the exact OPEN publication and its `pr` URL. Neither `done`, a PR link, nor historical
+prose creates a current delivery handoff. Generated rows say “Published; verify live state”, not unconditional OPEN.
+Do not add markers to old PRs to scan history. Empty/absent markers have no live query effect.
+
+At authorized Work, Land or substantive planning intake run `./bin/planning-check --reconcile-delivery` before
+edits. This explicit write mode validates records, all live evidence and planned output before writing; it retires
+only verified MERGED/integrated `done` markers, appends exact observed head/merge/time/local-HEAD evidence and
+refreshes views/eligible parent rollups. OPEN markers remain. Any failure prevents all planned writes. Repeating
+retirement with no current markers is a query-free, byte-identical no-op when views are current. Ordinary checks,
+Review, QA and routing never retire markers. A full gate stays offline and read-only.
+
+Live verification checks at most 16 markers, one `gh pr view` per marker, with a 15-second/16384-byte response
+limit each. It requires the target GitHub origin, exact repository/URL/number/TASK title, TASK feature branch,
+`develop` base, 40-hex published head, valid state and exact merge timestamp/commit. Missing tools, authentication,
+metadata or local objects hold routing for the named evidence/Git/planning owner, not maintainer cleanup or setup
+authority. Successful MERGED resolution proves integration only, never independent acceptance or QA.
+
+Preserve the manual procedure for existing authorized authored handoffs or unavailable automation. Before routing
+from an authored current publication/merge handoff, inspect only its named PR through existing
 read-only operator access, for example `gh pr view <PR-URL> --json number,url,title,state,mergedAt,baseRefName,headRefName,headRefOid,mergeCommit`.
 Match the target origin, exact PR URL/number, TASK/title, feature branch and `develop` base. Do not scan historical
 PRs, fetch, merge, publish or refresh views during read-only routing.
@@ -71,10 +95,10 @@ observed head/merge/time/local-HEAD evidence; refresh and validate views explici
 unchanged evidence must need no further edit. Read-only routing, Review, QA, `./bin/planning-check` and `./bin/build`
 never perform this retirement or network-dependent mutation.
 
-Yii currently has no `--check-delivery` or `--reconcile-delivery` flags. The steps above are bounded manual checks,
-not a claim that the offline validator enforces delivery freshness. Fight Common's
-[TASK-00176](https://github.com/johnnickell/fight-common/pull/234) supplies the reference automation; porting its
-explicit markers, generated summaries and check/reconciliation modes requires an accepted local tooling TASK.
+[TASK-00014](tasks/00014-TASK.md) adapts Fight Common's
+[TASK-00176](https://github.com/johnnickell/fight-common/pull/234) tooling reference with Yii's local validation and
+authored Wayfinder guarantees. `./bin/planning-check` and `--write` remain offline and do not assert live freshness.
+`--write`, `--check-delivery` and `--reconcile-delivery` are mutually exclusive effects; no combined implicit writes.
 
 ## Hierarchy and identities
 
@@ -144,7 +168,8 @@ TICKETs require `epic: EPIC-NNNNN`. TASKs require `ticket: TICKET-NNNNN`, except
 `kind` is `feature`, `bug`, or `chore`. `blocked_by` is a comma-separated list of TASK IDs. Preserve completed
 edges; only unfinished blockers prevent execution. `order` is an optional positive priority number, lower first.
 Unranked work sorts last; IDs break ties for deterministic display, not implicit priority. `pr` is an optional
-full pull-request URL, not an assertion of merge state. Frontmatter uses flat, single-line values.
+full pull-request URL, not an assertion of merge state. Optional `delivery: awaiting-merge` identifies a verified
+OPEN publication snapshot on a live TASK; see [live handoff verification](#live-handoff-verification). Frontmatter uses flat, single-line values.
 
 | Status | Meaning |
 | --- | --- |
@@ -164,7 +189,11 @@ in the operation that completes the final child.
 
 `tasks/BOARD.md` presents authored **Now** and **Wayfinder Review** decisions, then generated **Active Work**,
 **Ready Frontier**, **Waiting**, **Needs Info**, **Human Action**, **Needs Triage**, and **Recently Closed**.
-Generated rows show order, ID, title, parent, status, blockers, and PR. An active TASK takes precedence over
+Generated rows show order, ID, title, parent, status, blockers, and PR. Generated Current Execution on the Board
+and Roadmap uses the same ordering/classification: all active TASKs, otherwise the first executable ready TASK;
+Human Action/Needs Info remain visible, and no-executable routes include first triage/waiting reasons. Completed
+blocker edges remain in full tables while routing lists only unresolved blockers. Current Delivery projects only
+explicit publication markers; authored Now decisions/history and planning decomposition remain separate. An active TASK takes precedence over
 starting another ready TASK. For "What's next?", return the current human decision, the active TASK if any,
 and otherwise the first executable TASK in Ready Frontier. Say explicitly when there is no executable work.
 The Wayfinder pointer remains advisory, not permission to bypass an active TASK or its blockers.
@@ -183,7 +212,8 @@ not generated rows. After changes run:
 
 The writer first validates records and local Markdown links, then refreshes marked views. The read-only command
 fails on stale views, invalid IDs/parents/status/priority, duplicate IDs, missing links, and dependency cycles.
-`./bin/build` invokes only the read-only check. Validate planning mechanisms with their owning tools, never
+`./bin/build` invokes only the offline read-only check, first as a freshness preflight before expensive checks
+and again as its final planning phase. Validate planning mechanisms with their owning tools, never
 product tests or deliberately invalid fixtures.
 
 ## Wayfinder
