@@ -15,7 +15,9 @@ For a fresh checkout, use `./bin/up`, then
 lock changes. All development commands run in the repository Docker services, so host PHP, Composer and Python
 versions are not prerequisites for the gate. Direct host `./bin/planning-check` still needs Python 3. Use
 `./bin/down` to stop the complete Compose runtime. Image preparation requires registry access and fails closed
-if required image preparation fails;
+if required image or writable-directory preparation fails. `./bin/up` uses a one-shot root container only to
+create/chown generated `vendor/` and `var/` for the image's non-root user; source ownership is preserved even
+when the Linux checkout owner has a different UID. Composer/install, the gate and FPM remain non-root;
 see [runtime refresh and checkout isolation](README.md#container-runtime-refresh). After runtime updates, use
 `./bin/up` to recreate the services and FPM workers; `./bin/build` does not update running containers.
 

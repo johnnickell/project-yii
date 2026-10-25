@@ -75,7 +75,11 @@ measurement is preserved, not a current prerequisite. Work has implemented and l
 PHP gate and explicit local/CI setup. One canonical PHPUnit run retains 88 tests / 320 assertions; Unit-only exact
 coverage remains 237/237 across all 19 PHP files, with boundary-only coverage separately measured at 0/237. The
 bespoke verifier and disposable no-dev boot are retired, not replaced by a production-install claim. Independent
-Review/QA are still pending; this TICKET stays open with its in-progress child.
+Review requested REV-01 for Linux workspace ownership at candidate `b4a2741c2dd9f552f1e02aaba3938bbe064df22c`.
+Work reproduced and repaired it in explicit `bin/up` directory preparation, preserving non-root install/FPM/gate
+and source ownership. Fresh UID-1001 Linux-workspace up/install/full-gate checks pass with the unchanged exact
+coverage and suite counts; actual hosted execution is not claimed. See the [current repair](../tasks/00009-TASK.md#current-repair--rev-01-linux-workspace-ownership).
+Fresh independent Review and applicable QA remain pending; this TICKET stays open with its in-progress child.
 
 ### Historical gate approval and consolidation
 

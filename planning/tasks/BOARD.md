@@ -41,8 +41,11 @@ after the [owner's clarification](00009-TASK.md#current-work--owner-clarificatio
 scripts or infrastructure tests, not PHP code. Cover the PHP code”. Direct tests of owned PHP providers/composition
 contracts are allowed; all owned PHP stays in the exact Unit-only denominator. The prior measured hold is resolved
 and preserved as history. Work has implemented and locally verified the replacement (88 tests / 320 assertions,
-237/237 Unit-only statements across all 19 PHP source files). Next is independent Review, then applicable QA through
-the existing coordinator; do not start another TASK or mistake local verification for independent acceptance.
+237/237 Unit-only statements across all 19 PHP source files). Initial independent Review requested REV-01 for Linux
+workspace ownership; Work's [bounded preparation repair](00009-TASK.md#current-repair--rev-01-linux-workspace-ownership)
+passes fresh Linux UID-1001 and existing-runtime checks. Next is fresh independent Review, then applicable QA
+through the existing coordinator (1/5 repair cycles consumed); do not start another TASK or mistake local
+verification for independent acceptance. Actual hosted execution is not claimed.
 No additional general adoption decision or decomposition is pending for [EPIC-00003](../epics/00003-EPIC.md#progress).
 Concrete conflicts or releases outside the approved envelope need scoped owner decisions; Common 2.0 remains
 `needs-info` until its contract, deprecation-removal inventory, and migration guide exist.

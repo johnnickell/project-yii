@@ -6,6 +6,13 @@ if ! docker compose build --pull; then
     echo >&2 'Runtime preparation failed; check Docker/registry access and the pinned base images. Services were not recreated; any existing services remain unchanged.'
     exit 1
 fi
+# Linux checkouts can belong to a different UID than the non-root runtime.
+# Only generated dependency/runtime directories change ownership, never source.
+if ! docker compose run --rm --no-deps --user root app sh -ec \
+    'mkdir -p vendor var; find vendor var -xdev \( -type d -o -type f \) -exec chown systemuser:systemuser {} +'; then
+    echo >&2 'Writable-directory preparation failed; inspect vendor/ and var/ permissions before retrying ./bin/up. Services were not recreated.'
+    exit 1
+fi
 if ! docker compose up --no-build --force-recreate --detach "$@"; then
     echo >&2 'Runtime recreation failed; inspect docker compose ps/logs before retrying ./bin/up.'
     exit 1

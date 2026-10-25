@@ -55,8 +55,11 @@ prohibition applies to bin/* and infrastructure tests, not owned PHP providers/c
 tests are permitted and every owned PHP statement stays in the exact Unit-only denominator. The prior 235/237
 filtered measurement and hold remain historical, not a current blocker. Work has implemented and locally verified
 the running-service PHP gate, explicit local/CI setup and obsolete/no-dev machinery retirement: 88 tests / 320
-assertions and 237/237 Unit-only statements across all 19 source files. Independent Review/QA of the replacement
-are still pending. No new decomposition or second gate TASK is needed.
+assertions and 237/237 Unit-only statements across all 19 source files. Initial independent Review requested
+REV-01 (Linux workspace ownership); Work's [explicit-preparation repair](tasks/00009-TASK.md#current-repair--rev-01-linux-workspace-ownership)
+passes fresh UID-1001 Linux-workspace and existing-runtime checks, with source ownership/non-root execution
+preserved. Fresh independent Review and applicable QA remain pending; actual hosted execution is not claimed.
+No new decomposition or second gate TASK is needed.
 The broader application map remains in its decision phase; WF-001 is its executable review candidate, but its
 complete capability inventory is not implied by this bounded adoption portfolio.
 
