@@ -247,7 +247,7 @@ def delivery_repository(handoffs: list) -> str:
 
 def delivery_metadata(number: int, repository: str) -> dict:
     """Bound both request time and buffered output, without echoing private CLI diagnostics."""
-    command = ["gh", "pr", "view", str(number), "--repo", repository, "--json",
+    command = ["gh", "pr", "view", str(number), "--repo", "github.com/" + repository, "--json",
                "number,url,title,state,mergedAt,baseRefName,headRefName,headRefOid,mergeCommit"]
     try:
         with subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
