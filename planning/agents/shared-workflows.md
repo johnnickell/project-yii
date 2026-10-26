@@ -83,7 +83,7 @@ The PR body states scope/behavior, TASK and accepted candidate, verification com
 Review/QA identity and evidence, limitations, and pending publication/checks/human review. Use an accessible,
 sanitized Before/After table only for applicable visual evidence; non-visual work records behavioral evidence and
 visual N/A. Local ignored paths alone are not published PR evidence. Title: `TASK-NNNNN — <TASK title>`, base:
-`develop`. Missing publication/upload capability holds that effect; never invent a URL or commit private evidence.
+the live-default/policy-bound target below. Missing publication/upload capability holds that effect; never invent a URL or commit private evidence.
 
 Before routing, run `./bin/planning-check --check-delivery` under
 [live handoff verification](../CONVENTIONS.md#live-handoff-verification). Land runs this bounded read-only mode
@@ -100,6 +100,24 @@ Git root/remote/common directory, selected checkout/canonical base, branch/base/
 substitutions/exclusions, commands, completion/hosted policy and evidence paths. Every fresh child reads that
 context and target instructions before its provider skill, verifies Git identity, and applies these substitutions
 through nested references. A changed target, binding or requirement needs reconciled context/evidence first.
+
+## Bound target and required retirement
+
+Before reconciliation, pre-publication and final handoff bind the live GitHub default against Yii's `develop`
+policy and existing subject PR using the resolved provider's `.pi/skills/land/scripts/bind-target.py` with target
+`--root`, `--policy develop` and existing `--pr`/`--head`. Retain the observation and use the bound base throughout;
+stale `origin/HEAD` is not authority. Default/policy/PR conflicts need explicit disposition, not silent retargeting.
+
+Consume the provider's `docs/engineering/LANDING.md` cleanup-only intake, inventory/preservation, live-consumer,
+Git/Docker retirement and postcondition/resume contract (TASK-00534 plus qualified TASK-00537), alongside Yii's
+gates. Publication, document synchronization and eligible local retirement are separate required obligations;
+held resources mean incomplete cleanup. Verified merged cleanup-only needs no metadata correction PR or repeated
+acceptance gate. Discover orphan stacks independently of worktrees with source/path/topology/data corroboration.
+After worker exit continue from the safe checkout with original model/ledger/authority; preserve active sessions.
+Positively qualify Docker VM read-only sharing against all containers (including stopped), parent mounts, host
+cwd/writers and stable preservation manifests. Unknown readers hold; never stop the shared VM. Preserve active,
+dirty/shared resources, independent reports, credentials and durable data. Reobserve current consumers, resume
+only missing effects and verify exact postconditions with finite recovery actions.
 
 ## Skill entry points and boundaries
 
