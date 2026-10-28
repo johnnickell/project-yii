@@ -4,12 +4,12 @@ Read `AGENTS.md`, `ARCHITECTURE.md`, `planning/CONVENTIONS.md`, and the focused 
 proposing a change. EPICs own destinations, TICKETs own requirements, and TASKs own bounded implementation.
 Create or update an accepted local TASK, choose the checkout with the maintainer, and branch from `develop` as
 `feature/task-NNNNN-<slug>`. Keep work to a vertical slice and run `./bin/build` before requesting review.
-At authorized Work, Land or substantive planning intake, run `./bin/planning-check --reconcile-delivery` to
-retire only verified ended publication markers and preserve merge/integration evidence; uncertainty prevents all
-planned writes. After planning changes, run `./bin/planning-check --write` followed by `./bin/planning-check`.
-Read-only routing uses `./bin/planning-check --check-delivery`; Land repeats it at intake, pre-publication and
-final handoff. Live modes query only explicit `delivery: awaiting-merge` TASKs, not historical PRs. Ordinary
-checks/writer/build stay offline; see [delivery conventions](planning/CONVENTIONS.md#live-handoff-verification).
+After planning changes, run offline `./bin/planning-check --write` followed by `./bin/planning-check`.
+[Land closeout](planning/CONVENTIONS.md#publication-closeout) owns independently accepted TASK/current-doc closure,
+exact live own-PR/default/head/remote validation and eligible owned local Git/Docker/storage retirement. Human
+merge remains separate, without a persistent delivery queue or recurring post-merge planning chore. Preserve
+historical acceptance/publication and independent reports; keep live results in ignored receipts and actual PRs.
+Routing never scans historical PRs; uncertainty holds the affected action, not inferred success.
 Use the [shared workflow binding](planning/agents/shared-workflows.md) for installed skills, Yii resource substitutions,
 canonical evidence and independent Review/QA/Land handoffs. A next recommendation does not authorize execution;
 explicit Build delegates its bounded delivery stages, while work alone stops at a committed Review handoff.

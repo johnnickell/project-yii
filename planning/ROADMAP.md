@@ -21,8 +21,9 @@ No TASK is currently executable; unresolved work may remain.
 <!-- /planning:execution -->
 
 This generated execution route is separate from the authored planning/decomposition handoff below.
-Current publication snapshots live on the [Board](tasks/BOARD.md#current-delivery); verify with
-`./bin/planning-check --check-delivery` before routing a delivery handoff.
+[Land closeout](CONVENTIONS.md#publication-closeout) owns exact live subject validation and eligible local
+retirement, without a persistent delivery queue or recurring post-merge planning chore. Historical checkpoints
+remain evidence, not current merge instructions.
 
 ## Planning Frontier
 
