@@ -85,15 +85,14 @@ sanitized Before/After table only for applicable visual evidence; non-visual wor
 visual N/A. Local ignored paths alone are not published PR evidence. Title: `TASK-NNNNN — <TASK title>`, base:
 the live-default/policy-bound target below. Missing publication/upload capability holds that effect; never invent a URL or commit private evidence.
 
-Before routing, run `./bin/planning-check --check-delivery` under
-[live handoff verification](../CONVENTIONS.md#live-handoff-verification). Land runs this bounded read-only mode
-at intake, pre-publication and final handoff; verify its newly published subject directly before setting
-`delivery: awaiting-merge` and its exact `pr` URL. Never infer a marker from historical prose, `done` or a PR link.
-At authorized Work, Land or substantive planning intake run `./bin/planning-check --reconcile-delivery` before
-edits. Only that explicit write mode retires verified ended markers/evidence and refreshes views. Read-only
-routing resolves integrated merges without writes or routine cleanup; uncertainty holds the exact owner/input.
-Preserve the existing manual authored-handoff procedure in conventions. Offline planning/build success is not
-evidence that a published PR remains OPEN; no live mode grants publication, fetch, merge or credential setup.
+Before routing, run offline read-only `./bin/planning-check`. Land owns
+[publication closeout](../CONVENTIONS.md#publication-closeout): accepted TASK/eligible-parent/current-doc closure
+and exact live own PR/repository/default/base/head/remote validation at intake, pre-publication and final handoff.
+Keep actual PR URL as publication history and live delivery/cleanup results in durable ignored receipts and the
+actual PR, not tracked markers/tables, a persistent pending-merge queue or recurring post-merge planning chore.
+Preserve historical acceptance/publication and independent reports. Human merge stays separate; preserve open-PR
+remote heads. Unknown/conflicting identity holds the affected action, never inferred acceptance/merge. Planning
+checks/build stay offline; routing never queries historical PRs or dispatches delivery.
 
 For delegated stages, the coordinator records a private reusable project context: exact target/provider resources,
 Git root/remote/common directory, selected checkout/canonical base, branch/base/head, local records/templates,
@@ -116,8 +115,13 @@ acceptance gate. Discover orphan stacks independently of worktrees with source/p
 After worker exit continue from the safe checkout with original model/ledger/authority; preserve active sessions.
 Positively qualify Docker VM read-only sharing against all containers (including stopped), parent mounts, host
 cwd/writers and stable preservation manifests. Unknown readers hold; never stop the shared VM. Preserve active,
-dirty/shared resources, independent reports, credentials and durable data. Reobserve current consumers, resume
-only missing effects and verify exact postconditions with finite recovery actions.
+dirty/shared resources, independent reports, credentials and durable data. Capture exact creating-container
+mounts and named/image-anonymous volume creation provenance before creator removal. Inventory task-created
+versus merely used/shared containers, networks, volumes, images and caches with size, discard authority,
+dependencies and disposition. Reobserve exact identity and all consumers, including stopped ones, before each
+normal exact effect; unknown/shared/durable/excluded or denied inspection holds without force/prune, shared
+shutdown or suppressed cleanup errors. Resume only missing authorized effects and verify actual absence/
+preservation with finite recovery actions.
 
 ## Skill entry points and boundaries
 

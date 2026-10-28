@@ -2,9 +2,9 @@
 
 ## Routing index
 
-Validate with `./bin/planning-check --check-delivery`, then read generated Current Execution and Current Delivery
-plus current human decisions below; otherwise the first ready TASK. Live checks resolve verified integrated merges
-read-only; unavailable or uncertain evidence is an owner/input gap, never a routine cleanup request.
+Validate with offline read-only `./bin/planning-check`, then read generated Current Execution and current human
+decisions below; otherwise the first ready TASK. Historical publication checkpoints do not create current merge
+actions or recurring post-merge planning work; uncertainty needs its exact owner/input.
 Use [lightweight routing](../CONVENTIONS.md#lightweight-work-routing) for validation and evidence limits.
 [Wayfinder status and frontiers](../wayfinder/README.md) answer the decision-routing question.
 Use the [Roadmap](../ROADMAP.md) and current handoffs for planning phases; do not infer full decomposition from closed maps.
@@ -27,16 +27,12 @@ under **Ready Frontier**. Do not start a second TASK just because its ID is lowe
 No TASK is currently executable; unresolved work may remain.
 <!-- /planning:next -->
 
-## Current Delivery
-
-<!-- planning:delivery -->
-None. No explicit current publication handoffs.
-<!-- /planning:delivery -->
-
-Publication snapshots require `--check-delivery` before routing; these rows do not assert unconditional OPEN state.
-No marker means no current delivery handoff, even when historical prose or a PR link exists.
-
 ## Now
+
+[Publication closeout](../CONVENTIONS.md#publication-closeout) retires the former delivery-marker/queue and
+recurring reconciliation duties described in the historical checkpoint below. Land closes accepted TASK/current
+docs, validates its exact live subject and retires eligible owned local resources during delivery. Human merge
+stays separate; historical acceptance/publication evidence remains, without a recurring post-merge planning chore.
 
 On 2026-10-25 the maintainer approved [TASK-00014 — Keep Yii Post-Merge Routing and Delivery Handoffs Current](00014-TASK.md)
 as a standalone bug, using the main checkout. Port Fight Common's bounded live delivery checking, explicit
@@ -48,7 +44,7 @@ TASK-00014 candidate A is independently accepted and QA-passed. At its publicati
 MERGED on 2026-10-25 at `f8d41eefa2eb3b4cb550ab7bb940248be30b2d38`, integrated in this checkout, with
 [exact delivery evidence](00014-TASK.md#delivery-reconciliation--pr-18). No merge or routine cleanup handoff remains.
 The earlier planning-publication instruction is historical, not an implementation delivery handoff.
-Preserve its PR #16 reconciliation and manual guidance. WF-001's research closeout below is separate.
+Preserve its historical PR #16 reconciliation evidence, not the retired marker/manual-maintenance duties. WF-001's research closeout below is separate.
 
 On 2026-10-24 the maintainer approved the urgent standalone runtime security repair in
 [TASK-00013](00013-TASK.md), with an isolated worktree and no package-adoption prerequisite. Independent review

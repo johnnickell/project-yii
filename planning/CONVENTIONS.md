@@ -6,14 +6,11 @@ For “What's next?”, `next`, or an unqualified `/ask-matt`, use the routing e
 This read-only path precedes general orientation; full implementation, review, QA and delivery requirements
 still apply when the selected workflow is invoked.
 
-1. Run `./bin/planning-check --check-delivery` once. It validates local planning read-only, then queries only
-   explicitly current delivery handoffs. Failure stops selection with the actual owner/input gap; do not refresh
-   views or retire markers. Verified MERGED/integrated `done` handoffs resolve read-only, so continue selection
-   without routine cleanup. Apply [live handoff verification](#live-handoff-verification) for evidence and manual
-   fallback; ordinary offline validation alone does not verify current PR state.
-   Without a validator, disclose that limitation and check selected record metadata against the authored Board;
-   do not claim generated freshness.
-2. Read only the Board's generated Current Execution/Current Delivery, current human decision, active work,
+1. Run offline read-only `./bin/planning-check` once. Failure stops selection with the actual planning-owner/
+   input gap; do not refresh views. Historical publication checkpoints do not create current merge actions.
+   Land verifies its exact live subject during publication or explicit resume; routing never scans historical
+   PRs or requests recurring post-merge planning maintenance.
+2. Read only the Board's generated Current Execution, current human decision, active work,
    and (if no active work) first ready entry.
    Use local section names and authoritative order. Return all active TASKs, not a new winner. Inspect selected
    TASK metadata and its current handoff, plus blocker metadata only as needed. An unresolved contradiction
@@ -52,53 +49,24 @@ owner's reconciliation, not a guessed verdict. Preserve the current checkout, le
 Project Yii owns its planning. Individual records own scope, status, dependencies, and priority; generated
 indexes, child tables, the TASK Board, and Roadmap tables are projections, not additional status authorities.
 
-## Live handoff verification
+## Publication closeout
 
-Use `./bin/planning-check --check-delivery` at read-only routing and Land intake, pre-publication and final
-handoff. It validates records/views before live queries; no writes, fetch, merge, setup or publication occur.
-An optional `delivery: awaiting-merge` on a live TASK is the sole automated current-publication marker. Land sets
-it only after verifying the exact OPEN publication and its `pr` URL. Neither `done`, a PR link, nor historical
-prose creates a current delivery handoff. Generated rows say “Published; verify live state”, not unconditional OPEN.
-Do not add markers to old PRs to scan history. Empty/absent markers have no live query effect.
+Land closes independently accepted TASKs, eligible parents and applicable current Board/Roadmap/README/docs
+during delivery under the [workflow binding](agents/shared-workflows.md#bound-target-and-required-retirement).
+At intake, before publication and final handoff validate exact live own PR/repository/default/base/head/remote
+candidate and required delivery proof. Missing/conflicting identity holds the affected effect; never infer
+acceptance, merge, deployment or cleanup from a historical checkpoint. Closed-unmerged is not delivered.
 
-At authorized Work, Land or substantive planning intake run `./bin/planning-check --reconcile-delivery` before
-edits. This explicit write mode validates records, all live evidence and planned output before writing; it retires
-only verified MERGED/integrated `done` markers, appends exact observed head/merge/time/local-HEAD evidence and
-refreshes views/eligible parent rollups. OPEN markers remain. Any failure prevents all planned writes. Repeating
-retirement with no current markers is a query-free, byte-identical no-op when views are current. Ordinary checks,
-Review, QA and routing never retire markers. A full gate stays offline and read-only.
+Keep live results in durable ignored receipts and the actual PR, not tracked delivery markers/tables, a persistent
+pending-merge queue or recurring post-merge planning chore. Preserve historical acceptance/publication, including
+TASK-00014's former mechanism, and canonical independent reports. A TASK `pr` is publication history, not live
+merge proof. Human merge remains separate; preserve open-PR remote heads. Planning checks and `--write` stay
+offline; routing does not query historical PRs or dispatch delivery.
 
-Live verification checks at most 16 markers, one `gh pr view` per marker, with a 15-second/16384-byte response
-limit each. It requires the target GitHub origin, exact repository/URL/number/TASK title, TASK feature branch,
-`develop` base, 40-hex published head, valid state and exact merge timestamp/commit. Missing tools, authentication,
-metadata or local objects hold routing for the named evidence/Git/planning owner, not maintainer cleanup or setup
-authority. Successful MERGED resolution proves integration only, never independent acceptance or QA.
-
-Preserve the manual procedure for existing authorized authored handoffs or unavailable automation. Before routing
-from an authored current publication/merge handoff, inspect only its named PR through existing
-read-only operator access, for example `gh pr view <PR-URL> --json number,url,title,state,mergedAt,baseRefName,headRefName,headRefOid,mergeCommit`.
-Match the target origin, exact PR URL/number, TASK/title, feature branch and `develop` base. Do not scan historical
-PRs, fetch, merge, publish or refresh views during read-only routing.
-
-- OPEN: human review/merge remains pending. A `done` status alone is not technical acceptance or QA evidence.
-- MERGED: resolve the old human merge handoff only when the TASK is `done`, exact merge time/commit are present,
-  and local Git proves published head → merge commit → current HEAD ancestry with replacement objects and lazy
-  fetching disabled (`git --no-replace-objects`, `GIT_NO_LAZY_FETCH=1`). Continue normal Board/Wayfinder selection;
-  do not ask the maintainer for routine cleanup of a verified ended handoff. This proves integration, not new
-  review, QA, release or deployment authority.
-- CLOSED without merge, unavailable/mismatched/contradictory metadata, non-`done` scope or absent local ancestry:
-  name the exact evidence or integration gap and its owner. Do not infer OPEN, MERGED, acceptance or completion.
-
-At authorized substantive planning or Work/Land intake, reconcile verified ended current handoffs in the owning
-TASK and affected authored Board/Roadmap/parent summaries. Preserve historical publication checkpoints and exact
-observed head/merge/time/local-HEAD evidence; refresh and validate views explicitly. Repeating reconciliation of
-unchanged evidence must need no further edit. Read-only routing, Review, QA, `./bin/planning-check` and `./bin/build`
-never perform this retirement or network-dependent mutation.
-
-[TASK-00014](tasks/00014-TASK.md) adapts Fight Common's
-[TASK-00176](https://github.com/johnnickell/fight-common/pull/234) tooling reference with Yii's local validation and
-authored Wayfinder guarantees. `./bin/planning-check` and `--write` remain offline and do not assert live freshness.
-`--write`, `--check-delivery` and `--reconcile-delivery` are mutually exclusive effects; no combined implicit writes.
+Land also owns eligible local Git/Docker/storage retirement using durable creation/mount provenance, fresh exact
+identity/all-consumer checks and verified absence/preservation. Unknown/shared/durable/excluded or denied
+inspection holds without force/prune, shared shutdown or suppressed cleanup errors. Resume only missing
+authorized effects with finite recovery; no post-exit watcher or tracked update to certify later success.
 
 ## Hierarchy and identities
 
@@ -168,8 +136,8 @@ TICKETs require `epic: EPIC-NNNNN`. TASKs require `ticket: TICKET-NNNNN`, except
 `kind` is `feature`, `bug`, or `chore`. `blocked_by` is a comma-separated list of TASK IDs. Preserve completed
 edges; only unfinished blockers prevent execution. `order` is an optional positive priority number, lower first.
 Unranked work sorts last; IDs break ties for deterministic display, not implicit priority. `pr` is an optional
-full pull-request URL, not an assertion of merge state. Optional `delivery: awaiting-merge` identifies a verified
-OPEN publication snapshot on a live TASK; see [live handoff verification](#live-handoff-verification). Frontmatter uses flat, single-line values.
+full pull-request URL recording publication history, not live merge state. See [publication closeout](#publication-closeout).
+Frontmatter uses flat, single-line values.
 
 | Status | Meaning |
 | --- | --- |
@@ -192,8 +160,8 @@ in the operation that completes the final child.
 Generated rows show order, ID, title, parent, status, blockers, and PR. Generated Current Execution on the Board
 and Roadmap uses the same ordering/classification: all active TASKs, otherwise the first executable ready TASK;
 Human Action/Needs Info remain visible, and no-executable routes include first triage/waiting reasons. Completed
-blocker edges remain in full tables while routing lists only unresolved blockers. Current Delivery projects only
-explicit publication markers; authored Now decisions/history and planning decomposition remain separate. An active TASK takes precedence over
+blocker edges remain in full tables while routing lists only unresolved blockers. Live delivery results belong
+in ignored receipts/actual PRs; authored Now decisions/history and planning decomposition remain separate. An active TASK takes precedence over
 starting another ready TASK. For "What's next?", return the current human decision, the active TASK if any,
 and otherwise the first executable TASK in Ready Frontier. Say explicitly when there is no executable work.
 The Wayfinder pointer remains advisory, not permission to bypass an active TASK or its blockers.

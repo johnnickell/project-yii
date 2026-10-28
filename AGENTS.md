@@ -5,8 +5,8 @@
 For “What's next?”, `next`, or an unqualified `/ask-matt`, go straight to the [Board](planning/tasks/BOARD.md)
 before general project orientation. Read its current human decision and active work; otherwise select the first
 executable ready TASK in Board order. Use the [Wayfinder index](planning/wayfinder/README.md) for map status and current frontier pointers.
-Run `./bin/planning-check --check-delivery` read-only before routing; verified integrated merges resolve without
-routine cleanup. Stop on unavailable/uncertain evidence with the precise owner/input gap, not an inferred PR state.
+Run offline read-only `./bin/planning-check` before routing. Historical publication checkpoints do not create
+current merge actions or recurring post-merge planning work; uncertainty needs its exact owner/input.
 Follow [lightweight work routing](planning/CONVENTIONS.md#lightweight-work-routing) for validation,
 bounded evidence reads and planning handoffs. Recommend and stop; load execution guidance when work is invoked.
 This routing path does not require reading README, architecture, full project context, task history or receiving skills.
@@ -19,9 +19,10 @@ path above takes precedence over broad orientation reads; it does not waive engi
 Read `ARCHITECTURE.md`, `planning/README.md`, `planning/CONVENTIONS.md`, and `planning/agents/` before changing behavior.
 Use the [shared workflow binding](planning/agents/shared-workflows.md) for execution and substantive planning;
 installed shared engineering/delivery guidance is the default with its explicit Yii substitutions and stronger local guarantees.
-At authorized Work, Land or substantive planning intake, run `./bin/planning-check --reconcile-delivery` before edits;
-only this explicit mode retires verified ended markers. Land also checks live freshness at intake, pre-publication
-and final handoff. See [delivery effects and markers](planning/CONVENTIONS.md#live-handoff-verification).
+Land owns [publication closeout](planning/CONVENTIONS.md#publication-closeout): accepted TASK/current-doc closure,
+exact live own-PR/default/head/remote validation and eligible owned local Git/Docker/storage retirement. Human
+merge and open-PR remote heads remain separate; no tracked queue or recurring post-merge bookkeeping. Planning
+checks stay offline; preserve historical acceptance/publication and independent reports.
 Work in independently verifiable vertical slices. Use the repository-owned `./bin/build`, `./bin/phpunit`, `./bin/up`, `./bin/down`, `./bin/composer`, and `./bin/exec` commands; `./bin/build` is the single noninteractive local and hosted gate.
 
 Yii owns its configuration-provider composition, DI bindings, HTTP and console entry points, Twig presentation, and future adapters. Fight Common and Fight AccessControl are public Composer dependencies only. Do not implement login, persistence, browser journeys, releases, tags, Packagist publication, template enablement, or create-project distribution without an accepted local TASK.
