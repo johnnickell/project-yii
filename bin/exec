@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 set -eu
-
 cd "$(dirname "$0")/.."
-docker compose exec -T app "$@"
+exec ./bin/runtime docker compose exec -T app "$@"

@@ -1,0 +1,43 @@
+{
+  "project": "project-yii",
+  "running": [
+    "app"
+  ],
+  "gate": [
+    "./bin/.build-full"
+  ],
+  "outputs": [
+    "var/coverage"
+  ],
+  "runtime_probes": [
+    [
+      "exec",
+      "-T",
+      "app",
+      "sh",
+      "-ec",
+      "php -r 'echo json_encode([PHP_VERSION, get_loaded_extensions(), ini_get_all(null, false)]);'; composer --version; git --version"
+    ]
+  ],
+  "directories": [
+    "var/cache"
+  ],
+  "setup": [
+    "./bin/runtime",
+    "docker",
+    "compose",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--user",
+    "root",
+    "app",
+    "sh",
+    "-ec",
+    "mkdir -p vendor var; find vendor var -xdev \\( -type d -o -type f \\) -exec chown systemuser:systemuser {} +"
+  ],
+  "images": [
+    "app",
+    "web"
+  ]
+}

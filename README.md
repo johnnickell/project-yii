@@ -45,14 +45,12 @@ from stale images. Existing services may still be running after a failed prepara
 retry after fixing access. A successful image build alone does not refresh running services: run `./bin/up` too.
 Explicit release pins still need deliberate updates when later security releases appear.
 
-For parallel checkouts, set a unique `COMPOSE_PROJECT_NAME` and unused `PROJECT_YII_HTTP_PORT` (default `8088`)
-for every wrapper invocation, including `./bin/down`. For example:
-
-```sh
-export COMPOSE_PROJECT_NAME=project-yii-my-task PROJECT_YII_HTTP_PORT=18088
-./bin/up
-./bin/down
-```
+For parallel registered checkouts use [local tooling](docs/engineering/LOCAL_TOOLING.md), which selects a
+stable project per path and allocates a free loopback port. Ambient Compose project variables do not choose
+the target. In an isolated checkout use `./bin/up --worktree "$PWD"`, inspect
+`./bin/runtime docker compose ps`, and retire it with `./bin/down --worktree "$PWD"`. Plain up/down select
+main, whose normal port remains 8088. The normal build validates planning freshly and can reuse its own
+qualifying application receipt; `--force` deliberately executes the unchanged complete gate.
 
 The startup INI disables `session.upload_progress.enabled` per PHP's
 [follow-up guidance](https://www.php.net/archive/2026.php#2026-10-23-1) for CVE-2026-115560; PHP 8.5.12 fixes
@@ -68,3 +66,5 @@ after INI changes. Finite PHP/request limits remain enabled: base defaults are `
 Configure these environment variables in every deployment: `FIGHT_HMAC_PUBLIC` for the nonblank HMAC identity,
 `FIGHT_HMAC_PRIVATE` for the 32-byte hexadecimal HMAC secret, and `FIGHT_JWT_SECRET` for the 32-byte hexadecimal
 JWT secret. JWT encoding and decoding use `HS256`.
+
+See [local Docker, worktree and build-cache operations](docs/engineering/LOCAL_TOOLING.md) for explicit main/worktree selection, guarded teardown and fresh versus reused gate evidence.

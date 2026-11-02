@@ -2,4 +2,4 @@
 set -eu
 
 cd "$(dirname "$0")/.."
-docker compose exec -T app composer "$@"
+./bin/runtime docker compose exec -T app composer "$@"
