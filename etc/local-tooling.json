@@ -22,20 +22,6 @@
   "directories": [
     "var/cache"
   ],
-  "setup": [
-    "./bin/runtime",
-    "docker",
-    "compose",
-    "run",
-    "--rm",
-    "--no-deps",
-    "--user",
-    "root",
-    "app",
-    "sh",
-    "-ec",
-    "mkdir -p vendor var; find vendor var -xdev \\( -type d -o -type f \\) -exec chown systemuser:systemuser {} +"
-  ],
   "images": [
     "app",
     "web"

@@ -37,6 +37,9 @@ From the selected isolated checkout prepare dependencies/runtime with:
 
 `bin/up --worktree PATH --build-only` builds images without starting the stack. This repository's tooling
 service is `app`. Composer/quality commands retain the local project's dependency and coverage policy.
+The app image maps its `systemuser` account to the invoking host UID/GID through local build arguments.
+Preparation does not recursively change checkout ownership: canonical `var/worktrees/` configuration stays
+private to its host owner, and application dependency/cache files use that same identity.
 Main and worktrees have separate images, networks, source mounts and generated output. The native Git common
 directory is mounted read-only so linked-worktree locators function without a metadata copy.
 

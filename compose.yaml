@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: etc/docker/fpm/Dockerfile
+      args:
+        APP_UID: "${FIGHT_UID:-1000}"
+        APP_GID: "${FIGHT_GID:-1000}"
     working_dir: /app
     volumes:
       - .:/app

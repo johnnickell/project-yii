@@ -33,16 +33,14 @@ distribution without a separately accepted local TASK. Planning follows EPIC →
 ## Container runtime refresh
 
 The Dockerfiles pin PHP `8.5.12-fpm` and NGINX `1.30.6-alpine`. `./bin/up` refreshes both service builds with
-`--pull`, prepares writable `vendor/` and `var/` directories, then force-recreates containers so no old FPM workers
-remain. Directory preparation uses a one-shot root container to create those generated directories and assign
-their directories and regular files to the image's `systemuser` (uid/gid 1000), without following symlinks or
-touching sockets; checkout/source ownership is unchanged. This supports
-Linux checkouts owned by a different UID, including hosted runners. Composer, verification and FPM still run
-non-root. Host tools must account for runtime-owned generated files. The non-root PHP image includes PCOV and
-Python 3 for the existing planning validator. `./bin/build` only verifies the prepared running service and does
-not refresh images or workers. Registry/Docker/build failures stop preparation rather than recreating services
-from stale images. Existing services may still be running after a failed preparation; inspect them and
-retry after fixing access. A successful image build alone does not refresh running services: run `./bin/up` too.
+`--pull` and starts the selected native Compose stack. Local builds map the image's non-root `systemuser`
+account to the invoking host UID/GID, including hosted runners. Composer, verification and FPM create
+dependency/cache files as that identity; preparation does not recursively change checkout ownership or
+private `var/worktrees/` configuration. The non-root PHP image includes PCOV and Python 3 for the existing
+planning validator. `./bin/build` only verifies the prepared running service and does not refresh images or
+workers. Registry/Docker/build failures stop preparation rather than recreating services from stale images.
+Existing services may still be running after a failed preparation; inspect them and retry after fixing access.
+A successful image build alone does not refresh running services: run `./bin/up` too.
 Explicit release pins still need deliberate updates when later security releases appear.
 
 For parallel registered checkouts use [local tooling](docs/engineering/LOCAL_TOOLING.md), which selects a
