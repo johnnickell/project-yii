@@ -104,6 +104,6 @@ build evidence are local adaptations, not copied provider application services. 
 comparison and qualification; no private-path dependency, symlink or automatic synchronization is installed.
 Validate these tools directly with native Compose/Worktrunk and normal gates, outside product test suites.
 
-Local development builds use native `--provenance=false` so cached executable layers retain a stable immutable image identity instead of a timestamped attestation index. Release/publication commands retain their own policy. Layers and actual image IDs remain verified; this does not permit publishing local images.
+Local development builds set native `BUILDX_NO_DEFAULT_ATTESTATIONS=1` for the build command so cached executable layers retain a stable immutable image identity instead of a timestamped attestation index. Release/publication commands retain their own policy. Layers and actual image IDs remain verified; this does not permit publishing local images.
 
 Use `./bin/runtime docker ps` to list all selected-checkout containers and their published ports, including plain-run tool previews. `docker compose ps` lists Compose services only.
