@@ -11,8 +11,11 @@ RUN apt-get update \
     && apt-get purge --yes --auto-remove $PHPIZE_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --gid 1000 systemuser \
-    && useradd --uid 1000 --gid 1000 --home-dir /app --no-create-home --shell /usr/sbin/nologin systemuser
+ARG APP_UID=1000
+ARG APP_GID=1000
+
+RUN groupadd --non-unique --gid "$APP_GID" systemuser \
+    && useradd --non-unique --uid "$APP_UID" --gid "$APP_GID" --home-dir /app --no-create-home --shell /usr/sbin/nologin systemuser
 
 RUN rm /usr/local/etc/php-fpm.d/www.conf
 

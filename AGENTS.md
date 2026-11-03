@@ -16,6 +16,10 @@ This routing path does not require reading README, architecture, full project co
 For execution or substantive planning changes, load the applicable guidance below. The read-only routing
 path above takes precedence over broad orientation reads; it does not waive engineering or delivery rules.
 
+For Docker preparation/teardown, isolated worktrees, guarded source removal and build-cache evidence, follow
+[local tooling](docs/engineering/LOCAL_TOOLING.md). Use normal `./bin/build` for fresh planning and qualified
+application reuse; use `--force` for deliberate fresh application execution.
+
 Read `ARCHITECTURE.md`, `planning/README.md`, `planning/CONVENTIONS.md`, and `planning/agents/` before changing behavior.
 Use the [shared workflow binding](planning/agents/shared-workflows.md) for execution and substantive planning;
 installed shared engineering/delivery guidance is the default with its explicit Yii substitutions and stronger local guarantees.

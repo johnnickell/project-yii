@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -eu
+
+cd "$(dirname "$0")/.."
+if ! ./bin/runtime docker compose ps --status running --services | grep -qx app; then
+    echo >&2 'Build requires the running Compose app service. Run ./bin/up --worktree "$PWD", then ./bin/composer install --no-interaction --prefer-dist --no-progress, then ./bin/build.'
+    exit 1
+fi
+
+exec ./bin/runtime docker compose exec -T app php scripts/build.php

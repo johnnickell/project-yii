@@ -25,3 +25,8 @@ Thumbs.db
 .env.local
 .env.*.local
 /.merge-plan.php
+
+# Local gate cache and native worktree configuration
+/var/build.json
+/var/build.lock
+/var/worktrees/
