@@ -25,5 +25,6 @@
   "images": [
     "app",
     "web"
-  ]
+  ],
+  "https_preview": {"service": "web", "network": "default", "port": 80}
 }

@@ -97,6 +97,38 @@ absence separately. An exact unchanged `retained_unmerged` local ref is reported
 failed cleanup. Never delete a remote head, stop a shared VM, strip protections or archive source routinely.
 After successful retirement, repeat using the original absolute path; do not redirect through a surviving ref.
 
+## Runtime-free qualification fixtures
+
+An owning qualification caller can pass `runtime_free_fixture=True` to
+`scripts/local_tooling/worktrunk.py`'s guarded `remove` with the fixture's canonical primary, exact linked
+checkout and expected commit. This is for generated local Git fixtures. The caller must establish ownership.
+The guard requires absent remotes, application declarations, runtime settings and project Docker resources,
+successful native inventories and absent effective removal hooks. The existing source, ancestry, consumer
+and protection checks still apply. Retry only with the original absolute path. Published delivery and
+application or QA environments use the Docker-first path above.
+
+## Local QA and shared HTTPS
+
+Prepare dependencies and start the exact isolated checkout using the commands above. For a browser smoke
+check, use the loopback URL reported by `./bin/runtime docker compose ps`. To preview the same running
+checkout through shared HTTPS, run from that checkout with an absolute path to a Fight Agent OS supplier
+checkout that supports framework previews.
+
+```sh
+./bin/ingress certificate --certificate-action setup --supplier "$supplier"
+./bin/ingress preview --supplier "$supplier"
+```
+
+Operate the shared supplier separately. In Herd mode, render the owned include after certificate setup
+and before preview. For a single framework, use `./bin/ingress herd-config --supplier "$supplier"`.
+For multiple frameworks, render all consumers together using the supplier's documented command.
+Inspect, install, syntax-check and reload the owned Herd include explicitly. See
+`docs/engineering/RESOURCE_LIFECYCLE.md` in Fight Agent OS for details.
+
+The framework owns its HTTP service and readiness. Stop this checkout and its gateway together using
+`./bin/down --worktree "$PWD"`. Remove its preview leaf explicitly with
+`./bin/ingress certificate --certificate-action remove --supplier "$supplier"` after teardown.
+
 ## Maintainer ownership
 
 `etc/local-tooling.json` binds the local service set, gate, artifact paths and runtime probes. Update it whenever
