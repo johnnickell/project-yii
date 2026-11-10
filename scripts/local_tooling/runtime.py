@@ -192,6 +192,7 @@ def main(root):
     parser.add_argument('action', choices=('up', 'down', 'docker', 'inspect', 'finish', 'image-name'))
     parser.add_argument('--worktree')
     parser.add_argument('--build-only', action='store_true')
+    parser.add_argument('--task', help='Actual TASK identity for an enrolled new worktree')
     parser.add_argument('--outcome')
     parser.add_argument('--published-oid')
     parser.add_argument('--pr')
@@ -235,6 +236,10 @@ def main(root):
     guard(safe, checkout, project)
     if args.action == 'up':
         require(not argv, 'Unexpected up arguments')
+        provider, registered = None, None
+        if configuration(root).get('https_preview'):
+            from .ingress_client import ensure
+            provider, registered = ensure(safe, checkout, args.task)
         prepare = configuration(root).get('startup', [])
         for directory in configuration(root).get('directories', []):
             (checkout / directory).mkdir(parents=True, exist_ok=True)
@@ -249,6 +254,9 @@ def main(root):
             run(setup, checkout, env=env)
         if not args.build_only:
             run([*command, 'up', '--detach', '--no-build', '--wait', '--wait-timeout', '120'], checkout, env=env)
+            if registered is not None:
+                from .ingress_client import preview
+                preview(provider, safe, checkout)
             print('Compose ready: ' + project + '; inspect published ports with ./bin/runtime docker compose ps', flush=True)
     elif args.action == 'inspect':
         print(json.dumps({'checkout': str(checkout), 'project': project,

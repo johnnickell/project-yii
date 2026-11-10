@@ -22,7 +22,8 @@ Git registrations resolve paths, branches and unambiguous short names. Ambiguity
 worktree's project hashes the canonical repository and exact checkout path, so branches may change without
 renaming its resources. Worktree ports bind dynamically on loopback; inspect the actual published port with
 `./bin/runtime docker compose ps`. Compose health is not proof of an application/browser journey. No shared
-ingress, custom DNS, certificate enrollment, database migrations or imported main data is implicit.
+ingress enrollment, custom DNS, certificate enrollment, database migrations or imported main data is implicit.
+Already-enrolled local projects maintain their host binding and HTTPS preview during startup as described below.
 
 From the selected isolated checkout prepare dependencies/runtime with:
 
@@ -142,3 +143,37 @@ Validate these tools directly with native Compose/Worktrunk and normal gates, ou
 Local development builds set native `BUILDX_NO_DEFAULT_ATTESTATIONS=1` for the build command so cached executable layers retain a stable immutable image identity instead of a timestamped attestation index. Release/publication commands retain their own policy. Layers and actual image IDs remain verified; this does not permit publishing local images.
 
 Use `./bin/runtime docker ps` to list all selected-checkout containers and their published ports, including plain-run tool previews. `docker compose ps` lists Compose services only.
+
+## Automatic local domain registration
+
+The reviewed local Fight installation owns its canonical `var/local-ingress/hosts.json`.
+Configure discovery once with that supplier's `bin/local-domain install`, or set
+`FIGHT_INGRESS_SUPPLIER` to its absolute checkout path for one invocation. Discovery
+uses `fight/local-ingress.json` beneath `XDG_CONFIG_HOME` (default `~/.config`), never
+a private author path. DockerProxy is optional; the standard supplier supports its
+own loopback front door and scoped DNS. Unenrolled projects retain ordinary startup.
+
+Enroll this app's chosen `local.{domain}` explicitly using the supplier's
+`bin/local-domain plan --project-root /absolute/canonical/app --namespace local.example.com
+--primary`, then apply the printed plan. `local.example.com` is illustrative; this
+starter does not choose a public domain for its users. DNS, trust and project leaf
+preparation remain separate explicit operator operations.
+
+Once enrolled, `bin/up --worktree /exact/path --task TASK-NNNNN` updates the shared
+local registry, including build-only preparation. Existing bindings remain stable;
+new worktrees may infer a TASK only from `feature/task-NNNNN-*` and its actual record.
+Normal startup then connects the running app through its exact HTTPS preview.
+Main uses its explicitly assigned base name. Missing configured supplier, certificate
+or routing prerequisites fail clearly. No fallback origin, silent CA enrollment,
+shared service restart or database import occurs.
+
+`bin/ingress` can use the same discovery pointer when `--supplier` is omitted.
+The supplier's local-domain preview/remove operation retires bindings explicitly
+before source retirement; `bin/down` stops runtime but retains names for restart.
+Project leaves cover the base and one-level wildcard; use explicit certificate
+`renew`/`restore` and refresh affected gateways, preserving the shared CA.
+
+This adapter rollout was authorized with Fight Agent OS TASK-00589 on 2026-11-10.
+Only local tooling changes; no framework product capability or dependency upgrade.
+Validate with native commands and this repository's full gate. Independent acceptance,
+publication and live installation remain separate from implementation.
