@@ -87,3 +87,14 @@ Test owned application behavior and meaningful package integrations. Do not crea
 certification files, receipt readers/generators, dependency certification matrices, or tests of those mechanisms.
 Validate build, configuration and planning tools directly with their owning commands, outside product suites.
 Historical certification notes remain history, not current gates.
+
+## Clear communication
+
+Lead human-facing replies, plans, reports, handoffs, PR descriptions and documentation with the result or
+needed action. Use familiar words, short sentences and enough context to explain why. Explain necessary
+technical terms; remove repetition and detail that does not help the reader. Preserve facts, uncertainty,
+decisions, requirement strength, domain names, code and quoted evidence. Make factual corrections explicit.
+Check clarity before sending; no separate rewriting pipeline or rigid word limit is required. Agent-facing
+instructions still need precise conditions and boundaries.
+
+Follow the local [testing guidance](planning/agents/shared-workflows.md#test-quality-and-suite-balance) for coverage, useful tests and suite balance.
